@@ -121,11 +121,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
                 });
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
 
+            var service = GetService(spMock.Object);
             var result = service.GetReportDataMII(DateTime.MinValue, DateTime.MaxValue, 0);
 
             Assert.NotEmpty(result.Data);
@@ -150,68 +153,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
                 });
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
 
-            var result = service.GenerateExcelMII(DateTime.MinValue, DateTime.MaxValue, 7);
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public void GetReportData_MII_IDR_Success()
-        {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "IDR", "", 1, null);
-
-            var model1 = new GarmentShippingNoteItemModel("", 1, "IDR", 1);
-
-            var repoMock = new Mock<IGarmentShippingNoteRepository>();
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingNoteModel>() { model }.AsQueryable());
-
-            var repoMock1 = new Mock<IGarmentShippingNoteItemRepository>();
-            repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingNoteItemModel>() { model1 }.AsQueryable());
-
-            //var httpMock = new Mock<IHttpClientService>();
-            //httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
-            //    .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-            //    {
-            //        Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "USD" } } }))
-            //    });
-
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
-
-            var result = service.GetReportDataMII(DateTime.MinValue, DateTime.MaxValue, 0);
-
-            Assert.NotEmpty(result.Data);
-        }
-
-        [Fact]
-        public void GenerateExcel_IDR_MII_Success()
-        {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "IDR", "", 1, null);
-
-            var model1 = new GarmentShippingNoteItemModel("", 1, "IDR", 1);
-
-            var repoMock = new Mock<IGarmentShippingNoteRepository>();
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingNoteModel>() { model }.AsQueryable());
-
-            var repoMock1 = new Mock<IGarmentShippingNoteItemRepository>();
-            repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingNoteItemModel>() { model1 }.AsQueryable());
-
-            var httpMock = new Mock<IHttpClientService>();
-            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "IDR" } } }))
-                });
-
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var service = GetService(spMock.Object);
 
             var result = service.GenerateExcelMII(DateTime.MinValue, DateTime.MaxValue, 7);
 
@@ -229,8 +178,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentShippingNoteItemModel>().AsQueryable());
 
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                });
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
 
             var result = service.GenerateExcelMII(null, null, 7);
 

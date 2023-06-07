@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceNo = a.InvoiceNo,                          
                             BuyerCode = a.BuyerCode,
                             BuyerName = a.BuyerName,
-                            BankName = a.BankAccountName,
+                            BankName = a.BankAccountName.Replace(".",""),
                             AccountBankNo = a.BankAccountNo,
                             ReceiptNo = a.ReceiptNo == null ? "-" : a.ReceiptNo,  
                             Amount = Convert.ToDecimal(a.AmountPaid),
