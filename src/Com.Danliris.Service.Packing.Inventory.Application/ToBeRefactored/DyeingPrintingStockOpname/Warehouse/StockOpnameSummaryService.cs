@@ -459,7 +459,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Satuan Pack", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jalur/Rak", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Packing", DataType = typeof(double) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Satuan", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Qty Total", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
 
@@ -470,18 +470,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             else
             {
-               
+                decimal sumPackagingQty = 0;
+                double totalBalance = 0;
+
 
                 foreach (var item in data)
                 {
                    
                     dt.Rows.Add(item.ProductionOrderNo, item.ProductPackingCode, item.Construction, 
                         item.Grade, item.PackagingUnit, item.Track, item.PackagingQty, item.PackagingLength, item.Balance, item.Description);
+                    
+                    sumPackagingQty += item.PackagingQty;
+                    totalBalance += item.Balance;
 
                     
                 }
 
-                
+                dt.Rows.Add("", "", "", "", "", "", sumPackagingQty, 0, totalBalance, "");
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Monitoring Rak/Jalur {0}", "MO")) }, true);
