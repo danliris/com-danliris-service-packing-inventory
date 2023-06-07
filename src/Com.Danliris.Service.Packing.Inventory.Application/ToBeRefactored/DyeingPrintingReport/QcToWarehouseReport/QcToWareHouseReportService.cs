@@ -116,7 +116,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         select a;
             var joinQuerySolid = from a in query
                             join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
-                            where (b.ProductionOrderType == "solid")
+                            where (b.ProcessTypeName == "PRODUKSI WHITE")
 
                             select new QcToWarehouseReportViewModel
                             {
@@ -124,11 +124,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 inputQuantitySolid = b.InputQuantity,
                                 inputQuantityDyeing =0,
                                 inputQuantityPrinting = 0,
-                                orderType = b.ProductionOrderType
+                                orderType = b.ProcessTypeName
                             };
             var joinQueryDyeing = from a in query
                             join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
-                            where (b.ProductionOrderType == "Dyeing")
+                            where (b.ProcessTypeName == "PRODUKSI DYEING")
 
                             select new QcToWarehouseReportViewModel
                             {
@@ -136,11 +136,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 inputQuantitySolid = 0,
                                 inputQuantityDyeing = b.InputQuantity,
                                 inputQuantityPrinting = 0,
-                                orderType = b.ProductionOrderType
+                                orderType = b.ProcessTypeName
                             };
             var joinQueryPrinting = from a in query
                                   join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
-                                  where (b.ProductionOrderType == "Printing")
+                                  where (b.ProcessTypeName == "PRODUKSI PRINTING")
 
                                   select new QcToWarehouseReportViewModel
                                   {
@@ -148,7 +148,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                       inputQuantitySolid = 0,
                                       inputQuantityDyeing = 0,
                                       inputQuantityPrinting = b.InputQuantity,
-                                      orderType = b.ProductionOrderType
+                                      orderType = b.ProcessTypeName
                                   };
             var result = joinQuerySolid.Concat(joinQueryDyeing).Concat(joinQueryPrinting).AsEnumerable();
             var resultGroup = result.GroupBy(s => new { s.createdUtc }).Select(d => new QcToWarehouseReportViewModel()
