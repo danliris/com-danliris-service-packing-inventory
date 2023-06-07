@@ -24,6 +24,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public MemoryStream GenerateExcel( DateTime startdate, DateTime finishdate,int offset)
         {
             var list = GetReportQuery( startdate, finishdate,offset);
+            var ninputQuantitySolid = 0;
+            var ninputQuantityDyeing = 0;
+            var ninputQuantityPrinting = 0;
+            var ntotinputQuantitySolid = 0;
+            var ntotinputQuantityDyeing = 0;
+            var ntotinputQuantityPrinting = 0;
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(String) });
@@ -42,10 +48,53 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     index++;
                     string tgl = item.createdUtc == new DateTime(1970, 1, 1) ? "-" : item.createdUtc.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
+                    if (item.inputQuantitySolid != 0 )
+                    {
+                        ninputQuantitySolid = 1;
+                    }
+                    else
+                    {
+                        ninputQuantitySolid = 0;
+                    }
+                    ntotinputQuantitySolid += ninputQuantitySolid;
+                    //----
+                    if (item.inputQuantityDyeing != 0)
+                    {
+                        ninputQuantityDyeing = 1;
+                    }
+                    else
+                    {
+                        ninputQuantityDyeing = 0;
+                    }
+                    ntotinputQuantityDyeing += ninputQuantityDyeing;
+                    //-----
+                    if (item.inputQuantityPrinting != 0)
+                    {
+                        ninputQuantityPrinting = 1;
+                    }
+                    else
+                    {
+                        ninputQuantityPrinting = 0;
+                    }
+                    ntotinputQuantityPrinting += ninputQuantityPrinting;
+                    //----
+
+
 
                     result.Rows.Add(
                            index, tgl,   item.inputQuantitySolid,   item.inputQuantityDyeing, item.inputQuantityPrinting);
                 }
+                double TotQtySolid = list.Sum(x => x.inputQuantitySolid);
+                double TotQtyDyeing = list.Sum(x => x.inputQuantityDyeing);
+                double TotQtyPrinting = list.Sum(x => x.inputQuantityPrinting);
+                double jmlKuantitiSolid = TotQtySolid/ntotinputQuantitySolid;
+                double jmlKuantitiDyeing = TotQtyDyeing / ntotinputQuantityDyeing;
+                double jmlKuantitiPrinting = TotQtyPrinting / ntotinputQuantityPrinting;
+
+
+                result.Rows.Add("","T O T A L", string.Format("{0:N2}", TotQtySolid), string.Format("{0:N2}", TotQtyDyeing), string.Format("{0:N2}", TotQtyPrinting));
+                result.Rows.Add("", "AVERAGE", string.Format("{0:N2}", jmlKuantitiSolid), string.Format("{0:N2}", jmlKuantitiDyeing), string.Format("{0:N2}", jmlKuantitiPrinting));
+
             }
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
         }
