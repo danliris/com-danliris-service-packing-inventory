@@ -120,7 +120,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             select new QcToWarehouseReportViewModel
                             {
-                                createdUtc = a.CreatedUtc.Date,
+                                createdUtc = a.Date.Date,
                                 inputQuantitySolid = b.InputQuantity,
                                 inputQuantityDyeing =0,
                                 inputQuantityPrinting = 0,
@@ -132,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             select new QcToWarehouseReportViewModel
                             {
-                                createdUtc = a.CreatedUtc.Date,
+                                createdUtc = a.Date.Date,
                                 inputQuantitySolid = 0,
                                 inputQuantityDyeing = b.InputQuantity,
                                 inputQuantityPrinting = 0,
@@ -144,7 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                                   select new QcToWarehouseReportViewModel
                                   {
-                                      createdUtc = a.CreatedUtc.Date,
+                                      createdUtc = a.Date.Date,
                                       inputQuantitySolid = 0,
                                       inputQuantityDyeing = 0,
                                       inputQuantityPrinting = b.InputQuantity,
