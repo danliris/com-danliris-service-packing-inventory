@@ -159,6 +159,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.SalesExport;
 
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
 
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -412,6 +414,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
             services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
             services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
+            services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
+            services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IFabricQualityControlReportService, FabricQualityControlReportService>();
