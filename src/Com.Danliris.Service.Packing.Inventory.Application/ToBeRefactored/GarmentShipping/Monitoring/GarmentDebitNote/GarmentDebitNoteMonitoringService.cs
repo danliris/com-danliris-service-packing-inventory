@@ -128,7 +128,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                          {
                              DNDate = a.Date,
                              DNDate1 = a.Date.AddHours(7).Date,
-                             InvoiceNo = "-",
+                             InvoiceNo = a.NoteNo,
                              BuyerCode = a.BuyerCode,
                              BuyerName = a.BuyerName,
                              BankName = a.BankName,
@@ -205,7 +205,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "NO KWITANSI", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "BANK DEVISA", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO REK BANK", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "INVOICE NO", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "NO DEBIT NOTE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "CURRENCY", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "RATE", DataType = typeof(decimal) });
             result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT", DataType = typeof(decimal) });
