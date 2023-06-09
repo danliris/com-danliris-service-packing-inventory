@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport
 {
@@ -111,16 +112,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var dateTo = finishdate != DateTime.MinValue ? finishdate.Date : DateTime.Now.Date;
 
             var query = from a in _repository.ReadAll()
-                        where a.Date.AddHours(offset).Date >= dateStart.Date && a.Date.AddHours(offset).Date <= dateTo.Date
-                        && a.Area == "GUDANG JADI"
+                        where
+                        a.Date.AddHours(offset).Date >= dateStart.Date && a.Date.AddHours(offset).Date <= dateTo.Date
+                        && 
+                        a.Area == "GUDANG JADI"
                         select a;
+
+            //DyeingPrintingArea.GUDANGJADI
+
+            //var querya = from a in _repository.ReadAll()
+            //            where
+            //            a.Date.AddHours(offset).Date >= dateStart.Date && a.Date.AddHours(offset).Date <= dateTo.Date
+            //            && 
+            //            a.Area == DyeingPrintingArea.GUDANGJADI
+            //             select new { 
+            //                a.CreatedUtc,
+            //                a.Date,
+            //                a.BonNo
+
+            //            };
             var joinQuerySolid = from a in query
                             join b in _productionOrderRepository.ReadAll() on a.Id equals b.DyeingPrintingAreaInputId
                             where (b.ProcessTypeName == "PRODUKSI WHITE")
 
                             select new QcToWarehouseReportViewModel
                             {
-                                createdUtc = a.Date.Date,
+                                createdUtc = a.Date.AddHours(offset).Date,
                                 inputQuantitySolid = b.InputQuantity,
                                 inputQuantityDyeing =0,
                                 inputQuantityPrinting = 0,
@@ -132,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                             select new QcToWarehouseReportViewModel
                             {
-                                createdUtc = a.Date.Date,
+                                createdUtc = a.Date.AddHours(offset).Date,
                                 inputQuantitySolid = 0,
                                 inputQuantityDyeing = b.InputQuantity,
                                 inputQuantityPrinting = 0,
@@ -144,7 +161,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                                   select new QcToWarehouseReportViewModel
                                   {
-                                      createdUtc = a.Date.Date,
+                                      createdUtc = a.Date.AddHours(offset).Date,
                                       inputQuantitySolid = 0,
                                       inputQuantityDyeing = 0,
                                       inputQuantityPrinting = b.InputQuantity,
