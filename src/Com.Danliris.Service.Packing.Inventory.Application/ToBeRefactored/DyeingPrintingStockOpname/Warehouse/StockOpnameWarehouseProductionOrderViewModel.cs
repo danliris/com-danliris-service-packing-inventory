@@ -24,6 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public Material Material { get; set; }
         public MaterialConstruction MaterialConstruction { get; set; }
         public ProductionOrder ProductionOrder { get; set; }
+        public Track Track { get; set;  }
         public string PackagingType { get; set; }
         public string PackagingUnit { get; set; }
         public decimal PackagingQty { get; set; }
@@ -35,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Unit { get; set; }
         public string UomUnit { get; set; }
         public string Remark { get; set; }
+        public string Description { get; set; }
         public double PreviousBalance { get; set; }
         public decimal PreviousQtyPacking { get; set; }
         public string ProductionOrderNo { get; set; }
@@ -68,6 +70,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int ProductPackingId { get; set; }
         public int FabricPackingId { get; set; }
         public IEnumerable<string> ProductPackingCodes { get; set; }
+        public string ProductPackingCode { get; set; }
         public bool HasPrintingProductSKU { get; set; }
+        public int TrackId { get; set; }
+        public string TrackType { get; set; }
+        public string TrackName { get; set; }
+        public string TrackBox { get; set; }
     }
 }

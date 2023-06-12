@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
+using Com.DanLiris.Service.Purchasing.WebApi.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -74,43 +75,44 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
 
         }
 
-        [HttpPost("mobile")]
-        public async Task<IActionResult> PostMobile([FromBody] StockOpnameBarcodeFormDto viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                var excpetion = new
-                {
-                    error = ResultFormatter.FormatErrorMessage(ModelState)
-                };
-                return new BadRequestObjectResult(excpetion);
-            }
-            try
-            {
-                VerifyUser();
-                ValidateService.Validate(viewModel);
-                var result = await _service.Create(viewModel);
+        //Tanggal 23-03-2023 by Gama
+        //[HttpPost("mobile")]
+        //public async Task<IActionResult> PostMobile([FromBody] StockOpnameBarcodeFormDto viewModel)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var excpetion = new
+        //        {
+        //            error = ResultFormatter.FormatErrorMessage(ModelState)
+        //        };
+        //        return new BadRequestObjectResult(excpetion);
+        //    }
+        //    try
+        //    {
+        //        VerifyUser();
+        //        ValidateService.Validate(viewModel);
+        //        var result = await _service.Create(viewModel);
 
-                return Created("/", result);
-            }
-            catch (ServiceValidationException ex)
-            {
-                var Result = new
-                {
-                    error = ResultFormatter.Fail(ex),
-                    apiVersion = "1.0.0",
-                    statusCode = HttpStatusCode.BadRequest,
-                    message = "Data does not pass validation"
-                };
+        //        return Created("/", result);
+        //    }
+        //    catch (ServiceValidationException ex)
+        //    {
+        //        var Result = new
+        //        {
+        //            error = ResultFormatter.Fail(ex),
+        //            apiVersion = "1.0.0",
+        //            statusCode = HttpStatusCode.BadRequest,
+        //            message = "Data does not pass validation"
+        //        };
 
-                return new BadRequestObjectResult(Result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
+        //        return new BadRequestObjectResult(Result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        //    }
 
-        }
+        //}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
@@ -293,6 +295,127 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("code")]
+        public IActionResult GetBarcode(string itemData, int trackId)
+        {
+
+            string accept = Request.Headers["Accept"];
+            try
+            {
+
+                //var data = _service.getDatabyCode(itemData, trackId);
+                var data = _service.getDatabyCodeSummary(itemData, trackId);
+                //var model = mapper.Map<List<InventoryViewModel>>(data);
+
+                return Ok(new
+                {
+                    //apiVersion = ApiVersion,
+                    data = data,
+                    info = new { count = data.Count(), total = data.Count() },
+
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("report-so")]
+        public IActionResult Get([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] string barcode, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var data = _service.GetReportDataSO(dateFrom, dateTo, productionOrderId, barcode, track, offset);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("report-so-xls")]
+        public IActionResult GetXls([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] string barcode, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcel(dateFrom, dateTo, productionOrderId, barcode, track, offset);
+                string filename = $"Laporan Stock Opname {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("monitoring-so")]
+        public IActionResult GetMonitoring([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var data = _service.GetMonitoringSO(dateFrom, dateTo, productionOrderId, track, offset);
+                return Ok(new
+                {
+                    //apiVersion = ApiVersion,
+                    data = data,
+                    info = new { count = data.Count(), total = data.Count() },
+
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("monitoring-so-xls")]
+        public IActionResult GetMonitoringXls([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] int track)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcelMonitoring(dateFrom, dateTo, productionOrderId, track, offset);
+                string filename = "";
+
+                if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
+                {
+                    filename = $"Monitoring Stock Opname Masuk .xlsx";
+                }
+                else
+                {
+                    filename = $"Monitoring Stock Opname Masuk {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                }
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        
+
+        
 
 
     }

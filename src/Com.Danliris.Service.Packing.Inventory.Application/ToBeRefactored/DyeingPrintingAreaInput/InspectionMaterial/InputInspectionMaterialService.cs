@@ -151,7 +151,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                      new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                      s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.InputQuantity, false, s.BuyerId, 0, s.Material.Id, s.Material.Name,
                      s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, s.FinishWidth, 
-                     viewModel.Date, s.MaterialOrigin, s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
+                     viewModel.Date, s.MaterialOrigin, s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name, s.ProductionOrder.CreatedUtc)).ToList());
                    
 
                 result = await _repository.InsertAsync(model);
@@ -172,7 +172,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                         item.Motif, item.UomUnit, item.InputQuantity, item.InputQuantity, false, item.BuyerId, 0, item.Material.Id, item.Material.Name,
                         item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name,
-                        item.InputQuantity, item.FinishWidth,viewModel.Date, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
+                        item.InputQuantity, item.FinishWidth,viewModel.Date, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc);
                        
                     modelItem.DyeingPrintingAreaInputId = model.Id;
 
@@ -499,7 +499,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                  new DyeingPrintingAreaInputProductionOrderModel(viewModel.Area, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity,
                  s.PackingInstruction, s.CartNo, s.Buyer, s.Construction, s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, s.InputQuantity, s.HasOutputDocument, s.BuyerId, 0, s.Material.Id,
                  s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, 
-                 s.FinishWidth,viewModel.Date, s.MaterialOrigin, s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)
+                 s.FinishWidth,viewModel.Date, s.MaterialOrigin, s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name, s.ProductionOrder.CreatedUtc)
                //  s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.InputQuantity, viewModel.Date)
                  { Id = s.Id }).ToList());
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();

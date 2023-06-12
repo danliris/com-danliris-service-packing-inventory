@@ -42,11 +42,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         public string BillCA { get; private set; }
 
         public int BuyerId { get; private set; }
+        public string BuyerCode { get; private set; }
         public string BuyerName { get; private set; }
         public string BuyerAddress { get; private set; }
 
         public int BankAccountId { get; private set; }
         public string BankAccountName { get; private set; }
+        public string BankAccountNo { get; private set; }
         public string BankAddress { get; private set; }
 
         public double CreditInterest { get; private set; }
@@ -68,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, double amountPaid, double balanceAmount, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, double amountPaid, double balanceAmount, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerCode, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAccountNo, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -102,10 +104,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             BillAmount = billAmount;
             BillCA = billCA;
             BuyerId = buyerId;
+            BuyerCode = buyerCode;
             BuyerName = buyerName;
             BuyerAddress = buyerAddress;
             BankAccountId = bankAccountId;
             BankAccountName = bankAccountName;
+            BankAccountNo = bankAccountNo;
             BankAddress = bankAddress;
             CreditInterest = creditInterest;
             BankCharges = bankCharges;

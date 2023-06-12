@@ -1,4 +1,6 @@
-﻿namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
+﻿using System;
+
+namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 {
     public class FabricSKUAutoCreateFormDto
     {
@@ -21,5 +23,6 @@
         public string uomUnit { get; set; }
         public string motif { get; set; }
         public string color { get; set; }
+        public DateTime CreatedUtcOrderNo { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.Product
 
         public override ProductSKUModel GetModel()
         {
-            return new ProductSKUModel("code", "name", 1,1, "description");
+            return new ProductSKUModel("code", "name", 1,1, "description", true);
         }
 
     }

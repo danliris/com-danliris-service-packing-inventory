@@ -10,5 +10,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         List<GarmentDebitNoteMonitoringViewModel> GetReportData(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset);
         MemoryStream GenerateExcel(string buyerAgent, DateTime? dateFrom, DateTime? dateTo, int offset);
+
+        ListResult<GarmentDebitNoteMIIMonitoringViewModel> GetReportDataMII(DateTime? dateFrom, DateTime? dateTo, int offset);
+        MemoryStream GenerateExcelMII(DateTime? dateFrom, DateTime? dateTo, int offset);
     }
 }

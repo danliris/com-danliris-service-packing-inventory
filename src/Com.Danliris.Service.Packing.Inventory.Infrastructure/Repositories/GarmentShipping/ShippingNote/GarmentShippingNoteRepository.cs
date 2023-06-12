@@ -82,6 +82,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             modelToUpdate.SetBankId(model.BankId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankName(model.BankName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBankAccountNo(model.BankAccountNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankCurrencyCode(model.BankCurrencyCode, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
