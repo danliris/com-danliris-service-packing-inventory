@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.helper
         public void shouldSuccessInstantiate()
         {
 
-            ProductSKUModel product = new ProductSKUModel("Code","Name",1,1,"Description")
+            ProductSKUModel product = new ProductSKUModel("Code","Name",1,1,"Description", true)
             {
                 Id =1,
                 
@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.helper
                 
             };
 
-            ProductSKUModel productSKUModel = new ProductSKUModel("Code","Name",1,1,"Description")
+            ProductSKUModel productSKUModel = new ProductSKUModel("Code","Name",1,1,"Description", true)
             {
 
             };

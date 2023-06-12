@@ -533,7 +533,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Master.ProductPacking
             productPackingRepository.Setup(s => s.ReadAll())
                .Returns(new List<ProductPackingModel>() { productPackingModel }.AsQueryable().BuildMock().Object);
 
-            var productSKUModel = new ProductSKUModel("Code", "Name", 1, 1, "Description")
+            var productSKUModel = new ProductSKUModel("Code", "Name", 1, 1, "Description", true)
             {
                 Id = 1,
                 Active = true,
