@@ -167,6 +167,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdvice4MII;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdviceMII;
 
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
+
+
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
     public class Startup
@@ -431,8 +435,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
+            services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
+
+
+          
             services.AddTransient<IFabricQualityControlReportService, FabricQualityControlReportService>();
             services.AddTransient<IRegradingResultDocReportService, RegradingResultDocReportService>();
+
 
             services.AddTransient<IGarmentShippingExportSalesContractService, GarmentShippingExportSalesContractService>();
             services.AddTransient<IGarmentExportCoverLetterService, GarmentExportCoverLetterService>();
