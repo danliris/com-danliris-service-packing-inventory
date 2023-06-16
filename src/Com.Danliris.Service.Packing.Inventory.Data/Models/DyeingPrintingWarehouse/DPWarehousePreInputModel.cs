@@ -5,11 +5,12 @@ using System.Text;
 
 namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse
 {
-    public class DPWarehouseSummaryModel : StandardEntity
+    public class DPWarehousePreInputModel : StandardEntity
     {
         public double Balance { get; set; }
         public double BalanceRemains { get; set; }
-        public double BalanceOut { get; set; }
+        public double BalanceReceipt { get; set; }
+        public double BalanceReject { get; set; }
 
         public int BuyerId { get; set; }
         public string Buyer { get; private set; }
@@ -28,9 +29,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string Motif { get; private set; }
 
         public string PackingInstruction { get; private set; }
-        public decimal PackagingQty { get; set; }
+        public decimal PackagingQty { get; private set; }
         public decimal PackagingQtyRemains { get; set; }
-        public decimal PackagingQtyOut { get; private set; }
+        public decimal PackagingQtyReceipt { get; set; }
+        public decimal PackagingQtyReject { get; private set; }
         public double PackagingLength { get; private set; }
         public string PackagingType { get; private set; }
         public string PackagingUnit { get; private set; }
@@ -40,7 +42,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string ProductionOrderType { get; private set; }
         public double ProductionOrderOrderQuantity { get; private set; }
         public DateTime CreatedUtcOrderNo { get; private set; }
-     
+
         public int ProcessTypeId { get; private set; }
         public string ProcessTypeName { get; private set; }
 
@@ -52,10 +54,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string TrackType { get; private set; }
         public string TrackName { get; private set; }
         public string TrackBox { get; private set; }
-
-
-        public double SplitQuantity { get; set; }
+        public string Remark { get; set; }
         public string Description { get; set; }
+        public string MaterialOrigin { get; set; }
+        public string FinishWidth { get; set; }
+        
 
 
         #region Product SKU Packing
@@ -73,50 +76,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string ProductPackingCode { get; private set; }
         #endregion
 
-        public DPWarehouseSummaryModel(double balance, double balanceRemains, double balanceOut, int buyerId, string buyer, string cartNo, string color, string grade, string construction,
-         int materialConstructionId, string materialConstructionName,
-         int materialId,
-         string materialName,
-         string materialWidth,
-         string motif,
-         string packingInstruction,
-         decimal packagingQty,
-         decimal packagingQtyRemains,
-         decimal packagingQtyOut,
-         double packagingLength,
-         string packagingType,
-         string packagingUnit,
-          long productionOrderId,
-         string productionOrderNo,
-         string productionOrderType,
-         double productionOrderOrderQuantity,
-         DateTime createdUtcOrderNo,
-         int processTypeId,
-         string processTypeName,
-         int yarnMaterialId,
-         string yarnMaterialName,
-         string unit,
-         string uomUnit,
-         //int trackId,
-         //string trackType,
-         //string trackName,
-         //string trackBox,
-         double splitQuantity,
-         string description,
-         int productSKUId,
-         int fabricSKUId,
-         string productSKUCode,
-         int productPackingId,
-         int fabricPackingId,
-         string productPackingCode
-         ) 
+        public DPWarehousePreInputModel(double balance, double balanceRemains, double balanceReceipt, double balanceReject, int buyerId, string buyer, string color, string construction, string grade,
+            int materialConstructionId, string materialConstructionName, int materialId, string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty,
+            decimal packagingQtyRemains, decimal packagingQtyReceipt, decimal packagingQtyReject, double packagingLength, string packagingType, string packagingUnit, long productionOrderId, string productionOrderNo,
+            string productionOrderType, double productionOrderOrderQuantity, DateTime createdUtcOrderNo, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, string unit, string uomUnit,
+            /*int trackId, string trackType, string trackName, string trackBox,*/ string remark, string description, int productSKUId, int fabricSKUId, string productSKUCode, int productPackingId, int fabricPackingId,
+            string productPackingCode, string materialOrigin, string finishWidth)  
         {
             Balance = balance;
             BalanceRemains = balanceRemains;
-            BalanceOut =balanceOut;
+            BalanceReceipt = balanceReceipt;
+            BalanceReject = balanceReject;
             BuyerId = buyerId;
             Buyer = buyer;
-            CartNo = cartNo;
             Color = color;
             Construction = construction;
             Grade = grade;
@@ -129,7 +101,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             PackingInstruction = packingInstruction;
             PackagingQty = packagingQty;
             PackagingQtyRemains = packagingQtyRemains;
-            PackagingQtyOut = packagingQtyOut;
+            PackagingQtyReceipt = packagingQtyReceipt;
+            PackagingQtyReject = packagingQtyReject;
             PackagingLength = packagingLength;
             PackagingType = packagingType;
             PackagingUnit = packagingUnit;
@@ -148,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             //TrackType = trackType;
             //TrackName = trackName;
             //TrackBox = trackBox;
-            SplitQuantity = splitQuantity;
+            Remark = remark;
             Description = description;
             ProductSKUId = productSKUId;
             FabricSKUId = fabricSKUId;
@@ -156,8 +129,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductPackingId = productPackingId;
             FabricPackingId = fabricPackingId;
             ProductPackingCode = productPackingCode;
+            MaterialOrigin = materialOrigin;
+            FinishWidth = finishWidth;
+
         }
 
+        public void SetBalance(double newBalance, string user, string agent)
+        {
+            if (newBalance != Balance)
+            {
+                Balance = newBalance;
+                this.FlagForUpdate(user, agent);
+            }
+        }
         public void SetBalanceRemains(double newBalanceRemains, string user, string agent)
         {
             if (newBalanceRemains != BalanceRemains)
@@ -167,4 +151,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             }
         }
     }
+
+    
 }

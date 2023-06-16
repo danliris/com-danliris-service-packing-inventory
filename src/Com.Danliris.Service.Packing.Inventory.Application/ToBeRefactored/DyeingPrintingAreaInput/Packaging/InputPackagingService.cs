@@ -51,7 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, false, s.QtyOrder, s.Grade, s.InputQuantity, s.BuyerId, s.Id, s.Remark, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                          s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                          s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.InputQuantity, s.FinishWidth, viewModel.Date, s.MaterialOrigin,
-                         s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
+                         s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name, s.ProductionOrder.CreatedUtc)).ToList());
                      
 
                 result = await _repository.InsertAsync(model);
@@ -70,7 +70,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                          s.Unit, s.Color, s.Motif, s.UomUnit, s.InputQuantity, false, s.QtyOrder, s.Grade, prevBon.Id, s.InputQuantity, s.BuyerId, s.Id, s.Remark, s.ProductionMachine, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id,
                          s.MaterialConstruction.Name, s.MaterialWidth, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                          s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.InputQuantity, s.FinishWidth, viewModel.Date, s.MaterialOrigin, s.ProductTextile.Id,
-                         s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
+                         s.ProductTextile.Code, s.ProductTextile.Name, s.ProductionOrder.CreatedUtc)).ToList());
                      
                 model.Id = prevBon.Id;
 
@@ -609,7 +609,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     Id = s.ProductionOrderId,
                     No = s.ProductionOrderNo,
                     Type = s.ProductionOrderType,
-                    OrderQuantity = s.ProductionOrderOrderQuantity
+                    OrderQuantity = s.ProductionOrderOrderQuantity,
+                    CreatedUtc = s.CreatedUtcOrderNo
 
                 },
                 MaterialWidth = s.MaterialWidth,

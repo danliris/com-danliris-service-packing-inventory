@@ -191,6 +191,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingWarehouse;
 
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -335,11 +336,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteRepository, GarmentShippingDetailLocalSalesNoteRepository>();
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteItemRepository, GarmentShippingDetailLocalSalesNoteItemRepository>();
-
             services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
-
-
             services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
+            services.AddTransient<IDPWarehousePreInputRepository, DPWarehousePreInputRepository>();
+            services.AddTransient<IDPWarehouseInputRepository, DPWarehouseInputRepository>();
+            services.AddTransient<IDPWarehouseSummaryRepository, DPWarehouseSummaryRepository>();
 
             services.AddTransient<IGarmentReceiptSubconPackingListRepository, GarmentReceiptSubconPackingListRepository>();
             services.AddTransient<IGarmentReceiptSubconPackingListItemRepository, GarmentReceiptSubconPackingListItemRepository>();

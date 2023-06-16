@@ -23,12 +23,15 @@ using Newtonsoft.Json.Linq;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric;
 using Microsoft.EntityFrameworkCore;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingWarehouse;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingAreaOutput.Packaging
 {
     public class OutputPackagingService : IOutputPackagingService
     {
         private readonly IDyeingPrintingAreaOutputRepository _repository;
+        private readonly IDPWarehousePreInputRepository _preInputrepository;
         private readonly IDyeingPrintingAreaMovementRepository _movementRepository;
         private readonly IDyeingPrintingAreaSummaryRepository _summaryRepository;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _inputProductionOrderRepository;
@@ -63,6 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _fabricPackingSKUService = serviceProvider.GetService<IFabricPackingSKUService>();
             _areaReferenceRepository = serviceProvider.GetService<IDyeingPrintingAreaReferenceRepository>();
+            _preInputrepository = serviceProvider.GetService<IDPWarehousePreInputRepository>();
         }
 
         private async Task<OutputPackagingViewModel> MapToViewModel(DyeingPrintingAreaOutputModel model)
@@ -907,9 +911,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.PackingLength, item.FinishWidth, item.DateIn, viewModel.Date, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
 
 
-                    productionOrder.SetPackagingQuantity(packingData.ProductPackingCodes.Count);
-                    productionOrder.SetPackagingQuantityBalance(packingData.ProductPackingCodes.Count, 0);
+                    //productionOrder.SetPackagingQuantity(packingData.ProductPackingCodes.Count);
+                    //productionOrder.SetPackagingQuantityBalance(packingData.ProductPackingCodes.Count, 0);
                     productionOrders.Add(productionOrder);
+
+                    var preInput = _preInputrepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.ProductPackingCode == packingData.ProductPackingCode);
+                    if (viewModel.DestinationArea == "GUDANG JADI")
+                    {
+                        if (preInput == null)
+                        {
+                            var preInputModel = new DPWarehousePreInputModel(
+                                item.QtyOut, item.QtyOut, 0, 0, item.BuyerId, item.Buyer, item.Color, item.Construction, item.Grade, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialWidth,
+                                item.Motif, item.PackingInstruction, item.PackagingQTY, item.PackagingQTY, item.PackagingQTY, 0, item.PackingLength, item.PackagingType, item.PackagingUnit, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
+                                item.ProductionOrder.CreatedUtc, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.Unit, item.UomUnit, item.Remark, item.Description,
+                                packingData.ProductSKUId, packingData.FabricSKUId, packingData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingData.ProductPackingCode, item.MaterialOrigin, item.FinishWidth
+                                );
+
+                            result += await _preInputrepository.InsertAsync(preInputModel);
+                        }
+                        else
+                        {
+                            await _preInputrepository.UpdateBalance(preInput.Id, item.QtyOut);
+                            await _preInputrepository.UpdateBalanceRemainsIn(preInput.Id, item.QtyOut);
+                        }
+                    }
 
 
                 }
@@ -941,7 +966,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         FabricSKUId = item.FabricSKUId,
                         PackingType = item.PackagingUnit,
                         Quantity = (int)item.PackagingQTY,
-                        Length = item.PackingLength
+                        Length = item.PackingLength,
+                        Description = item.Description
                     });
 
                     string packingCodes = string.Join(',', packingData.ProductPackingCodes);
@@ -954,10 +980,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.YarnMaterial.Id, item.YarnMaterial.Name, item.ProductSKUId, item.FabricSKUId, item.ProductSKUCode, item.HasPrintingProductSKU, packingData.ProductPackingId, packingData.FabricPackingId, packingCodes, false,
                         item.PackingLength, item.FinishWidth, item.DateIn, viewModel.Date, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
 
-                    modelItem.SetPackagingQuantity(packingData.ProductPackingCodes.Count);
-                    modelItem.SetPackagingQuantityBalance(packingData.ProductPackingCodes.Count, 0);
+                    //modelItem.SetPackagingQuantity(packingData.ProductPackingCodes.Count);
+                    //modelItem.SetPackagingQuantityBalance(packingData.ProductPackingCodes.Count, 0);
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
                     result += await _outputProductionOrderRepository.InsertAsync(modelItem);
+
+                   
+                    if( viewModel.DestinationArea == "GUDANG JADI")
+                    {
+                        var preInput = _preInputrepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.ProductPackingCode == packingData.ProductPackingCode);
+                        if (preInput == null)
+                        {
+                            var preInputModel = new DPWarehousePreInputModel(
+                                item.QtyOut, item.QtyOut, 0, 0, item.BuyerId, item.Buyer, item.Color, item.Construction, item.Grade, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialWidth,
+                                item.Motif, item.PackingInstruction, item.PackagingQTY, item.PackagingQTY, 0, 0, item.PackingLength, item.PackagingType, item.PackagingUnit, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
+                                item.ProductionOrder.CreatedUtc, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.Unit, item.UomUnit, item.Remark, item.Keterangan,
+                                packingData.ProductSKUId, packingData.FabricSKUId, packingData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingData.ProductPackingCode, item.MaterialOrigin, item.FinishWidth
+                                );
+
+                            result += await _preInputrepository.InsertAsync(preInputModel);
+                        }
+                        else
+                        {
+                            await _preInputrepository.UpdateBalance(preInput.Id, item.QtyOut);
+                            await _preInputrepository.UpdateBalanceRemainsIn(preInput.Id, item.QtyOut);
+                        }
+                    }
+                    
 
 
                     var movementModel = new DyeingPrintingAreaMovementModel(viewModel.Date, item.MaterialOrigin, viewModel.Area, DyeingPrintingArea.OUT, model.Id, model.BonNo, item.ProductionOrder.Id, item.ProductionOrderNo,
@@ -2341,7 +2390,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             Id = e.First().ProductionOrderId,
                             No = e.First().ProductionOrderNo,
                             Type = e.First().ProductionOrderType,
-                            OrderQuantity = e.First().ProductionOrderOrderQuantity
+                            OrderQuantity = e.First().ProductionOrderOrderQuantity,
+                            CreatedUtc = e.First().CreatedUtcOrderNo
                         },
                         ProductTextile = new ProductTextile()
                         { 

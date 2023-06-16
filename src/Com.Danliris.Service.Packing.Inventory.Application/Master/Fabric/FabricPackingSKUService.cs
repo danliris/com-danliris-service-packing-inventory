@@ -312,8 +312,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 processTypeId = 0;
             }
 
-            var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
-            //var yearCode = CodeConstructionHelper.GetYearCode(form.CreatedUtcOrderNo.Year);
+            //var yearCode = CodeConstructionHelper.GetYearCode(DateTime.Now.Year);
+            var yearCode = CodeConstructionHelper.GetYearCode(form.CreatedUtcOrderNo.Year);
             code += yearCode;
 
             var sppNo = form.ProductionOrderNo.Substring(form.ProductionOrderNo.Length - 4);
