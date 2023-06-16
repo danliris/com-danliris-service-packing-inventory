@@ -21,7 +21,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type", 1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now, "a", 1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type", 1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now, "a", 1, "a", "a", DateTime.MinValue)
                
                 {
                     PrevSppInJson = "[]"
@@ -95,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a",  1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a",  1, "a", "a", DateTime.MinValue)
               
                 {
                     PrevSppInJson = "[]"
@@ -108,7 +108,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a", 1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a", 1, "a", "a", DateTime.MinValue)
                
                 {
                     PrevSppInJson = "[]"
@@ -121,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, "IM", "pa", "1", false, "TRANSIT", "A", "OUT", new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a", 1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","qc","zimmer","a",1,"a",1,"a",1,1,"s",false, "a",DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a", 1, "a", "a", DateTime.MinValue)
               
                 {
                     PrevSppInJson = "[]"
@@ -134,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
         {
             return new DyeingPrintingAreaOutputModel(DateTimeOffset.UtcNow, null, null, null, false, null, null, null, new List<DyeingPrintingAreaOutputProductionOrderModel>()
             {
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true, null,DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a", 1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true, null,DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a", 1, "a", "a", DateTime.MinValue)
                 {
                     PrevSppInJson = "[]"
                 }
@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,null,DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a",  1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,null,null,0,null,0,null,0,0,null,true,null,DateTimeOffset.Now,DateTimeOffset.Now.AddDays(1), "a",  1, "a", "a", DateTime.MinValue)
               
                 {
                     PrevSppInJson = "[]"
@@ -174,7 +174,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","a","zimmer","a",1,"a",1,"a",1,1,"a",false, "a",DateTimeOffset.Now,DateTimeOffset.Now, "a",  1, "a", "a")
+                new DyeingPrintingAreaOutputProductionOrderModel("IM","TRANSIT",false,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,1, "type",1, "name", 1, "a", "1","a","zimmer","a",1,"a",1,"a",1,1,"a",false, "a",DateTimeOffset.Now,DateTimeOffset.Now, "a",  1, "a", "a", DateTime.MinValue)
                 
                 {
                     PrevSppInJson = "[]"
@@ -199,7 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils
                 {
                     PrevSppInJson = "[]"
                 },
-                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,"zimmer",null,0,null,0,null,0,0,null,true,null,DateTimeOffset.Now,DateTimeOffset.Now, null, null, null, null)
+                new DyeingPrintingAreaOutputProductionOrderModel(null,null,true,1,"a","e",1,"rr","1","as","test","unit","color","motif","mtr", "rem","a","a",2,1,0, null,0,null,0,null,"0",null,"zimmer",null,0,null,0,null,0,0,null,true,null,DateTimeOffset.Now,DateTimeOffset.Now, null, null, null, null, DateTime.MinValue)
                
                 {
                     PrevSppInJson = "[]"

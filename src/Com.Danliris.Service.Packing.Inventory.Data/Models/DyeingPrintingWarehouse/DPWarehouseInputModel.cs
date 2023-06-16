@@ -13,6 +13,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string BonNo { get; private set; }
         public string Group { get; private set; }
         public string ShippingType { get; private set; }
-        //public ICollection<DPWarehouseInputItemModel> DPWarehouseInputItems { get; private set; }
+        public ICollection<DPWarehouseInputItemModel> DPWarehouseInputItems { get; private set; }
+
+        public DPWarehouseInputModel()
+        {
+            DPWarehouseInputItems = new HashSet<DPWarehouseInputItemModel>();
+        }
+
+        public DPWarehouseInputModel(DateTimeOffset date, string area, string shift, string bonNo, string group,
+            ICollection<DPWarehouseInputItemModel> dPWarehouseInputItems)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            Group = group;
+            DPWarehouseInputItems = dPWarehouseInputItems;
+        }
+
     }
 }

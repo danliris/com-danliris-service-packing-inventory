@@ -13,7 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
 
         public int DPDocumentId { get; private set; }
         public int DPDocumentItemId { get; private set; }
-        public int DPDocumentBonNo{ get; private set; }
+        public string DPDocumentBonNo{ get; private set; }
         public int DPSummaryId{ get; private set; }
         public long ProductionOrderId { get; private set; }
         public string ProductionOrderNo { get; private set; }
@@ -33,6 +33,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string PackagingUnit { get; private set; }
         public double PackagingLength { get; private set; }
         public string MaterialOrigin { get; set; }
+        public int ProductPackingId { get; set; }
+        public string ProductPackingCode { get; set; }
 
         #region
         public int? ProductTextileId { get; set; }
@@ -49,6 +51,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string TrackToName { get; private set; }
         public string TrackToBox { get; private set; }
 
+        public DPWarehouseMovementModel(DateTimeOffset date,
+            string area,
+            string type,
+            int dPDocumentId,
+            int dPDocumentItemId,
+            string dPDocumentBonNo,
+            int dPSummaryId,
+            long productionOrderId,
+            string productionOrderNo,
+            string buyer,
+            string construction,
+            string unit,
+            string color,
+            string motif,
+            string uomUnit,
+            double balance,
+            string grade,
+            string productionOrderType,
+            string remark,
+            string packingType,
+            decimal packagingQty,
+            string packagingUnit,
+            double packagingLength,
+            string materialOrigin,
+            int? productTextileId,
+            string productTextileCode,
+            string productTextileName,
+            int productPackingId,
+            string productPackingCode
+            )
+        {
+            Date = date;
+            Area = area;
+            Type = type;
+
+            DPDocumentId = dPDocumentId;
+            DPDocumentItemId = dPDocumentItemId;
+            DPDocumentBonNo = dPDocumentBonNo;
+            DPSummaryId = dPSummaryId;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            Remark = remark;
+            PackingType = packingType;
+
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            PackagingLength = packagingLength;
+            MaterialOrigin = materialOrigin;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
+            ProductPackingId = productPackingId;
+            ProductPackingCode = productPackingCode;
+
+
+        }
 
     }
 }

@@ -25,6 +25,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string PackingListIssuedBy { get; private set; }
         public string PackingListDescription { get; private set; }
         public bool UpdateBySales { get; private set; }
-        //public ICollection<DPWarehouseOutputItemModel> DPWarehouseOutputItems { get; set; }
+        public ICollection<DPWarehouseOutputItemModel> DPWarehouseOutputItems { get; set; }
+        public DPWarehouseOutputModel()
+        {
+            DPWarehouseOutputItems = new HashSet<DPWarehouseOutputItemModel>();
+        }
+
+
     }
 }

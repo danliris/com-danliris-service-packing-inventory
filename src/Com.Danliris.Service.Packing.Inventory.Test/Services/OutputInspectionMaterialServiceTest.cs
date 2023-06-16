@@ -209,7 +209,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId,
                             detail.AvalType, item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine,
-                            item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 1, 1, "a", false, item.FinishWidth,item.DateIn,item.DateOut, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name)
+                            item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 1, 1, "a", false, item.FinishWidth,item.DateIn,item.DateOut, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc)
                            
                         {
                             Id = detail.Id
@@ -389,7 +389,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                             item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo,
                             item.Buyer, item.Construction, item.Unit, item.Color, item.Motif, item.UomUnit, "", "",item.Status, item.Balance, item.Id, item.BuyerId,
                             "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine, item.AdjDocumentNo,
-                            item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false, item.FinishWidth,item.DateIn,item.DateOut, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name)
+                            item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false, item.FinishWidth,item.DateIn,item.DateOut, item.MaterialOrigin, item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc)
                            
                     {
                         Id = item.Id
