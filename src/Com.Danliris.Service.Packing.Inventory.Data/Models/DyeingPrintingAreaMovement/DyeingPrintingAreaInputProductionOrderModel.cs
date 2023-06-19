@@ -292,7 +292,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode,
-            bool hasPrintingProductPacking, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin, int? productTextileId, string productTextileCode, string productTextileName) : this()
+            bool hasPrintingProductPacking, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin, int? productTextileId, string productTextileCode, string productTextileName, DateTime createdUtcOrderNo) : this()
 
         {
             ProductionOrderId = productionOrderId;
@@ -345,6 +345,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
+            CreatedUtcOrderNo = createdUtcOrderNo;
         }
 
         /// <summary>
@@ -389,7 +390,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             string remark, string productionMachine, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode,
-            bool hasPrintingProductPacking, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin, int? productTextileId, string productTextileCode, string productTextileName) : this()
+            bool hasPrintingProductPacking, double inputQuantity, string finishWidth, DateTimeOffset dateIn, string materialOrigin, int? productTextileId, string productTextileCode, string productTextileName, DateTime createdUtcOrderNo) : this()
 
         {
             ProductionOrderId = productionOrderId;
@@ -444,6 +445,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
+            CreatedUtcOrderNo = createdUtcOrderNo;
         }
 
         /// <summary>
