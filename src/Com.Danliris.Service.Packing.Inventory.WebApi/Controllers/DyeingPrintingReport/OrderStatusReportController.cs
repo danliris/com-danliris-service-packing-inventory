@@ -26,14 +26,22 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             _identityProvider = identityProvider;
         }
 
+        protected void VerifyUser()
+        {
+            _identityProvider.Username = User.Claims.ToArray().SingleOrDefault(p => p.Type.Equals("username")).Value;
+            _identityProvider.Token = Request.Headers["Authorization"].FirstOrDefault().Replace("Bearer ", "");
+            _identityProvider.TimezoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+        }
+
         [HttpGet]
-        public IActionResult GetReport([FromQuery] string ordertype, [FromQuery] string year)
+        public async Task< IActionResult> GetReport([FromQuery] DateTime startdate, DateTime finishdate, [FromQuery] int orderType = 0)
         {
             int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
             string accept = Request.Headers["Accept"];
             try
             {
-                var data = _service.GetReportData(ordertype,year);
+                VerifyUser();
+                var data = await _service.GetReportData(startdate, finishdate, orderType);
 
                 return Ok(new
                 {
@@ -50,16 +58,17 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("download")]
-        public IActionResult GetXls([FromQuery] string ordertype, [FromQuery] string year)
+        public async Task<IActionResult> GetXls([FromQuery] DateTime startdate, DateTime finishdate, [FromQuery] int orderType = 0)
         {
             try
             {
+                VerifyUser();
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
 
-                var xls = _service.GenerateExcel(ordertype, year);
+                var xls = await _service.GenerateExcel(startdate, finishdate, orderType);
 
-                string filename = String.Format("Laporan Pemeriksaan Kain - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
+                string filename = String.Format("Laporan Status Order - {0}.xlsx", finishdate.Year);
 
                 xlsInBytes = xls.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
