@@ -8,21 +8,29 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 using System.Globalization;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Com.Danliris.Service.Packing.Inventory.Application.Helper;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport
 {
     public class OrderStatusReportService : IOrderStatusReportService
     {
+        protected readonly IHttpClientService _http;
         private readonly IDyeingPrintingAreaInputProductionOrderRepository _productionOrderRepository;
         private readonly IDyeingPrintingAreaOutputProductionOrderRepository _productionOutRepository;
+        private readonly IServiceProvider _serviceProvider;
         public OrderStatusReportService(IServiceProvider serviceProvider)
         {
             _productionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaInputProductionOrderRepository>();
             _productionOutRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
+            _serviceProvider = serviceProvider;
         }
-        public MemoryStream GenerateExcel(string orderType, string year)
+        public async Task<MemoryStream> GenerateExcel(DateTime startdate, DateTime finishdate, int orderTypeId)
         {
-            var list = GetReportQuery(orderType, year);
+            var list = await GetReportQuery(startdate, finishdate, orderTypeId);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(String) });
@@ -53,30 +61,145 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
         }
 
-        public List<OrderStatusReportViewModel> GetReportData(string orderType, string year)
+        public async Task<List<OrderStatusReportViewModel>> GetReportData(DateTime startdate, DateTime finishdate, int orderTypeId)
         {
-            var Query = GetReportQuery(orderType, year);
-            return Query.ToList();
+            var Query = await GetReportQuery(startdate, finishdate, orderTypeId);
+            return Query;
         }
 
-        private List<OrderStatusReportViewModel> GetReportQuery(string orderType, string year)
-        { 
-            var joinQuery = from a in _productionOrderRepository.ReadAll()
-                            join b in _productionOutRepository.ReadAll() on a.ProductionOrderId equals b.ProductionOrderId
-                            where a.ProductionOrderType == (!string.IsNullOrEmpty(orderType) ? orderType : a.ProductionOrderType)
-                            && a.CreatedUtc.Year== (!string.IsNullOrEmpty(year) ? Convert.ToInt32( year) : a.CreatedUtc.Year)
-                            select new OrderStatusReportViewModel
+        private async Task<List<OrderStatusReportViewModel> >GetReportQuery(DateTime startdate, DateTime finishdate, int orderTypeId)
+        {
+            var dateStart = startdate != DateTime.MinValue ? startdate.Date : DateTime.MinValue;
+            var dateTo = finishdate != DateTime.MinValue ? finishdate.Date : DateTime.Now.Date;
+            var spp = await GetDataSPP(dateStart, dateTo, orderTypeId);
+            var sppResults = spp.data;
+            List<long> sppIds = new List<long>();
+            if (sppResults.Count > 0)
+            {
+                foreach (var ids in sppResults)
+                {
+                    sppIds.Add(ids);
+                }
+            }
+            var queryIn = from a in _productionOrderRepository.ReadAll()
+                        where sppIds.Contains(a.ProductionOrderId) 
+                        select new OrderStatusReportViewModel
+                        {
+                            productionOrderNo = a.ProductionOrderNo,
+                            targetQty = Convert.ToDecimal(a.ProductionOrderOrderQuantity),
+                            //producedQty = a.InputQuantity,
+                            productionOrderId=a.ProductionOrderId,
+                            sentBuyerQty =0,
+                            inProductionQty =0,
+                            qcQty = a.Area == "INSPECTION MATERIAL" ? Convert.ToDecimal(a.InputQuantity) : 0,
+                            sentGJQty= a.Area=="GUDANG JADI" ? Convert.ToDecimal(a.InputQuantity):0
+                        };
+            var queryOut = from b in _productionOutRepository.ReadAll() //on a.productionOrderId equals b.ProductionOrderId
+                           where sppIds.Contains(b.ProductionOrderId)
+                           select new OrderStatusReportViewModel
                             {
                                 productionOrderNo = b.ProductionOrderNo,
                                 productionOrderId = b.ProductionOrderId,
-                                sentBuyerQty= b.Balance,
-                                targetQty= a.ProductionOrderOrderQuantity,
-                                qcQty= a.InputQuantity,
-                                producedQty= a.InputQuantity,
-                                sentGJQty = a.Area=="GUDANG JADI"? a.InputQuantity : 0,
-                            };
+                                sentBuyerQty= Convert.ToDecimal(b.Balance),
+                                targetQty=0,
+                                //producedQty=0,
+                                inProductionQty= Convert.ToDecimal(b.Balance),
+                                qcQty= b.Area=="INSPECTION MATERIAL" ? Convert.ToDecimal(b.Balance)*(-1) : 0,
+                                sentGJQty = 0,
+                           };
 
-            return joinQuery.OrderByDescending(a => a.date).ToList();
+            var joinQuery = queryIn.ToList().Union(queryOut.ToList());
+            var dataList = from data in joinQuery.ToList()
+                           group data by new { data.productionOrderNo }
+                           into groupdata
+                           select new OrderStatusReportViewModel
+                           {
+                               productionOrderNo = groupdata.Key.productionOrderNo,
+                               sentBuyerQty = groupdata.Sum(a => a.sentBuyerQty),
+                               targetQty = groupdata.Sum(a => a.targetQty),
+                               //producedQty = groupdata.Sum(a => a.producedQty),
+                               inProductionQty = groupdata.Sum(a => a.inProductionQty),
+                               qcQty= groupdata.Sum(a => a.inProductionQty),
+                               producedQty = groupdata.Sum(a => a.inProductionQty),
+                               sentGJQty = groupdata.Sum(a => a.sentGJQty),
+                               //remainingSentQty= groupdata.Sum(a => a.remainingSentQty),
+                           };
+
+            var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
+            var productionData = await GetDataProduction(noOrders);
+            var productionResults = productionData.data;
+            List<OrderStatusReportViewModel> newListData = new List<OrderStatusReportViewModel>();
+            foreach(var data in dataList)
+            {
+                var inProd = productionResults.Where(a => a.noorder == data.productionOrderNo).FirstOrDefault();
+                data.inProductionQty = inProd!=null ? Convert.ToDecimal(inProd.qtyin) : 0;
+                data.preProductionQty = data.targetQty - data.inProductionQty >= 0? data.targetQty - data.inProductionQty:0 ;
+                data.remainingSentQty = data.targetQty - data.sentBuyerQty >= 0 ? data.targetQty - data.sentBuyerQty : 0;
+                newListData.Add(data);
+            }
+            return newListData.ToList();
+        }
+
+        public async Task<SPPResult> GetDataSPP(DateTime startdate, DateTime finishdate, int orderTypeId)
+        {
+            SPPResult spp = new SPPResult();
+
+            var filters = new
+            {
+                startdate,
+                finishdate,
+                orderTypeId
+            };
+            var salesUri = $"sales/production-orders/for-status-order-report?startdate={startdate}&&finishdate={finishdate}&&orderTypeId={orderTypeId}";
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+            var garmentProductionUri = ApplicationSetting.SalesEndpoint + salesUri;
+            var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentString = await response.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+
+                var listdata = JsonConvert.DeserializeObject<List<long>>(dataString);
+
+                foreach (var i in listdata)
+                {
+                    spp.data.Add(i);
+                }
+            }
+
+            return spp;
+        }
+
+        public async Task<ProductionResult> GetDataProduction(List<string> orderno)
+        {
+            ProductionResult spp = new ProductionResult();
+
+            var filter = string.Join(",", orderno.Distinct());
+            var dpUri = $"GetProductionOsthoffStatusOrder?noorder={filter}";
+            //var filter= string.Join(",", orderno.Distinct());
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+            var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
+            var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filter), Encoding.Unicode, "application/json"));
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentString = await response.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+
+                var listdata = JsonConvert.DeserializeObject<List<ProductionViewModel>>(dataString);
+
+                foreach (var i in listdata)
+                {
+                    spp.data.Add(i);
+                }
+            }
+
+            return spp;
         }
     }
 }
