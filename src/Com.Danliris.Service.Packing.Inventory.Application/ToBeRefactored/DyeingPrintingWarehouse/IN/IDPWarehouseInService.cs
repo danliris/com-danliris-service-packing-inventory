@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         List<OutputPreWarehouseItemListViewModel> PreInputWarehouse(string packingCode);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<int> Create(DPInputWarehouseCreateViewModel viewModel);
+        Task<int> Reject(DPInputWarehouseCreateViewModel viewModel);
 
     }
 }

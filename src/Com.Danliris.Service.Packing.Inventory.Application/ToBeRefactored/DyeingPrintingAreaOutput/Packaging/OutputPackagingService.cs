@@ -891,7 +891,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += transform.Item1;
                     var prevPacking = JsonConvert.SerializeObject(transform.Item2);
 
-                    var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
+                    var packingData = _fabricPackingSKUService.AutoCreatePackingNuovo(new FabricPackingAutoCreateFormDto()
                     {
                         FabricSKUId = item.FabricSKUId,
                         PackingType = item.PackagingUnit,
@@ -961,7 +961,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     result += transform.Item1;
                     var prevPacking = JsonConvert.SerializeObject(transform.Item2);
 
-                    var packingData = _fabricPackingSKUService.AutoCreatePacking(new FabricPackingAutoCreateFormDto()
+                    var packingData = _fabricPackingSKUService.AutoCreatePackingNuovo(new FabricPackingAutoCreateFormDto()
                     {
                         FabricSKUId = item.FabricSKUId,
                         PackingType = item.PackagingUnit,

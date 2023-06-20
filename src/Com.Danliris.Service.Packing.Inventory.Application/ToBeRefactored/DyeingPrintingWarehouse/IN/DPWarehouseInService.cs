@@ -20,6 +20,7 @@ using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN.ViewModel;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN
 {
@@ -35,6 +36,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly DbSet<DPWarehouseInputItemModel> _dbSetItems;
         private readonly DbSet<DPWarehouseSummaryModel> _dbSetSummary;
         private readonly DbSet<DPWarehouseMovementModel> _dbSetMovement;
+        private readonly DbSet<DyeingPrintingAreaInputProductionOrderModel> _dbSetInputOrder;
+        private readonly DbSet<DyeingPrintingAreaInputModel> _dbSetInput;
+        private readonly DbSet<DyeingPrintingAreaMovementModel> _dbSetMovementOrder;
         private readonly IIdentityProvider _identityProvider;
         private const string UserAgent = "Repository";
 
@@ -44,6 +48,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _dbSetSummary = dbContext.Set<DPWarehouseSummaryModel>();
             _dbSetMovement = dbContext.Set<DPWarehouseMovementModel>();
             _dbSetItems = dbContext.Set<DPWarehouseInputItemModel>();
+            _dbSetInput = dbContext.Set<DyeingPrintingAreaInputModel>();
+            _dbSetMovementOrder = dbContext.Set<DyeingPrintingAreaMovementModel>();
+            _dbSetInputOrder = dbContext.Set<DyeingPrintingAreaInputProductionOrderModel>();
             _outputProductionOrderRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _dPWarehousePreInputRepository = serviceProvider.GetService<IDPWarehousePreInputRepository>();
             _dPWarehouseInputRepository = serviceProvider.GetService<IDPWarehouseInputRepository>();
@@ -201,6 +208,165 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
 
         }
+        public async Task<int> Reject(DPInputWarehouseCreateViewModel viewModel)
+        {
+            int Created = 0;
+            DyeingPrintingAreaInputModel modelBon;
+
+            DateTime date = DateTime.Now.Date;
+            DateTime combined = new DateTime(date.Year, date.Month, date.Day, 14, 00, 00);
+
+            if (DateTime.Now.AddHours(7) < combined) {
+                modelBon = _dbSetInput.FirstOrDefault(s => s.Area == DyeingPrintingArea.PACKING && s.Shift == "PAGI" && s.CreatedUtc.Date == DateTime.Now.Date);
+            }
+            else {
+                modelBon = _dbSetInput.FirstOrDefault(s => s.Area == DyeingPrintingArea.PACKING && s.Shift == "SIANG" && s.CreatedUtc.Date == DateTime.Now.Date);
+            }
+            using (var transaction = this._dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var listPreInput = new List<DPWarehousePreInputModel>();
+                    var listInput = new List<DyeingPrintingAreaInputProductionOrderModel>();
+                    
+                    foreach (var item in viewModel.DyeingPrintingWarehouseInItems)
+                    {
+
+                        var dyeingPrintingAreaInputProductionOrderModel = new DyeingPrintingAreaInputProductionOrderModel(
+                                    item.ProductionOrder.Id,
+                                    item.ProductionOrder.No,
+                                    item.CartNo,
+                                    item.Buyer,
+                                    item.Construction,
+                                    item.Unit,
+                                    item.Color,
+                                    item.Motif,
+                                    item.UomUnit,
+                                    item.Sendquantity * item.PackagingLength,
+                                    false,
+                                    "",
+                                    item.ProductionOrder.Type,
+                                    item.ProductionOrder.OrderQuantity,
+                                    item.Remark,
+                                    item.Grade,
+                                    item.Status,
+                                    item.PackagingUnit,
+                                    item.PackagingType,
+                                    (decimal)item.Sendquantity,
+                                    DyeingPrintingArea.PACKING,
+                                    item.Sendquantity * item.PackagingLength,
+                                    0,
+                                    item.BuyerId,
+                                    item.MaterialProduct.Id,
+                                    item.MaterialProduct.Name,
+                                    item.MaterialConstruction.Id,
+                                    item.MaterialConstruction.Name,
+                                    item.MaterialWidth,
+                                    item.ProcessType.Id,
+                                    item.ProcessType.Name,
+                                    item.YarnMaterial.Id,
+                                    item.YarnMaterial.Name,
+                                    item.ProductSKUId,
+                                    item.FabricSKUId,
+                                    item.ProductSKUCode,
+                                    false,
+                                    item.ProductPackingId,
+                                    item.FabricPackingId,
+                                    item.ProductPackingCode,
+                                    false,
+                                    item.PackagingLength,
+                                    item.Sendquantity * item.PackagingLength,
+                                    (decimal) item.Sendquantity,
+                                    item.FinishWidth, 
+                                    item.MaterialOrigin,
+                                    "REJECT GJ",
+                                    item.Id,
+                                    modelBon.Id
+
+                        );
+
+                        dyeingPrintingAreaInputProductionOrderModel.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                        listInput.Add(dyeingPrintingAreaInputProductionOrderModel);
+
+                        _dbSetInputOrder.Add(dyeingPrintingAreaInputProductionOrderModel);
+
+
+                        var modelPreInput = _dPWarehousePreInputRepository.GetDbSet().FirstOrDefault(s => s.Id == item.Id);
+
+                        modelPreInput.BalanceReject = modelPreInput.BalanceReject + (item.Sendquantity * item.PackagingLength);
+                        modelPreInput.BalanceRemains = modelPreInput.BalanceRemains - (item.Sendquantity * item.PackagingLength);
+                        modelPreInput.PackagingQtyReject = modelPreInput.PackagingQtyReject + (decimal)item.Sendquantity;
+                        modelPreInput.PackagingQtyRemains = modelPreInput.PackagingQtyRemains - (decimal)item.Sendquantity;
+
+                        listPreInput.Add(modelPreInput);
+
+                        EntityExtension.FlagForUpdate(modelPreInput, _identityProvider.Username, UserAgent);
+
+
+
+                       
+                    }
+
+                    Created = await _dbContext.SaveChangesAsync();
+
+                  
+                    await createMovementReject(modelBon, listPreInput, listInput);
+
+
+                    transaction.Commit();
+
+
+                }
+                catch(Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            
+            }
+                return Created;
+        }
+
+        private async Task<int>createMovementReject(DyeingPrintingAreaInputModel modelBon, List<DPWarehousePreInputModel> preInput, List<DyeingPrintingAreaInputProductionOrderModel> InputOrder)
+        {
+            int Count = 0;
+            foreach (var item in InputOrder)
+            {
+                var IdSum = preInput.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == 0);
+                var dyeingPrintingAreaMovementModel = new DyeingPrintingAreaMovementModel(
+                                        DateTime.Now,
+                                        item.MaterialOrigin,
+                                        DyeingPrintingArea.PACKING,
+                                        DyeingPrintingArea.IN,
+                                        modelBon.Id,
+                                        modelBon.BonNo,
+                                        item.ProductionOrderId,
+                                        item.ProductionOrderNo,
+                                        item.Buyer,
+                                        item.Construction,
+                                        item.Unit,
+                                        item.Color,
+                                        item.Motif,
+                                        item.UomUnit,
+                                        item.Balance,
+                                        item.Id,
+                                        item.ProductionOrderType,
+                                        IdSum.Id,
+                                        (decimal) item.PackagingQty
+                            );
+
+                dyeingPrintingAreaMovementModel.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                _dbSetMovementOrder.Add(dyeingPrintingAreaMovementModel);
+
+            };
+
+            Count = await _dbContext.SaveChangesAsync();
+            return Count;
+        }
+
+
 
         public async Task<int> InsertNewWarehouse(DPInputWarehouseCreateViewModel viewModel)
         {
@@ -362,8 +528,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                         #region update dpWarehousePreInput
                         var modelPreInput = _dPWarehousePreInputRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode));
-
-
 
                         modelPreInput.BalanceReceipt = modelPreInput.BalanceReceipt + item.Balance;
                         modelPreInput.BalanceRemains = modelPreInput.BalanceRemains - item.Balance;
