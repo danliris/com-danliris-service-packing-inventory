@@ -450,86 +450,86 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
         #region Barcode Generator OldVersion
         // Barcode Generator Based on Roll
-        public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
-        {
-            var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId);
+        //public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
+        //{
+        //    var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId);
 
-            //if (fabric.ProductSKUId == 0)
-            //{
-            //    var errorResult = new List<ValidationResult>()
-            //        {
-            //            new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
-            //        };
-            //    var validationContext = new ValidationContext( _serviceProvider, null);
-            //    throw new ServiceValidationException(validationContext, errorResult);
-            //}
+        //    //if (fabric.ProductSKUId == 0)
+        //    //{
+        //    //    var errorResult = new List<ValidationResult>()
+        //    //        {
+        //    //            new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+        //    //        };
+        //    //    var validationContext = new ValidationContext( _serviceProvider, null);
+        //    //    throw new ServiceValidationException(validationContext, errorResult);
+        //    //}
 
-            if (fabric != null)
-            {
-                var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
-                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Id).FirstOrDefault();
+        //    if (fabric != null)
+        //    {
+        //        var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
+        //        var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code)).OrderByDescending(entity => entity.Id).FirstOrDefault();
 
-                var i = 1;
-                if (latestProductPacking != null)
-                {
-                    if (latestProductPacking.Code.Count() == 12)
-                    {
-                        var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
-                        i = int.Parse(rollNumber) + 1;
-                    }
-                    else
-                    {
-                        var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 5);
-                        i = int.Parse(rollNumber) + 1;
-                    }
+        //        var i = 1;
+        //        if (latestProductPacking != null)
+        //        {
+        //            if (latestProductPacking.Code.Count() == 12)
+        //            {
+        //                var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 4);
+        //                i = int.Parse(rollNumber) + 1;
+        //            }
+        //            else
+        //            {
+        //                var rollNumber = latestProductPacking.Code.Substring(latestProductPacking.Code.Count() - 5);
+        //                i = int.Parse(rollNumber) + 1;
+        //            }
 
-                }
+        //        }
 
-                var packingModel = new ProductPackingModel();
-                var fabricPackingProduct = new FabricProductPackingModel();
-                var packingCodes = new List<string>();
-                var limit = (i - 1) + form.Quantity;
-                for (; i <= limit; i++)
-                {
-                    var code = productSKU.Code + i.ToString().PadLeft(5, '0');
-                    var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
-                    packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
-                    _unitOfWork.ProductPackings.Insert(packingModel);
-                    _unitOfWork.Commit();
-                    packingCodes.Add(code);
+        //        var packingModel = new ProductPackingModel();
+        //        var fabricPackingProduct = new FabricProductPackingModel();
+        //        var packingCodes = new List<string>();
+        //        var limit = (i - 1) + form.Quantity;
+        //        for (; i <= limit; i++)
+        //        {
+        //            var code = productSKU.Code + i.ToString().PadLeft(5, '0');
+        //            var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
+        //            packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, "");
+        //            _unitOfWork.ProductPackings.Insert(packingModel);
+        //            _unitOfWork.Commit();
+        //            packingCodes.Add(code);
 
-                    fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, false, "");
-                    _dbContext.FabricProductPackings.Add(fabricPackingProduct);
-                }
+        //            fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, false, "");
+        //            _dbContext.FabricProductPackings.Add(fabricPackingProduct);
+        //        }
 
-                _dbContext.SaveChanges();
+        //        _dbContext.SaveChanges();
 
-                //if (packingCodes.Count < 1 )
-                //{
-                //    var errorResult = new List<ValidationResult>()
-                //    {
-                //        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
-                //    };
-                //    var validationContext = new ValidationContext(packingModel, _serviceProvider, null);
-                //    throw new ServiceValidationException(validationContext, errorResult);
-                //}
+        //        //if (packingCodes.Count < 1 )
+        //        //{
+        //        //    var errorResult = new List<ValidationResult>()
+        //        //    {
+        //        //        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+        //        //    };
+        //        //    var validationContext = new ValidationContext(packingModel, _serviceProvider, null);
+        //        //    throw new ServiceValidationException(validationContext, errorResult);
+        //        //}
 
-                return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
-            }
-            else
-            {
-                var errorResult = new List<ValidationResult>()
-                    {
-                        new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
-                    };
-                var validationContext = new ValidationContext(form, _serviceProvider, null);
-                throw new ServiceValidationException(validationContext, errorResult);
-            }
-        }
+        //        return new FabricPackingIdCodeDto() { FabricPackingId = fabricPackingProduct.Id, ProductPackingCode = packingModel.Code, ProductPackingId = packingModel.Id, FabricSKUId = fabric.Id, ProductSKUCode = productSKU.Code, ProductSKUId = productSKU.Id, ProductPackingCodes = packingCodes };
+        //    }
+        //    else
+        //    {
+        //        var errorResult = new List<ValidationResult>()
+        //            {
+        //                new ValidationResult("SKU belum ada", new List<string> { "ProductSKU" })
+        //            };
+        //        var validationContext = new ValidationContext(form, _serviceProvider, null);
+        //        throw new ServiceValidationException(validationContext, errorResult);
+        //    }
+        //}
         #endregion
 
 
-        public FabricPackingIdCodeDto AutoCreatePackingNuovo(FabricPackingAutoCreateFormDto form)
+        public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
             var fabric = _dbContext.FabricProductSKUs.FirstOrDefault(entity => entity.Id == form.FabricSKUId );
 
