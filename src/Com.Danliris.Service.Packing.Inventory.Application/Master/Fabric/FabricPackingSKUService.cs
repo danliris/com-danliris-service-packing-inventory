@@ -498,7 +498,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         //            _unitOfWork.Commit();
         //            packingCodes.Add(code);
 
-        //            fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, false);
+        //            fabricPackingProduct = new FabricProductPackingModel(code, fabric.Id, productSKU.Id, packingModel.Id, uom.Id, form.Length, form.PackingType, false, "");
         //            _dbContext.FabricProductPackings.Add(fabricPackingProduct);
         //        }
 
@@ -527,6 +527,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         //    }
         //}
         #endregion
+
 
         public FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form)
         {
