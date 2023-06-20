@@ -32,7 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public decimal PackagingQty { get; private set; }
         public decimal PackagingQtyRemains { get; set; }
         public decimal PackagingQtyReceipt { get; set; }
-        public decimal PackagingQtyReject { get; private set; }
+        public decimal PackagingQtyReject { get;  set; }
         public double PackagingLength { get; private set; }
         public string PackagingType { get; private set; }
         public string PackagingUnit { get; private set; }
