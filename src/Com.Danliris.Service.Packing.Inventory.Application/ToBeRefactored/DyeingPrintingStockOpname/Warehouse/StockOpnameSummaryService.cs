@@ -88,6 +88,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             }).ToList();
 
+            var totalPacking = result.Sum(x => x.PackagingQty);
+            var totalInQty = result.Sum(x => x.Balance);
+            result.Add(new UpdateTrackViewModel()
+            {
+                Track = "Total",
+                PackagingQty = totalPacking,
+                Balance = totalInQty
+            });
+
             return result;
 
         }
