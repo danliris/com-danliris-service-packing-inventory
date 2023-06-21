@@ -21,6 +21,9 @@ using Microsoft.EntityFrameworkCore;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN.ViewModel;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
+using System.IO;
+using System.Data;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN
 {
@@ -839,6 +842,207 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             count = await _dbContext.SaveChangesAsync();
             return count;
+        }
+
+        public async Task<DPInputWarehouseCreateViewModel> ReadById(int id)
+        {
+            var model = await _dPWarehouseInputRepository.ReadByIdAsync(id);
+            if (model == null)
+                return null;
+
+            DPInputWarehouseCreateViewModel vm = await MapToViewModel(model);
+
+            return vm;
+        }
+
+        private async Task<DPInputWarehouseCreateViewModel> MapToViewModel(DPWarehouseInputModel model)
+        {
+            var vm = new DPInputWarehouseCreateViewModel();
+            vm = new DPInputWarehouseCreateViewModel
+            {
+
+                Active = model.Active,
+                Id = model.Id,
+                Area = model.Area,
+                BonNo = model.BonNo,
+                
+                CreatedAgent = model.CreatedAgent,
+                CreatedBy = model.CreatedBy,
+                CreatedUtc = model.CreatedUtc,
+                Date = model.Date,
+                DeletedAgent = model.DeletedAgent,
+                DeletedBy = model.DeletedBy,
+                DeletedUtc = model.DeletedUtc,
+                IsDeleted = model.IsDeleted,
+                LastModifiedAgent = model.LastModifiedAgent,
+                LastModifiedBy = model.LastModifiedBy,
+                LastModifiedUtc = model.LastModifiedUtc,
+                DyeingPrintingWarehouseInItems = model.DPWarehouseInputItems.Where(x => !x.IsDeleted).Select(s => new DPInputWarehouseItemCreateViewModel()
+                {
+                    Active = s.Active,
+                    LastModifiedUtc = s.LastModifiedUtc,
+
+                    Color = s.Color,
+                    Construction = s.Construction,
+                    CreatedAgent = s.CreatedAgent,
+                    CreatedBy = s.CreatedBy,
+                    CreatedUtc = s.CreatedUtc,
+                    DeletedAgent = s.DeletedAgent,
+                    DeletedBy = s.DeletedBy,
+                    DeletedUtc = s.DeletedUtc,
+                    Balance = s.Balance,
+                    Grade = s.Grade,
+                    Motif = s.Motif,
+                    PackagingQty = (double) s.PackagingQty,
+                    PackagingLength = s.PackagingLength,
+                    PackagingType = s.PackagingType,
+                    PackagingUnit = s.PackagingUnit,
+                    
+                    ProductionOrder = new ProductionOrder()
+                    {
+                        Id = s.ProductionOrderId,
+                        No = s.ProductionOrderNo,
+                        Type = s.ProductionOrderType,
+                        OrderQuantity = s.ProductionOrderOrderQuantity
+                    },
+                    Remark = s.Remark,
+
+                    ProcessType = new ProcessType()
+                    { 
+                        Id = s.ProcessTypeId,
+                        Name = s.ProcessTypeName
+                    },
+                    
+                    Unit = s.Unit,
+                    UomUnit = s.UomUnit,
+                    
+                    ProductSKUId = s.ProductSKUId,
+                    FabricSKUId = s.FabricSKUId,
+                    ProductSKUCode = s.ProductSKUCode,
+                    ProductPackingId = s.ProductPackingId,
+                    FabricPackingId = s.FabricPackingId,
+                    ProductPackingCode = s.ProductPackingCode,
+                    
+                    Description = s.Description
+
+                }).ToList()
+            };
+
+            return vm;
+
+        }
+
+        public List<DPInputWarehouseMonitoringViewModel> GetMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int offset)
+        {
+
+        
+            IQueryable<DPWarehouseInputItemModel> inputItemsQuery;
+            if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
+            {
+                //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll();
+                inputItemsQuery = _dbSetItems.AsNoTracking();
+            }
+            else
+            {
+                //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll().Where(s =>
+                //                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+                inputItemsQuery = _dbSetItems.AsNoTracking().Where(s =>
+                                        s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
+            }
+
+
+
+
+            if (productionOrderId != 0)
+            {
+                inputItemsQuery = _dbSetItems.AsNoTracking().Where(s => s.ProductionOrderId == productionOrderId);
+            }
+            var query = (from b in inputItemsQuery
+                         select new DPInputWarehouseMonitoringViewModel()
+                         {
+                             ProductionOrderId = b.ProductionOrderId,
+                             ProductionOrderNo = b.ProductionOrderNo,
+                             ProductPackingCode = b.ProductPackingCode,
+                             ProcessTypeName = b.ProcessTypeName,
+                             PackagingUnit = b.PackagingUnit,
+                             Grade = b.Grade,
+                             Construction = b.Construction,
+                             Motif = b.Motif,
+                             Color = b.Color,
+                             Balance = b.Balance,
+                             DateIn = b.CreatedUtc.AddHours(7),
+                             PackagingQty = b.PackagingQty,
+                             PackingLength = b.PackagingLength,
+                             Description = b.Description.Trim()
+                         }).ToList();
+            var result = query.GroupBy(s => new { s.ProductPackingCode  }).Select(d => new DPInputWarehouseMonitoringViewModel()
+            {
+                ProductionOrderId = d.First().ProductionOrderId,
+                ProductionOrderNo = d.First().ProductionOrderNo,
+                ProductPackingCode = d.First().ProductPackingCode,
+                ProcessTypeName = d.First().ProcessTypeName,
+                PackagingUnit = d.First().PackagingUnit,
+                Grade = d.First().Grade,
+                Color = d.First().Color,
+                Construction = d.First().Construction,
+                Motif = d.First().Motif,
+
+                Balance = d.Sum(a => a.Balance),
+                DateIn = d.First().DateIn,
+                PackagingQty = d.Sum(a => a.PackagingQty),
+                PackingLength = d.First().PackingLength,
+                Description = d.First().Description
+            }).OrderBy(o => o.ProductionOrderId).ToList();
+
+            return result;
+
+        }
+        public MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId,  int offset)
+        {
+            var data = GetMonitoring(dateFrom, dateTo, productionOrderId,  offset);
+            DataTable dt = new DataTable();
+
+            //dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jumlah Packing", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang Satuan", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(double) });
+
+
+            if (data.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "",  0, "",0, 0);
+            }
+            else
+            {
+                decimal packagingQty = 0;
+                double total = 0;
+
+                foreach (var item in data)
+                {
+                    var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.AddHours(offset).Date.ToString("d");
+                    // var sldbegin = item.SaldoBegin;
+                    //saldoBegin =+ item.SaldoBegin;
+                    dt.Rows.Add(item.ProductionOrderNo, dateIn, item.ProductPackingCode, item.Construction, item.Color, item.Motif,
+                        item.Grade, item.PackagingQty, item.PackagingUnit,  item.PackingLength, item.Balance);
+
+                    packagingQty += item.PackagingQty;
+                    total += item.Balance;
+                }
+
+                dt.Rows.Add("", "", "", "", "", "", "", packagingQty, "", 0, total);
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
+
         }
 
 

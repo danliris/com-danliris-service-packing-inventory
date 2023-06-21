@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
 
         public Task<DPWarehouseInputModel> ReadByIdAsync(int id)
         {
-            return _dbSet.FirstOrDefaultAsync(s => s.Id == id);
+            return _dbSet.Include(s => s.DPWarehouseInputItems).FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public Task<int> InsertAsync(DPWarehouseInputModel model)
