@@ -30,6 +30,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             var model = _dbSet.FirstOrDefault(s => s.Id == id);
 
+            var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
+            invoice.SetAmountCA(invoice.AmountCA - (decimal)model.AmountPaid, _identityProvider.Username, UserAgent);
+
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
