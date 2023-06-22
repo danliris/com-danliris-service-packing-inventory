@@ -56,8 +56,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 policyType = model.PolicyType,
 
                 rate = model.Rate,
-                remark = model.Remark,
-                items = (model.Items ?? new List<GarmentShippingInsuranceDispositionItemModel>()).Select(i => new GarmentShippingInsuranceDispositionItemViewModel
+                remark = model.Remark, 
+
+                items = (model.Items ?? new List<GarmentShippingInsuranceDispositionItemModel>()).Where(x => x.IsDeleted == false).Select(i => new GarmentShippingInsuranceDispositionItemViewModel
                 {
                     Active = i.Active,
                     Id = i.Id,
