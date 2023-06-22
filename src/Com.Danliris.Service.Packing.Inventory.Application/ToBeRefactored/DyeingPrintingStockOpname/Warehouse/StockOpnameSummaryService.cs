@@ -475,7 +475,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "",  0, 0, 0, "");
+                dt.Rows.Add("", "", "", "", "", "",  0, 0, 0, "");
             }
             else
             {
