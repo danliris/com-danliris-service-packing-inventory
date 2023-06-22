@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 foreach (var ids in sppResults)
                 {
-                    sppIds.Add(ids);
+                    sppIds.Add(ids.OrderId);
                 }
             }
             var queryIn = from a in _productionOrderRepository.ReadAll()
@@ -86,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         select new OrderStatusReportViewModel
                         {
                             productionOrderNo = a.ProductionOrderNo,
-                            targetQty = Convert.ToDecimal(a.ProductionOrderOrderQuantity),
+                            targetQty = 0,
                             //producedQty = a.InputQuantity,
                             productionOrderId=a.ProductionOrderId,
                             sentBuyerQty =0,
@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var joinQuery = queryIn.ToList().Union(queryOut.ToList());
             var dataList = from data in joinQuery.ToList()
-                           group data by new { data.productionOrderNo }
+                           group data by new { data.productionOrderNo, data.productionOrderId }
                            into groupdata
                            select new OrderStatusReportViewModel
                            {
@@ -122,7 +122,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                qcQty= groupdata.Sum(a => a.inProductionQty),
                                producedQty = groupdata.Sum(a => a.inProductionQty),
                                sentGJQty = groupdata.Sum(a => a.sentGJQty),
-                               //remainingSentQty= groupdata.Sum(a => a.remainingSentQty),
+                               productionOrderId =groupdata.Key.productionOrderId,
                            };
 
             var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
@@ -132,9 +132,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             foreach(var data in dataList)
             {
                 var inProd = productionResults.Where(a => a.noorder == data.productionOrderNo).FirstOrDefault();
+                var target= sppResults.Where(x=>x.OrderId== data.productionOrderId).FirstOrDefault();
+                data.targetQty = target.OrderQuantity;
                 data.inProductionQty = inProd!=null ? Convert.ToDecimal(inProd.qtyin) : 0;
                 data.preProductionQty = data.targetQty - data.inProductionQty >= 0? data.targetQty - data.inProductionQty:0 ;
                 data.remainingSentQty = data.targetQty - data.sentBuyerQty >= 0 ? data.targetQty - data.sentBuyerQty : 0;
+                
                 newListData.Add(data);
             }
             return newListData.ToList();
@@ -162,7 +165,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
                 var dataString = content.GetValueOrDefault("data").ToString();
 
-                var listdata = JsonConvert.DeserializeObject<List<long>>(dataString);
+                var listdata = JsonConvert.DeserializeObject<List<OrderQuantityForStatusOrder>>(dataString);
 
                 foreach (var i in listdata)
                 {

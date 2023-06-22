@@ -9,9 +9,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public SPPResult()
         {
-            data = new List<long>();
+            data = new List<OrderQuantityForStatusOrder>();
         }
-        public IList<long> data { get; set; }
+        public IList<OrderQuantityForStatusOrder> data { get; set; }
     }
     public class ProductionResult : BaseResult
     {
@@ -25,5 +25,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public double qtyin { get; set; }
         public string noorder { get; set; }
+    }
+    public class OrderQuantityForStatusOrder
+    {
+        public long OrderId { get; set; }
+        public decimal OrderQuantity { get; set; }
     }
 }
