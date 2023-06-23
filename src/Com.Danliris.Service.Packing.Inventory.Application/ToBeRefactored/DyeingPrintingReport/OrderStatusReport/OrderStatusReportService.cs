@@ -83,26 +83,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             }
             var queryIn = from a in _productionOrderRepository.ReadAll()
                         where sppIds.Contains(a.ProductionOrderId) 
-                        select new OrderStatusReportViewModel
+                          select new OrderStatusReportViewModel
                         {
                             productionOrderNo = a.ProductionOrderNo,
                             targetQty = 0,
-                            //producedQty = a.InputQuantity,
                             productionOrderId=a.ProductionOrderId,
                             sentBuyerQty =0,
                             inProductionQty =0,
                             qcQty = a.Area == "INSPECTION MATERIAL" ? Convert.ToDecimal(a.InputQuantity) : 0,
                             sentGJQty= a.Area=="GUDANG JADI" ? Convert.ToDecimal(a.InputQuantity):0
                         };
-            var queryOut = from b in _productionOutRepository.ReadAll() //on a.productionOrderId equals b.ProductionOrderId
+            var queryOut = from b in _productionOutRepository.ReadAll() 
                            where sppIds.Contains(b.ProductionOrderId)
                            select new OrderStatusReportViewModel
                             {
                                 productionOrderNo = b.ProductionOrderNo,
                                 productionOrderId = b.ProductionOrderId,
-                                sentBuyerQty= Convert.ToDecimal(b.Balance),
+                                sentBuyerQty= b.Area == "SHIPPING"? Convert.ToDecimal(b.Balance) : 0,
                                 targetQty=0,
-                                //producedQty=0,
                                 inProductionQty= Convert.ToDecimal(b.Balance),
                                 qcQty= b.Area=="INSPECTION MATERIAL" ? Convert.ToDecimal(b.Balance)*(-1) : 0,
                                 sentGJQty = 0,
@@ -117,10 +115,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                productionOrderNo = groupdata.Key.productionOrderNo,
                                sentBuyerQty = groupdata.Sum(a => a.sentBuyerQty),
                                targetQty = groupdata.Sum(a => a.targetQty),
-                               //producedQty = groupdata.Sum(a => a.producedQty),
                                inProductionQty = groupdata.Sum(a => a.inProductionQty),
-                               qcQty= groupdata.Sum(a => a.inProductionQty),
-                               producedQty = groupdata.Sum(a => a.inProductionQty),
+                               qcQty= groupdata.Sum(a => a.qcQty),
+                               producedQty = groupdata.Sum(a => a.qcQty),
                                sentGJQty = groupdata.Sum(a => a.sentGJQty),
                                productionOrderId =groupdata.Key.productionOrderId,
                            };
