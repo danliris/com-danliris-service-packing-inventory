@@ -163,12 +163,12 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.DetailShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.DetailLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.DetailShippingLocalSalesNote;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
+
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdvice4MII;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdviceMII;
 
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport;
 
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
@@ -192,6 +192,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             ApplicationSetting.ProductionEndpoint = Configuration.GetValue<string>(Constant.GARMENT_PRODUCTION_ENDPOINT) ?? Configuration[Constant.GARMENT_PRODUCTION_ENDPOINT];
             ApplicationSetting.StorageAccountName = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_NAME) ?? Configuration[Constant.STORAGE_ACCOUNT_NAME];
             ApplicationSetting.StorageAccountKey = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_KEY) ?? Configuration[Constant.STORAGE_ACCOUNT_KEY];
+            ApplicationSetting.SalesEndpoint = Configuration.GetValue<string>(Constant.SALES_ENDPOINT) ?? Configuration[Constant.SALES_ENDPOINT];
+            ApplicationSetting.DyeingPrintingEndpoint = Configuration.GetValue<string>(Constant.DYEINGPRINTING_ENDPOINT) ?? Configuration[Constant.DYEINGPRINTING_ENDPOINT];
+
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -436,9 +439,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
+            services.AddTransient<IOrderStatusReportService, OrderStatusReportService>();
 
-
-          
             services.AddTransient<IFabricQualityControlReportService, FabricQualityControlReportService>();
             services.AddTransient<IRegradingResultDocReportService, RegradingResultDocReportService>();
 
