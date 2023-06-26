@@ -170,7 +170,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingWarehouse;
-
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.UpdateTrack;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -438,6 +438,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
             services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
             services.AddTransient<IDPWarehouseInService, DPWarehouseInService>();
+            services.AddTransient<IDPWarehouseSummaryService, DPWarehouseSummaryService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();

@@ -420,7 +420,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                    s.PackagingLength,
                                    s.PackagingUnit,
                                    s.Area,
-                                   s.Remark,
+                                   s.Description,
                                    s.Id,
                                    s.ProductSKUId,
                                    s.FabricSKUId,
@@ -498,7 +498,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.ProductSKUCode,
                                         item.ProductPackingId,
                                         item.FabricPackingId,
-                                        item.ProductPackingCode
+                                        item.ProductPackingCode,
+                                        item.MaterialOrigin,
+                                        item.Remark
 
                                 );
                             modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -600,7 +602,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                item.PackagingLength,
                                                item.PackagingUnit,
                                                item.Area,
-                                               item.Remark,
+                                               item.Description,
                                                modelId,
                                                item.ProductSKUId,
                                                item.FabricSKUId,
@@ -669,7 +671,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.ProductSKUCode,
                                         item.ProductPackingId,
                                         item.FabricPackingId,
-                                        item.ProductPackingCode
+                                        item.ProductPackingCode,
+                                        item.MaterialOrigin,
+                                        item.Remark
 
                                 );
                             modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -766,7 +770,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.Balance,
                             item.Grade,
                             item.ProductionOrderType,
-                            item.Description,
+                            item.Remark,
                             item.PackagingType,
                             item.PackagingQty,
                             item.PackagingUnit,
@@ -776,7 +780,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             "",
                             "",
                             item.ProductPackingId,
-                            item.ProductPackingCode
+                            item.ProductPackingCode,
+                            item.Description
 
                             );
 
@@ -822,7 +827,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.Balance,
                             item.Grade,
                             item.ProductionOrderType,
-                            item.Description,
+                            item.Remark,
                             item.PackagingType,
                             item.PackagingQty,
                             item.PackagingUnit,
@@ -832,7 +837,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             "",
                             "",
                             item.ProductPackingId,
-                            item.ProductPackingCode
+                            item.ProductPackingCode,
+                            item.Description
 
                             );
 

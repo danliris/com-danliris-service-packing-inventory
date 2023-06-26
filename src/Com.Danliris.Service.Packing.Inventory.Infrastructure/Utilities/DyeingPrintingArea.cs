@@ -47,5 +47,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
 
         public static readonly string STOCK_OPNAME = "STOCK OPNAME";
         public static readonly string SO = "SO";
+        public static readonly string MOVE = "MOVE";
     }
 }
