@@ -48,14 +48,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string YarnMaterialName { get; private set; }
         public string Unit { get; private set; }
         public string UomUnit { get; private set; }
-        public int TrackId { get; private set; }
-        public string TrackType { get; private set; }
-        public string TrackName { get; private set; }
-        public string TrackBox { get; private set; }
+        public int TrackId { get;  set; }
+        public string TrackType { get;  set; }
+        public string TrackName { get;  set; }
+        public string TrackBox { get;  set; }
 
 
         public double SplitQuantity { get; set; }
         public string Description { get; set; }
+        public string MaterialOrigin { get; set; }
+        public string Remark { get; set; }
 
 
         #region Product SKU Packing
@@ -108,7 +110,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
          string productSKUCode,
          int productPackingId,
          int fabricPackingId,
-         string productPackingCode
+         string productPackingCode,
+         string materialOrigin,
+         string remark
          ) 
         {
             Balance = balance;
@@ -156,6 +160,97 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductPackingId = productPackingId;
             FabricPackingId = fabricPackingId;
             ProductPackingCode = productPackingCode;
+            MaterialOrigin = materialOrigin;
+            Remark = remark;
+        }
+
+        public DPWarehouseSummaryModel(double balance, double balanceRemains, double balanceOut, int buyerId, string buyer, string cartNo, string color, string grade, string construction,
+         int materialConstructionId, string materialConstructionName,
+         int materialId,
+         string materialName,
+         string materialWidth,
+         string motif,
+         string packingInstruction,
+         decimal packagingQty,
+         decimal packagingQtyRemains,
+         decimal packagingQtyOut,
+         double packagingLength,
+         string packagingType,
+         string packagingUnit,
+          long productionOrderId,
+         string productionOrderNo,
+         string productionOrderType,
+         double productionOrderOrderQuantity,
+         DateTime createdUtcOrderNo,
+         int processTypeId,
+         string processTypeName,
+         int yarnMaterialId,
+         string yarnMaterialName,
+         string unit,
+         string uomUnit,
+         int trackId,
+         string trackType,
+         string trackName,
+         string trackBox,
+         double splitQuantity,
+         string description,
+         int productSKUId,
+         int fabricSKUId,
+         string productSKUCode,
+         int productPackingId,
+         int fabricPackingId,
+         string productPackingCode,
+         string materialOrigin,
+         string remark
+         )
+        {
+            Balance = balance;
+            BalanceRemains = balanceRemains;
+            BalanceOut = balanceOut;
+            BuyerId = buyerId;
+            Buyer = buyer;
+            CartNo = cartNo;
+            Color = color;
+            Construction = construction;
+            Grade = grade;
+            MaterialConstructionId = materialConstructionId;
+            MaterialConstructionName = materialConstructionName;
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialWidth = materialWidth;
+            Motif = motif;
+            PackingInstruction = packingInstruction;
+            PackagingQty = packagingQty;
+            PackagingQtyRemains = packagingQtyRemains;
+            PackagingQtyOut = packagingQtyOut;
+            PackagingLength = packagingLength;
+            PackagingType = packagingType;
+            PackagingUnit = packagingUnit;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            CreatedUtcOrderNo = createdUtcOrderNo;
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+            Unit = unit;
+            UomUnit = uomUnit;
+            TrackId = trackId;
+            TrackType = trackType;
+            TrackName = trackName;
+            TrackBox = trackBox;
+            SplitQuantity = splitQuantity;
+            Description = description;
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            MaterialOrigin = materialOrigin;
+            Remark = remark;
         }
 
         public void SetBalanceRemains(double newBalanceRemains, string user, string agent)

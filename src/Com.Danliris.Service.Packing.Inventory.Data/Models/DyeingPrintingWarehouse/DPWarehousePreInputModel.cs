@@ -121,8 +121,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             //TrackType = trackType;
             //TrackName = trackName;
             //TrackBox = trackBox;
-            Remark = remark;
             Description = description;
+            Remark = remark;
+            
             ProductSKUId = productSKUId;
             FabricSKUId = fabricSKUId;
             ProductSKUCode = productSKUCode;
