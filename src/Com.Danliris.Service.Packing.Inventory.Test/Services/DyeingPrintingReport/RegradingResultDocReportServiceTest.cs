@@ -56,7 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(item.ProductionOrderNo, DateTime.Now, DateTime.Now, 7);
+            var result = service.GetReportData(item.ProductionOrderNo, DateTime.Now.AddDays(-30), DateTime.Now, 7);
 
             Assert.NotEmpty(result.ToList());
         }
