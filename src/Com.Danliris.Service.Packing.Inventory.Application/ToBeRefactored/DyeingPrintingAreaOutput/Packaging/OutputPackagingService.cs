@@ -922,7 +922,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             var preInputModel = new DPWarehousePreInputModel(
                                 item.QtyOut, item.QtyOut, 0, 0, item.BuyerId, item.Buyer, item.Color, item.Construction, item.Grade, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialWidth,
-                                item.Motif, item.PackingInstruction, item.PackagingQTY, item.PackagingQTY, item.PackagingQTY, 0, item.PackingLength, item.PackagingType, item.PackagingUnit, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
+                                item.Motif, item.PackingInstruction, item.PackagingQTY, item.PackagingQTY, 0, 0, item.PackingLength, item.PackagingType, item.PackagingUnit, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
                                 item.ProductionOrder.CreatedUtc, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.Unit, item.UomUnit, item.Remark, item.Keterangan,
                                 packingData.ProductSKUId, packingData.FabricSKUId, packingData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingData.ProductPackingCode, item.MaterialOrigin, item.FinishWidth
                                 );

@@ -500,7 +500,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.FabricPackingId,
                                         item.ProductPackingCode,
                                         item.MaterialOrigin,
-                                        item.Remark
+                                        item.Remark,
+                                        item.FinishWidth
 
                                 );
                             modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -673,7 +674,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.FabricPackingId,
                                         item.ProductPackingCode,
                                         item.MaterialOrigin,
-                                        item.Remark
+                                        item.Remark,
+                                        item.FinishWidth
 
                                 );
                             modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -839,6 +841,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.ProductPackingId,
                             item.ProductPackingCode,
                             item.Description
+                            
 
                             );
 

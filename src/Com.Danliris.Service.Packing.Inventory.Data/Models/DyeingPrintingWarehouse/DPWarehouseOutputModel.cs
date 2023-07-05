@@ -31,6 +31,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             DPWarehouseOutputItems = new HashSet<DPWarehouseOutputItemModel>();
         }
 
+        public DPWarehouseOutputModel(DateTimeOffset date, string area, string shift, string bonNo, string destinationArea, ICollection<DPWarehouseOutputItemModel> dPWarehouseOutputItems)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            DestinationArea = destinationArea;
+            DPWarehouseOutputItems = dPWarehouseOutputItems;
+
+        }
+
 
     }
 }

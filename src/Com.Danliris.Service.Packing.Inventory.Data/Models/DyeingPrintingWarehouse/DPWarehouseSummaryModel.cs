@@ -30,7 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string PackingInstruction { get; private set; }
         public decimal PackagingQty { get; set; }
         public decimal PackagingQtyRemains { get; set; }
-        public decimal PackagingQtyOut { get; private set; }
+        public decimal PackagingQtyOut { get;  set; }
         public double PackagingLength { get; private set; }
         public string PackagingType { get; private set; }
         public string PackagingUnit { get; private set; }
@@ -58,6 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string Description { get; set; }
         public string MaterialOrigin { get; set; }
         public string Remark { get; set; }
+        public string FinishWidth { get; set; }
 
 
         #region Product SKU Packing
@@ -112,7 +113,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
          int fabricPackingId,
          string productPackingCode,
          string materialOrigin,
-         string remark
+         string remark,
+         string finishWidth
          ) 
         {
             Balance = balance;
@@ -162,6 +164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductPackingCode = productPackingCode;
             MaterialOrigin = materialOrigin;
             Remark = remark;
+            FinishWidth = finishWidth;
         }
 
         public DPWarehouseSummaryModel(double balance, double balanceRemains, double balanceOut, int buyerId, string buyer, string cartNo, string color, string grade, string construction,
@@ -201,7 +204,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
          int fabricPackingId,
          string productPackingCode,
          string materialOrigin,
-         string remark
+         string remark,
+         string finishWidth
          )
         {
             Balance = balance;
@@ -251,6 +255,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductPackingCode = productPackingCode;
             MaterialOrigin = materialOrigin;
             Remark = remark;
+            FinishWidth = finishWidth;
         }
 
         public void SetBalanceRemains(double newBalanceRemains, string user, string agent)
