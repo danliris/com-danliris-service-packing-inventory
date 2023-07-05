@@ -40,6 +40,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string ShippingGrade { get; private set; }
         public string ShippingRemark { get; private set; }
         public int DPWarehouseOutputId { get; set; }
+        public int DPWarehouseSummaryId { get; set; }
         #region Product SKU Packing
         public int ProductSKUId { get; private set; }
 
@@ -71,6 +72,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public int? ProductTextileId { get; set; }
         public string ProductTextileCode { get; set; }
         public string ProductTextileName { get; set; }
+        #region Track
+        public int TrackFromId { get; private set; }
+        public string TrackFromType { get; private set; }
+        public string TrackFromName { get; private set; }
+        public string TrackFromBox { get; private set; }
+        #endregion
         public DPWarehouseOutputModel DPWarehouseOutput { get; set; }
 
         public DPWarehouseOutputItemModel()
@@ -81,9 +88,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public DPWarehouseOutputItemModel(long productionOrderId, string productionOrderNo, int materialId, string materalName, int materialConstructionId, string materialConstructionName,
             string materialWidth, int buyerId, string buyer, string construction, string unit, string color, string motif, string uomUnit, string remark, string grade, double balance, 
             string packingInstruction, string productionOrderType, double productionOrderOrderQuantity, string packagingType, decimal packagingQty, double packagingLength, string packagingUnit,
-            long deliveryOrderSalesId, string deliveryOrderSalesNo, string productionMachine, string area, string description, int dPWarehouseOutputId, int productSKUId, int fabricSKUId, string productSKUCode,
+            long deliveryOrderSalesId, string deliveryOrderSalesNo, string deliveryOrderSalesType, string productionMachine, string area, string description, int dPWarehouseOutputId, int productSKUId, int fabricSKUId, string productSKUCode,
             int productPackingId, int fabricPackingId, string productPackingCode, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, 
-            string finishWidth, string materialOrigin, string deliveryOrderSalesType
+            string finishWidth, string materialOrigin,  int dPWarehouseSummaryId, int trackFromId, string trackFromType, string trackFromName, string trackFromBox, string destinationArea
             ) : this()
         {
             ProductionOrderId = productionOrderId;
@@ -111,6 +118,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             PackagingUnit = packagingUnit;
             DeliveryOrderSalesId = deliveryOrderSalesId;
             DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            DeliveryOrderSalesType = deliveryOrderSalesType;
             ProductionMachine = productionMachine;
             Area = area;
             Description = description;
@@ -127,8 +135,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             YarnMaterialName = yarnMaterialName;
             FinishWidth = finishWidth;
             MaterialOrigin = materialOrigin;
-            DeliveryOrderSalesType = deliveryOrderSalesType;
-
+            
+            DPWarehouseSummaryId = dPWarehouseSummaryId;
+            TrackFromId = trackFromId;
+            TrackFromType = trackFromType;
+            TrackFromName = trackFromName;
+            TrackFromBox = trackFromBox;
+            DestinationArea = destinationArea;
 
         }
 

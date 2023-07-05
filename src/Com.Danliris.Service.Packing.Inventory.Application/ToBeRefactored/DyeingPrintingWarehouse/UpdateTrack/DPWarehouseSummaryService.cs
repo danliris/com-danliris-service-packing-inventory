@@ -291,7 +291,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             dbModel.FabricPackingId,
                                                             dbModel.ProductPackingCode,
                                                             dbModel.MaterialOrigin,
-                                                            dbModel.Remark
+                                                            dbModel.Remark,
+                                                            dbModel.FinishWidth
                                                             );
 
                                 var track = viewModel.Items[0].Track.Id;
