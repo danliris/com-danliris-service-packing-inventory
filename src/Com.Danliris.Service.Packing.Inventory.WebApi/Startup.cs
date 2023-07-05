@@ -171,6 +171,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingWarehouse;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.UpdateTrack;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.OUT;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -318,6 +319,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDPWarehousePreInputRepository, DPWarehousePreInputRepository>();
             services.AddTransient<IDPWarehouseInputRepository, DPWarehouseInputRepository>();
             services.AddTransient<IDPWarehouseSummaryRepository, DPWarehouseSummaryRepository>();
+            services.AddTransient<IDPWarehouseOutputRepository, DPWarehouseOutputRepository>();
 
             #endregion
 
@@ -439,6 +441,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
             services.AddTransient<IDPWarehouseInService, DPWarehouseInService>();
             services.AddTransient<IDPWarehouseSummaryService, DPWarehouseSummaryService>();
+            services.AddTransient<IDPWarehouseOutService, DPWarehouseOutService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
