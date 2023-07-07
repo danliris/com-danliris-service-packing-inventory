@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.OUT
 {
@@ -12,6 +13,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         List<OutputWarehouseItemListViewModel> ListOutputWarehouse(string packingCode, int trackId);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
+        Task<DPWarehouseOutputCreateViewModel> ReadById(int id);
         Task<int> Create(DPWarehouseOutputCreateViewModel viewModel);
+        List<DPOutputWarehouseMonitoringViewModel> GetMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int offset);
+        MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int offset);
     }
 }
