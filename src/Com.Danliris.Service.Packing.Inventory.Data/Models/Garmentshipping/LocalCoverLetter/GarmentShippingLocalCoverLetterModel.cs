@@ -48,6 +48,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Loc
             ShippingStaffName = shippingStaffName;
         }
 
+        public void SetLocalSalesNoteId(int localSalesNoteId, string userName, string userAgent)
+        {
+            if (LocalSalesNoteId != localSalesNoteId)
+            {
+                LocalSalesNoteId = localSalesNoteId;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
         {
             if (Date != date)
