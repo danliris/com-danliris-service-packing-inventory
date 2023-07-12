@@ -1333,6 +1333,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = s.BonNo,
                         NoSPP = d.ProductionOrderNo,
+                        ProductPackingCode = d.ProductPackingCode,
                         QtyOrder = d.ProductionOrderOrderQuantity,
                         Material = d.Construction,
                         MaterialOrigin = d.MaterialOrigin,
@@ -1351,6 +1352,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.UomUnit,
                         DateOut = d.DateOut,
                         ProductTextileName = d.ProductTextileName,
+                        
                     })
                 });
 
@@ -1362,6 +1364,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = d.First().BonNo,
                         NoSPP = d.Key.NoSPP,
+                        ProductPackingCode = d.First().ProductPackingCode,
                         QtyOrder = d.First().QtyOrder,
                         Material = d.First().Material,
                         MaterialOrigin = d.First().MaterialOrigin,
@@ -1380,6 +1383,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.First().SAT,
                         DateOut = d.First().DateOut,
                         ProductTextileName = d.First().ProductTextileName,
+                        
                     })
                 });
 
@@ -1393,6 +1397,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = d.BonNo,
                         NoSPP = d.NoSPP,
+                        ProductPackingCode = d.ProductPackingCode,
                         QtyOrder = d.QtyOrder,
                         Material = d.Material,
                         MaterialOrigin = d.MaterialOrigin,
@@ -1411,6 +1416,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.SAT,
                         DateOut = d.DateOut,
                         ProductTextileName = d.ProductTextileName,
+                       
                     })
                 });
 
@@ -1453,6 +1459,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 {"BonNo","NO BON" },
                 {"NoSPP","NO SP" },
+                { "ProductPackingCode", "BARCODE"},
                 {"DateOut","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},
