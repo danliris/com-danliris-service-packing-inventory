@@ -1054,6 +1054,91 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         }
 
+        public List<MonitoringPreInputWarehouseViewModel> GetMonitoringPreInput(int productionOrderId, string productPackingCode)
+        {
+            IQueryable<DPWarehousePreInputModel> preInput;
+
+            if (productionOrderId != 0)
+            {
+                preInput = _dPWarehousePreInputRepository.ReadAll().Where(x => x.ProductionOrderId == productionOrderId && x.ProductPackingCode == (string.IsNullOrWhiteSpace(productPackingCode) ? x.ProductPackingCode : productPackingCode));
+            }
+            else {
+                preInput = _dPWarehousePreInputRepository.ReadAll().Where(x => x.ProductPackingCode == (string.IsNullOrWhiteSpace(productPackingCode) ? x.ProductPackingCode : productPackingCode));
+            }
+
+                var Query = preInput.Where( s => s.BalanceRemains >0).Select( s => 
+            
+                            new MonitoringPreInputWarehouseViewModel() { 
+
+                                ProductionOrderNo = s.ProductionOrderNo,
+                                ProductPackingCode = s.ProductPackingCode,
+                                Balance = s.Balance,
+                                BalanceRemains = s.BalanceRemains,
+                                BalanceReceipt = s.BalanceReceipt,
+                                BalanceReject = s.BalanceReject,
+                                PackagingQty = s.PackagingQty,
+                                PackagingQtyRemains = s.PackagingQtyRemains,
+                                PackagingQtyReceipt = s.PackagingQtyReceipt,
+                                PackagingQtyReject = s.PackagingQtyReject,
+                                PackagingLength = s.PackagingLength,
+                                PackagingUnit = s.PackagingUnit,
+                                Description = s.Description,
+                                Grade = s.Grade,
+                                UomUnit = s.UomUnit,
+                                LastModifiedUtc = s.LastModifiedUtc
+            
+                            }).ToList();
+            Query.OrderByDescending(s => s.LastModifiedUtc);
+
+            return Query;
+        }
+
+        public MemoryStream GenerateExcelPreInput( int productionOrderId, string productPackingCode)
+        {
+            var data = GetMonitoringPreInput( productionOrderId, productPackingCode);
+            DataTable dt = new DataTable();
+
+            //dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Qty Pack", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang Per Pack", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Qty", DataType = typeof(double) });
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+
+
+            if (data.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", 0, 0, "", 0, "", "");
+            }
+            else
+            {
+                decimal packagingQty = 0;
+                double total = 0;
+
+                foreach (var item in data)
+                {
+                    //var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.AddHours(offset).Date.ToString("d");
+                    // var sldbegin = item.SaldoBegin;
+                    //saldoBegin =+ item.SaldoBegin;
+                    dt.Rows.Add(item.ProductionOrderNo,  item.ProductPackingCode, item.Grade, item.BalanceRemains, item.PackagingLength,
+                        item.PackagingUnit, item.PackagingQtyRemains, item.UomUnit, item.Description);
+
+                    packagingQty += item.PackagingQtyRemains;
+                    total += item.BalanceRemains;
+                }
+
+                dt.Rows.Add("", "", "", packagingQty, 0, "", total, "", "");
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Monitoring SPP Belum Diterima {0}","SO")) }, true);
+
+        }
+
 
     }
 

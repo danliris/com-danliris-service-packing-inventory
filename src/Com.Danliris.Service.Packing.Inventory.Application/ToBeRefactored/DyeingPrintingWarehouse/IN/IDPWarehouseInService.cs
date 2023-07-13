@@ -20,6 +20,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<DPInputWarehouseCreateViewModel> ReadById(int id);
         List<DPInputWarehouseMonitoringViewModel> GetMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId,  int offset);
         MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int offset);
+        List<MonitoringPreInputWarehouseViewModel> GetMonitoringPreInput(int productionOrderId, string productPackingCode);
+        MemoryStream GenerateExcelPreInput(int productionOrderId, string productPackingCode);
 
     }
 }
