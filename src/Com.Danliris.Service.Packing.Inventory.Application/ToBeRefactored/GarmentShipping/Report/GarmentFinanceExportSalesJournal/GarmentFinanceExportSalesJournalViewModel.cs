@@ -11,4 +11,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal debit { get; set; }
         public decimal credit { get; set; }
     }
+
+    public class GarmentFinanceExportSalesJournalTempViewModel
+    {
+        public string CurrencyCode { get; set; }
+        public string InvoiceType { get; set; }
+        public DateTimeOffset PEBDate { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal Rate { get; set; }
+    }
 }
