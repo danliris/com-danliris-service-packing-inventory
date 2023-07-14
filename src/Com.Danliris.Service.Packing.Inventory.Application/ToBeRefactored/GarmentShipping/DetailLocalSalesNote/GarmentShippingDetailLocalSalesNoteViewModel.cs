@@ -84,7 +84,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     errorItems.Add(errorItem);
                 }
 
-                if (amount != ItemAmount)
+                if (amount - ItemAmount > 0.1)
                 {
                     yield return new ValidationResult("Total Amount harus sama dengan Total Item Amount", new List<string> { "TotalAmount" });
                 }
