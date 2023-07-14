@@ -982,9 +982,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              DateIn = b.CreatedUtc.AddHours(7),
                              PackagingQty = b.PackagingQty,
                              PackingLength = b.PackagingLength,
-                             Description = b.Description.Trim()
+                             Description = b.Description.Trim(),
+                             UomUnit = b.UomUnit
                          }).ToList();
-            var result = query.GroupBy(s => new { s.ProductPackingCode  }).Select(d => new DPInputWarehouseMonitoringViewModel()
+            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.Description }).Select(d => new DPInputWarehouseMonitoringViewModel()
             {
                 ProductionOrderId = d.First().ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -995,13 +996,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
-
+                UomUnit = d.First().UomUnit,
                 Balance = d.Sum(a => a.Balance),
                 DateIn = d.First().DateIn,
                 PackagingQty = d.Sum(a => a.PackagingQty),
                 PackingLength = d.First().PackingLength,
-                Description = d.First().Description
+                Description = d.First().Description,
+                
             }).OrderBy(o => o.ProductionOrderId).ToList();
+
+            var totalPacking = result.Sum(x => x.PackagingQty);
+            var totalInQty = result.Sum(x => x.Balance);
+            result.Add(new DPInputWarehouseMonitoringViewModel()
+            {
+                ProductionOrderNo = "",
+                ProductPackingCode = "",
+                Construction = "",
+                Color = "",
+                Motif = "",
+                Grade = "",
+                
+                PackagingUnit = "Total",
+                PackagingQty = totalPacking,
+                Balance = totalInQty,
+                UomUnit = "MTR",
+                Description = ""
+            });
 
             return result;
 
@@ -1047,7 +1067,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     total += item.Balance;
                 }
 
-                dt.Rows.Add("", "", "", "", "", "", "", packagingQty, "", 0, total);
+                //dt.Rows.Add("", "", "", "", "", "", "", packagingQty, "", 0, total);
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
