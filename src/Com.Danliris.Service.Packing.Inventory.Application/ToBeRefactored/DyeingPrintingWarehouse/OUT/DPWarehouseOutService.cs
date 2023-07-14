@@ -379,8 +379,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.Id == item.DPWarehouseSummaryId);
                         modelSummary.BalanceRemains = modelSummary.BalanceRemains - (item.Sendquantity * item.PackagingLength);
                         modelSummary.BalanceOut = modelSummary.BalanceOut + (item.Sendquantity * item.PackagingLength);
-                        modelSummary.PackagingQtyRemains = modelSummary.PackagingQtyRemains - (decimal)item.PackagingQty;
-                        modelSummary.PackagingQtyOut = modelSummary.PackagingQtyOut + (decimal)item.PackagingQty;
+                        modelSummary.PackagingQtyRemains = modelSummary.PackagingQtyRemains - (decimal)item.Sendquantity;
+                        modelSummary.PackagingQtyOut = modelSummary.PackagingQtyOut + (decimal)item.Sendquantity;
                         EntityExtension.FlagForUpdate(modelSummary, _identityProvider.Username, UserAgent);
                     }
 
@@ -628,7 +628,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        public List<DPOutputWarehouseMonitoringViewModel> GetMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int offset)
+        public List<DPOutputWarehouseMonitoringViewModel> GetMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset)
         {
 
           
@@ -653,6 +653,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 inputItemsQuery = _dbSetItem.AsNoTracking().Where(s => s.ProductionOrderId == productionOrderId);
             }
+
+            if (track != 0)
+            {
+                inputItemsQuery = _dbSetItem.AsNoTracking().Where(s => s.TrackFromId == track);
+            }
+
+
+
             var query = (from b in inputItemsQuery
                          select new DPOutputWarehouseMonitoringViewModel()
                          {
@@ -674,7 +682,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              UomUnit = b.UomUnit
 
                          }).ToList();
-            var result = query.GroupBy(s => new { s.ProductPackingCode }).Select(d => new DPOutputWarehouseMonitoringViewModel()
+            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.TrackName, s.Description }).Select(d => new DPOutputWarehouseMonitoringViewModel()
             {
                 ProductionOrderId = d.First().ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -692,25 +700,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Description = d.First().Description,
                 TrackName = d.First().TrackName,
                 UomUnit = d.First().UomUnit
-                
-               
+
+
             }).OrderBy(o => o.ProductionOrderId).ToList();
 
-            //var totalPacking = result.Sum(x => x.PackagingQty);
-            //var totalInQty = result.Sum(x => x.Balance);
-            //result.Add(new DPOutputWarehouseMonitoringViewModel()
-            //{
-            //    PackagingUnit = "Total",
-            //    PackagingQty = totalPacking,
-            //    Balance = totalInQty
-            //});
+            var totalPacking = result.Sum(x => x.PackagingQty);
+            var totalInQty = result.Sum(x => x.Balance);
+            result.Add(new DPOutputWarehouseMonitoringViewModel()
+            {
+                ProductionOrderNo = "",
+                ProductPackingCode ="",
+                Construction = "",
+                Color ="",
+                Motif = "",
+                Grade = "",
+                TrackName = "Total Pack",
+                PackagingUnit = "Total",
+                PackagingQty = totalPacking,
+                Balance = totalInQty,
+                UomUnit = "MTR",
+                Description = ""
+            });
 
             return result;
 
         }
-        public MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int offset)
+        public MemoryStream GenerateExcelMonitoring(DateTimeOffset dateFrom, DateTimeOffset dateTo, int productionOrderId, int track, int offset)
         {
-            var data = GetMonitoring(dateFrom, dateTo, productionOrderId, offset);
+            var data = GetMonitoring(dateFrom, dateTo, productionOrderId, track, offset);
             DataTable dt = new DataTable();
 
             //dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });

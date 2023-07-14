@@ -188,7 +188,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                     //apiVersion = ApiVersion,
                     data = data,
                     info = new { count = data.Count(), total = data.Count() },
-
+                    total = data.Count(),
                     message = General.OK_MESSAGE,
                     statusCode = General.OK_STATUS_CODE
                 });

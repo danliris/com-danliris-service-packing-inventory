@@ -48,7 +48,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 var data = _service.GetDataUpdateTrack(productionOrderId, barcode, trackId);
                 return Ok(new
                 {
-                    data
+                    data = data,
+                    total = data.Count()
                 });
             }
             catch (Exception ex)

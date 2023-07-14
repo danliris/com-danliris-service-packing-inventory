@@ -131,18 +131,19 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
         [HttpGet("monitoring")]
-        public IActionResult GetMonitoring([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId)
+        public IActionResult GetMonitoring([FromQuery] DateTimeOffset dateFrom, [FromQuery] DateTimeOffset dateTo, [FromQuery] int productionOrderId, [FromQuery] int track)
         {
             try
             {
                 VerifyUser();
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var data = _service.GetMonitoring(dateFrom, dateTo, productionOrderId, offset);
+                var data = _service.GetMonitoring(dateFrom, dateTo, productionOrderId, track, offset);
                 return Ok(new
                 {
                     //apiVersion = ApiVersion,
                     data = data,
                     info = new { count = data.Count(), total = data.Count() }, 
+                    total = data.Count()
                 });
             }
             catch (Exception ex)
@@ -159,7 +160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 VerifyUser();
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = _service.GenerateExcelMonitoring(dateFrom, dateTo, productionOrderId, offset);
+                var Result = _service.GenerateExcelMonitoring(dateFrom, dateTo, productionOrderId, track, offset);
                 string filename = "";
 
                 if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
