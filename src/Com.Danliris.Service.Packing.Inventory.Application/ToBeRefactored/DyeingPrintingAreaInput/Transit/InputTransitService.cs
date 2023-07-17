@@ -215,7 +215,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var packingData = JsonConvert.DeserializeObject<List<PackingData>>(itemVM.PrevSppInJson);
                         result += await _SPPRepository.UpdateFromNextAreaInputPackingAsync(packingData);
                     }
-                    else
+                    if (itemVM.Area != DyeingPrintingArea.GUDANGJADI)
                     {
 
                         result += await _SPPRepository.UpdateFromNextAreaInputAsync(itemVM.DyeingPrintingAreaInputProductionOrderId, item.InputQuantity, item.InputPackagingQty);
@@ -251,7 +251,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         var packingData = JsonConvert.DeserializeObject<List<PackingData>>(item.PrevSppInJson);
                         result += await _SPPRepository.UpdateFromNextAreaInputPackingAsync(packingData);
                     }
-                    else
+
+                    if (item.Area != DyeingPrintingArea.GUDANGJADI)
                     {
 
                         result += await _SPPRepository.UpdateFromNextAreaInputAsync(item.DyeingPrintingAreaInputProductionOrderId, item.InputQuantity, item.InputQtyPacking);

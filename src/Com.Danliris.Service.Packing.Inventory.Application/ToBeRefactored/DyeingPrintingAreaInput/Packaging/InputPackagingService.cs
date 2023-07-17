@@ -90,7 +90,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var modelSpp in viewModel.PackagingProductionOrders)
             {
-                result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(modelSpp.DyeingPrintingAreaInputProductionOrderId, modelSpp.InputQuantity, modelSpp.InputQtyPacking);
+                if (modelSpp.Area != DyeingPrintingArea.GUDANGJADI) {
+                    result += await _productionOrderRepository.UpdateFromNextAreaInputAsync(modelSpp.DyeingPrintingAreaInputProductionOrderId, modelSpp.InputQuantity, modelSpp.InputQtyPacking);
+                }
+              
+
                 result += await _repositoryAreaProductionOrderOutput.UpdateFromInputNextAreaFlagAsync(modelSpp.Id, true, DyeingPrintingArea.TERIMA);
                 //var modelOutputs = _repositoryAreaProductionOrderOutput.ReadAll().Where(s => s.DestinationArea == PACKING && s.Id == modelSpp.Id).FirstOrDefault();
 
@@ -662,7 +666,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 ProductPackingId = s.ProductPackingId,
                 FabricPackingId = s.FabricPackingId,
                 ProductPackingCode = s.ProductPackingCode,
-                HasPrintingProductPacking = s.HasPrintingProductPacking
+                HasPrintingProductPacking = s.HasPrintingProductPacking,
             });
 
 
