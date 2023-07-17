@@ -933,6 +933,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             await _preInputrepository.UpdateBalance(preInput.Id, item.QtyOut);
                             await _preInputrepository.UpdateBalanceRemainsIn(preInput.Id, item.QtyOut);
+                            await _preInputrepository.UpdatePackagingQty(preInput.Id, item.PackagingQTY);
+                            await _preInputrepository.UpdatePackagingQtyRemains(preInput.Id, item.PackagingQTY);
                         }
                     }
 
@@ -1004,6 +1006,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             await _preInputrepository.UpdateBalance(preInput.Id, item.QtyOut);
                             await _preInputrepository.UpdateBalanceRemainsIn(preInput.Id, item.QtyOut);
+                            await _preInputrepository.UpdatePackagingQty(preInput.Id, item.PackagingQTY);
+                            await _preInputrepository.UpdatePackagingQtyRemains(preInput.Id, item.PackagingQTY);
                         }
                     }
                     

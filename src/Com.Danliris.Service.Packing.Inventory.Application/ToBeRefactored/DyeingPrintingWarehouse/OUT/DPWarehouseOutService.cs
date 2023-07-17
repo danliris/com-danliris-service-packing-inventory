@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 using Com.Moonlay.Models;
 using System.IO;
 using System.Data;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaMovement;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingAreaMovement;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.OUT
 {
@@ -27,9 +29,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly PackingInventoryDbContext _dbContext;
         private readonly IDPWarehouseOutputRepository _dPWarehouseOutputRepository;
         private readonly IDPWarehouseSummaryRepository _dPWarehouseSummaryRepository;
+        private readonly IDyeingPrintingAreaOutputRepository _outputRepository;
         private readonly DbSet<DPWarehouseSummaryModel> _dbSetSummary;
         private readonly DbSet<DPWarehouseOutputModel> _dbSet;
         private readonly DbSet<DPWarehouseOutputItemModel> _dbSetItem;
+        private readonly DbSet<DyeingPrintingAreaOutputProductionOrderModel> _dbSetOutputItemOlder;
+        private readonly DbSet<DyeingPrintingAreaOutputModel> _dbSetOutputOlder;
         private readonly DbSet<DPWarehouseMovementModel> _dbSetMovement;
         private readonly IIdentityProvider _identityProvider;
         private const string UserAgent = "Repository";
@@ -41,9 +46,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _dbSet = dbContext.Set<DPWarehouseOutputModel>();
             _dbSetItem = dbContext.Set<DPWarehouseOutputItemModel>();
             _dPWarehouseSummaryRepository = serviceProvider.GetService<IDPWarehouseSummaryRepository>();
+            _dbSetOutputItemOlder = dbContext.Set<DyeingPrintingAreaOutputProductionOrderModel>();
+            _dbSetOutputOlder = dbContext.Set<DyeingPrintingAreaOutputModel>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _dPWarehouseOutputRepository = serviceProvider.GetService<IDPWarehouseOutputRepository>();
             _dbContext = dbContext;
+            _outputRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputRepository>();
         }
 
         public List<OutputWarehouseItemListViewModel> ListOutputWarehouse(string packingCode, int trackId)
@@ -178,7 +186,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 //.Include(s => s.DyeingPrintingAreaInputProductionOrders)
                 .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                 s.Date.AddHours(7).ToString("dd/MM/yyyy") == DateTime.Now.Date.AddHours(7).ToString("dd/MM/yyyy") &&
-                s.Shift == "DAILY SHIFT");
+                s.Shift == "DAILY SHIFT" && s.DestinationArea == viewModel.DestinationArea);
 
             //var dateData = viewModel.Date;
 
@@ -186,7 +194,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (model != null)
             {
-                result = await UpdateExistingWarehouseOut(viewModel, model.Id, model.BonNo);
+                //result = await UpdateExistingWarehouseOut(viewModel, model.Id, model.BonNo);
+                result = await UpdateExistingWarehouseOut(viewModel, model);
             }
             else
             {
@@ -209,76 +218,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {
                     int totalCurrentYearData = _dPWarehouseOutputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
                                                                                              s.CreatedUtc.Year == DateTime.Now.Date.Year);
-
+                    
                     string bonNo = GenerateBonNo(totalCurrentYearData + 1, DateTime.Now.Date, viewModel.DestinationArea);
 
-                    var model = new DPWarehouseOutputModel(
+                
+                   
+                   
+                     var model = new DPWarehouseOutputModel(
                         DateTime.Now.Date,
                         "GUDANG JADI",
                         "DAILY SHIFT",
                         bonNo,
                         viewModel.DestinationArea,
-                        viewModel.DyeingPrintingWarehouseOutputItems.Select( s => new DPWarehouseOutputItemModel(
+                        viewModel.DyeingPrintingWarehouseOutputItems.Select(s => new DPWarehouseOutputItemModel(
 
-                                   s.ProductionOrder.Id,
-                                   s.ProductionOrder.No,
-                                   s.MaterialProduct.Id,
-                                   s.MaterialProduct.Name,
-                                   s.MaterialConstruction.Id,
-                                   s.MaterialConstruction.Name,
-                                   s.MaterialWidth,
-                                   s.BuyerId,
-                                   s.Buyer,
-                                   s.Construction,
-                                   s.Unit,
-                                   s.Color,
-                                   s.Motif,
-                                   s.UomUnit,
-                                   s.Remark,
-                                   s.Grade,
-                                   s.Sendquantity * s.PackagingLength,
-                                   s.PackingInstruction,
-                                   s.ProductionOrder.Type,
-                                   s.ProductionOrder.OrderQuantity,
-                                   s.PackagingType,
-                                   (decimal)s.Sendquantity,
-                                   s.PackagingLength,
-                                   s.PackagingUnit,
-                                   viewModel.DeliveryOrderSalesId,
-                                   viewModel.DeliveryOrderSalesNo,
-                                   viewModel.DeliveryOrderSalesType,
-                                   "",
-                                   s.Area,
-                                   s.Description,
-                                   s.Id,
-                                   s.ProductSKUId,
-                                   s.FabricSKUId,
-                                   s.ProductSKUCode,
-                                   s.ProductPackingId,
-                                   s.FabricPackingId,
-                                   s.ProductPackingCode,
-                                   s.ProcessType.Id,
-                                   s.ProcessType.Name,
-                                   s.YarnMaterial.Id,
-                                   s.YarnMaterial.Name,
-                                   s.FinishWidth,
-                                   s.MaterialOrigin,
-                                   s.DPWarehouseSummaryId,
-                                   s.Track.Id,
-                                   s.Track.Type,
-                                   s.Track.Name,
-                                   s.Track.Box,
-                                   viewModel.DestinationArea
+                                  s.ProductionOrder.Id,
+                                  s.ProductionOrder.No,
+                                  s.MaterialProduct.Id,
+                                  s.MaterialProduct.Name,
+                                  s.MaterialConstruction.Id,
+                                  s.MaterialConstruction.Name,
+                                  s.MaterialWidth,
+                                  s.BuyerId,
+                                  s.Buyer,
+                                  s.Construction,
+                                  s.Unit,
+                                  s.Color,
+                                  s.Motif,
+                                  s.UomUnit,
+                                  s.Remark,
+                                  s.Grade,
+                                  s.Sendquantity * s.PackagingLength,
+                                  s.PackingInstruction,
+                                  s.ProductionOrder.Type,
+                                  s.ProductionOrder.OrderQuantity,
+                                  s.PackagingType,
+                                  (decimal)s.Sendquantity,
+                                  s.PackagingLength,
+                                  s.PackagingUnit,
+                                  viewModel.DeliveryOrderSalesId,
+                                  viewModel.DeliveryOrderSalesNo,
+                                  viewModel.DeliveryOrderSalesType,
+                                  "",
+                                  s.Area,
+                                  s.Description,
+                                  s.Id,
+                                  s.ProductSKUId,
+                                  s.FabricSKUId,
+                                  s.ProductSKUCode,
+                                  s.ProductPackingId,
+                                  s.FabricPackingId,
+                                  s.ProductPackingCode,
+                                  s.ProcessType.Id,
+                                  s.ProcessType.Name,
+                                  s.YarnMaterial.Id,
+                                  s.YarnMaterial.Name,
+                                  s.FinishWidth,
+                                  s.MaterialOrigin,
+                                  s.DPWarehouseSummaryId,
+                                  s.Track.Id,
+                                  s.Track.Type,
+                                  s.Track.Name,
+                                  s.Track.Box,
+                                  viewModel.DestinationArea
 
-                          )            
+                         )
                         ).ToList()
-                        
+
                         );
 
-                    model.FlagForCreate(_identityProvider.Username, UserAgent);
+                        model.FlagForCreate(_identityProvider.Username, UserAgent);
 
-                    _dbSet.Add(model);
-
+                        _dbSet.Add(model);
+     
                     foreach (var item in model.DPWarehouseOutputItems)
                     {
                         item.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -291,9 +303,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         EntityExtension.FlagForUpdate(modelSummary, _identityProvider.Username, UserAgent);
 
                     }
+
+                    
+
                     Created = await _dbContext.SaveChangesAsync();
 
                     await createMovement(model);
+                    if (viewModel.DestinationArea != DyeingPrintingArea.GUDANGJADI) {
+                        await createOutputProductionOrder(model);
+                    }
+                    
+
                     transaction.Commit();
                 }
                 catch (Exception e)
@@ -310,7 +330,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         }
 
-        public async Task<int> UpdateExistingWarehouseOut(DPWarehouseOutputCreateViewModel viewModel, int modelId, string bonNo)
+        public async Task<int> UpdateExistingWarehouseOut(DPWarehouseOutputCreateViewModel viewModel, DPWarehouseOutputModel model)
         {
             int Created = 0;
             var listItem = new List<DPWarehouseOutputItemModel>();
@@ -352,7 +372,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                    "",
                                    item.Area,
                                    item.Description,
-                                   modelId,
+                                   model.Id,
                                    item.ProductSKUId,
                                    item.FabricSKUId,
                                    item.ProductSKUCode,
@@ -385,7 +405,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     }
 
                     Created = await _dbContext.SaveChangesAsync();
-                    await createMovementAv(listItem,  modelId, bonNo);
+                    await createMovementAv(listItem,  model);
+                    if (model.DestinationArea != DyeingPrintingArea.GUDANGJADI)
+                    {
+                        await createOutputProductionOrderAv(listItem, model);
+                    }
 
 
                     transaction.Commit();
@@ -400,7 +424,368 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return Created;
         }
 
-        private async Task<int> createMovement(DPWarehouseOutputModel model) 
+        private async Task<int> createOutputProductionOrder(DPWarehouseOutputModel model)
+        {
+            int count = 0;
+            //using (var transaction = this._dbContext.Database.BeginTransaction()) 
+            //{
+
+            //    try
+            //    {
+                    var modelAvailable = _outputRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                                                                                        s.DestinationArea == model.DestinationArea &&
+                                                                                        s.Date.Date == model.Date.Date &&
+                                                                                        s.Shift == "DAILY SHIFT" &&
+                                                                                        s.Group == "" &&
+                                                                                        s.Type == DyeingPrintingArea.OUT);
+
+                    if (modelAvailable == null)
+                    {
+                        var modelOlder = new DyeingPrintingAreaOutputModel(model.Date,
+                                                         model.Area,
+                                                         "DAILY SHIFT",
+                                                         model.BonNo,
+                                                         false,
+                                                         model.DestinationArea,
+                                                         "",
+                                                          DyeingPrintingArea.OUT,
+                                                         model.DPWarehouseOutputItems.Select(s =>
+
+                                           new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrderId,
+                                           s.ProductionOrderNo,
+                                           "",
+                                           s.Buyer,
+                                           s.Construction,
+                                           s.Unit,
+                                           s.Color,
+                                           s.Motif,
+                                           s.UomUnit,
+                                           s.Remark,
+                                           s.Grade,
+                                           "",
+                                           s.Balance, //
+                                           s.PackingInstruction,
+                                           s.ProductionOrderType,
+                                           s.ProductionOrderOrderQuantity,
+                                           s.PackagingType,
+                                           s.PackagingQty,
+                                           s.PackagingUnit,
+                                           0,
+                                           "",
+                                           false,
+                                           model.Area,
+                                           model.DestinationArea,
+                                           s.Id,
+                                           s.BuyerId,
+                                           s.MaterialId,
+                                           s.MaterialName,
+                                           s.MaterialConstructionId,
+                                           s.MaterialConstructionName,
+                                           s.MaterialWidth,
+                                           "",
+                                           s.ProcessTypeId,
+                                           s.ProcessTypeName,
+                                           s.YarnMaterialId,
+                                           s.YarnMaterialName,
+                                           s.ProductSKUId,
+                                           s.FabricSKUId,
+                                           s.ProductSKUCode,
+                                           false,
+                                           s.ProductPackingId,
+                                           s.FabricPackingId,
+                                           s.ProductPackingCode,
+                                           false,
+                                           s.PackagingLength,
+                                           s.FinishWidth,
+                                           DateTimeOffset.MinValue,
+                                           model.Date,
+                                           "",
+                                           "",
+                                           s.MaterialOrigin,
+                                           "",
+                                           s.ProductTextileId,
+                                           s.ProductTextileCode,
+                                           s.ProductTextileName,
+                                           model.Id,
+                                           s.Id
+                                           )).ToList());
+
+                        modelOlder.FlagForCreate(_identityProvider.Username, UserAgent);
+                        _dbSetOutputOlder.Add(modelOlder);
+
+                    foreach (var items in modelOlder.DyeingPrintingAreaOutputProductionOrders) {
+                        items.FlagForCreate(_identityProvider.Username, UserAgent);
+                    }
+
+                       
+                    }
+                    else
+                    {
+                        foreach (var s in model.DPWarehouseOutputItems)
+                        {
+
+                            var modelOlder = new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrderId,
+                                                s.ProductionOrderNo,
+                                                "",
+                                                s.Buyer,
+                                                s.Construction,
+                                                s.Unit,
+                                                s.Color,
+                                                s.Motif,
+                                                s.UomUnit,
+                                                s.Remark,
+                                                s.Grade,
+                                                "",
+                                                s.Balance, //
+                                                s.PackingInstruction,
+                                                s.ProductionOrderType,
+                                                s.ProductionOrderOrderQuantity,
+                                                s.PackagingType,
+                                                s.PackagingQty,
+                                                s.PackagingUnit,
+                                                0,
+                                                "",
+                                                false,
+                                                model.Area,
+                                                model.DestinationArea,
+                                                s.Id,
+                                                s.BuyerId,
+                                                s.MaterialId,
+                                                s.MaterialName,
+                                                s.MaterialConstructionId,
+                                                s.MaterialConstructionName,
+                                                s.MaterialWidth,
+                                                "",
+                                                s.ProcessTypeId,
+                                                s.ProcessTypeName,
+                                                s.YarnMaterialId,
+                                                s.YarnMaterialName,
+                                                s.ProductSKUId,
+                                                s.FabricSKUId,
+                                                s.ProductSKUCode,
+                                                false,
+                                                s.ProductPackingId,
+                                                s.FabricPackingId,
+                                                s.ProductPackingCode,
+                                                false,
+                                                s.PackagingLength,
+                                                s.FinishWidth,
+                                                DateTimeOffset.MinValue,
+                                                model.Date,
+                                                "",
+                                                "",
+                                                s.MaterialOrigin,
+                                                "",
+                                                s.ProductTextileId,
+                                                s.ProductTextileCode,
+                                                s.ProductTextileName,
+                                                model.Id,
+                                                s.Id
+                                                );
+                    modelOlder.DyeingPrintingAreaOutputId = modelAvailable.Id;
+                    modelOlder.FlagForCreate(_identityProvider.Username, UserAgent);
+                            _dbSetOutputItemOlder.Add(modelOlder);
+                        }
+                    }
+
+
+
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        transaction.Rollback();
+            //        throw new Exception(e.Message);
+            //    }
+
+            //}
+            count = await _dbContext.SaveChangesAsync();
+
+
+            return count;
+        }
+
+        private async Task<int> createOutputProductionOrderAv(List<DPWarehouseOutputItemModel> modelItem, DPWarehouseOutputModel model)
+        {
+            int count = 0;
+            //using (var transaction = this._dbContext.Database.BeginTransaction())
+            //{
+
+            //    try
+            //    {
+                    var modelAvailable = _outputRepository.GetDbSet().AsNoTracking().FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                                                                                        s.DestinationArea == model.DestinationArea &&
+                                                                                        s.Date.Date == model.Date.Date &&
+                                                                                        s.Shift == "DAILY SHIFT" &&
+                                                                                        s.Group == "" &&
+                                                                                        s.Type == DyeingPrintingArea.OUT);
+
+                    if (modelAvailable == null)
+                    {
+                        var modelOlder = new DyeingPrintingAreaOutputModel(model.Date,
+                                                         model.Area,
+                                                         "DAILY SHIFT",
+                                                         model.BonNo,
+                                                         false,
+                                                         model.DestinationArea,
+                                                         "",
+                                                          DyeingPrintingArea.OUT,
+                                                         modelItem.Select(s =>
+
+                                           new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrderId,
+                                           s.ProductionOrderNo,
+                                           "",
+                                           s.Buyer,
+                                           s.Construction,
+                                           s.Unit,
+                                           s.Color,
+                                           s.Motif,
+                                           s.UomUnit,
+                                           s.Remark,
+                                           s.Grade,
+                                           "",
+                                           s.Balance, //
+                                           s.PackingInstruction,
+                                           s.ProductionOrderType,
+                                           s.ProductionOrderOrderQuantity,
+                                           s.PackagingType,
+                                           s.PackagingQty,
+                                           s.PackagingUnit,
+                                           0,
+                                           "",
+                                           false,
+                                           model.Area,
+                                           model.DestinationArea,
+                                           s.Id,
+                                           s.BuyerId,
+                                           s.MaterialId,
+                                           s.MaterialName,
+                                           s.MaterialConstructionId,
+                                           s.MaterialConstructionName,
+                                           s.MaterialWidth,
+                                           "",
+                                           s.ProcessTypeId,
+                                           s.ProcessTypeName,
+                                           s.YarnMaterialId,
+                                           s.YarnMaterialName,
+                                           s.ProductSKUId,
+                                           s.FabricSKUId,
+                                           s.ProductSKUCode,
+                                           false,
+                                           s.ProductPackingId,
+                                           s.FabricPackingId,
+                                           s.ProductPackingCode,
+                                           false,
+                                           s.PackagingLength,
+                                           s.FinishWidth,
+                                           DateTimeOffset.MinValue,
+                                           model.Date,
+                                           "",
+                                           "",
+                                           s.MaterialOrigin,
+                                           "",
+                                           s.ProductTextileId,
+                                           s.ProductTextileCode,
+                                           s.ProductTextileName,
+                                           model.Id,
+                                           s.Id
+                                           )).ToList());
+
+                        modelOlder.FlagForCreate(_identityProvider.Username, UserAgent);
+                        _dbSetOutputOlder.Add(modelOlder);
+
+                        foreach (var items in modelOlder.DyeingPrintingAreaOutputProductionOrders)
+                        {
+                            items.FlagForCreate(_identityProvider.Username, UserAgent);
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (var s in modelItem)
+                        {
+
+                            var modelOlder = new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrderId,
+                                                s.ProductionOrderNo,
+                                                "",
+                                                s.Buyer,
+                                                s.Construction,
+                                                s.Unit,
+                                                s.Color,
+                                                s.Motif,
+                                                s.UomUnit,
+                                                s.Remark,
+                                                s.Grade,
+                                                "",
+                                                s.Balance, //
+                                                s.PackingInstruction,
+                                                s.ProductionOrderType,
+                                                s.ProductionOrderOrderQuantity,
+                                                s.PackagingType,
+                                                s.PackagingQty,
+                                                s.PackagingUnit,
+                                                0,
+                                                "",
+                                                false,
+                                                model.Area,
+                                                model.DestinationArea,
+                                                s.Id,
+                                                s.BuyerId,
+                                                s.MaterialId,
+                                                s.MaterialName,
+                                                s.MaterialConstructionId,
+                                                s.MaterialConstructionName,
+                                                s.MaterialWidth,
+                                                "",
+                                                s.ProcessTypeId,
+                                                s.ProcessTypeName,
+                                                s.YarnMaterialId,
+                                                s.YarnMaterialName,
+                                                s.ProductSKUId,
+                                                s.FabricSKUId,
+                                                s.ProductSKUCode,
+                                                false,
+                                                s.ProductPackingId,
+                                                s.FabricPackingId,
+                                                s.ProductPackingCode,
+                                                false,
+                                                s.PackagingLength,
+                                                s.FinishWidth,
+                                                DateTimeOffset.MinValue,
+                                                model.Date,
+                                                "",
+                                                "",
+                                                s.MaterialOrigin,
+                                                "",
+                                                s.ProductTextileId,
+                                                s.ProductTextileCode,
+                                                s.ProductTextileName,
+                                                model.Id,
+                                                 s.Id
+                                                );
+
+                            modelOlder.DyeingPrintingAreaOutputId = modelAvailable.Id;
+                            modelOlder.FlagForCreate(_identityProvider.Username, UserAgent);
+                            _dbSetOutputItemOlder.Add(modelOlder);
+                        }
+                    }
+
+
+
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        transaction.Rollback();
+            //        throw new Exception(e.Message);
+            //    }
+
+            //}
+            count = await _dbContext.SaveChangesAsync();
+            return count;
+
+        }
+        private async Task<int> createMovement(DPWarehouseOutputModel model)
         {
             int count = 0;
             foreach (var item in model.DPWarehouseOutputItems)
@@ -447,13 +832,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 _dbSetMovement.Add(modelMovement);
             };
+            
+        
 
             count = await _dbContext.SaveChangesAsync();
 
             return count;
         }
 
-        private async Task<int> createMovementAv(List<DPWarehouseOutputItemModel>modelItem, int modelId, string bonNo)
+        private async Task<int> createMovementAv(List<DPWarehouseOutputItemModel>modelItem, DPWarehouseOutputModel model)
         {
             int count = 0;
             foreach (var item in modelItem)
@@ -462,9 +849,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             DateTime.Now,
                             DyeingPrintingArea.GUDANGJADI,
                             DyeingPrintingArea.OUT,
-                            modelId,
+                            model.Id,
                             item.Id,
-                            bonNo,
+                            model.BonNo,
                             item.DPWarehouseSummaryId,
                             item.ProductionOrderId,
                             item.ProductionOrderNo,
@@ -501,6 +888,75 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 _dbSetMovement.Add(modelMovement);
             };
+
+            //if (model.DestinationArea != DyeingPrintingArea.GUDANGJADI)
+            //{
+            //    foreach (var s in modelItem)
+            //    {
+
+            //        var modelOlder = new DyeingPrintingAreaOutputProductionOrderModel(s.ProductionOrderId,
+            //                            s.ProductionOrderNo,
+            //                            "",
+            //                            s.Buyer,
+            //                            s.Construction,
+            //                            s.Unit,
+            //                            s.Color,
+            //                            s.Motif,
+            //                            s.UomUnit,
+            //                            s.Remark,
+            //                            s.Grade,
+            //                            "",
+            //                            s.Balance, //
+            //                            s.PackingInstruction,
+            //                            s.ProductionOrderType,
+            //                            s.ProductionOrderOrderQuantity,
+            //                            s.PackagingType,
+            //                            s.PackagingQty,
+            //                            s.PackagingUnit,
+            //                            0,
+            //                            "",
+            //                            false,
+            //                            model.Area,
+            //                            model.DestinationArea,
+            //                            model.Id,
+            //                            s.BuyerId,
+            //                            s.MaterialId,
+            //                            s.MaterialName,
+            //                            s.MaterialConstructionId,
+            //                            s.MaterialConstructionName,
+            //                            s.MaterialWidth,
+            //                            "",
+            //                            s.ProcessTypeId,
+            //                            s.ProcessTypeName,
+            //                            s.YarnMaterialId,
+            //                            s.YarnMaterialName,
+            //                            s.ProductSKUId,
+            //                            s.FabricSKUId,
+            //                            s.ProductSKUCode,
+            //                            false,
+            //                            s.ProductPackingId,
+            //                            s.FabricPackingId,
+            //                            s.ProductPackingCode,
+            //                            false,
+            //                            s.PackagingLength,
+            //                            s.FinishWidth,
+            //                            DateTimeOffset.MinValue,
+            //                            model.Date,
+            //                            "",
+            //                            "",
+            //                            s.MaterialOrigin,
+            //                            "",
+            //                            s.ProductTextileId,
+            //                            s.ProductTextileCode,
+            //                            s.ProductTextileName
+            //                            );
+
+            //        modelOlder.FlagForCreate(_identityProvider.Username, UserAgent);
+            //        _dbSetOutputItemOlder.Add(modelOlder);
+            //    }
+
+
+            //}
 
             count = await _dbContext.SaveChangesAsync();
 
