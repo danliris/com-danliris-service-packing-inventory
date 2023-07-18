@@ -79,10 +79,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             int? productTextileId,
             string productTextileCode,
             string productTextileName,
+            
+            int trackFromId,
+            string trackFromType,
+            string trackFromName,
+            int trackToId,
+            string trackToType,
+            string trackToName,
+
             int productPackingId,
             string productPackingCode,
             string description
-        
+            
             )
         {
             Date = date;
@@ -113,6 +121,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
+            
+            TrackFromId = trackFromId;
+            TrackFromType = trackFromType;
+            TrackFromName = trackFromName;
+
+            TrackToId = trackToId;
+            TrackToType = trackToType;
+            TrackToName = trackToName;
+
             ProductPackingId = productPackingId;
             ProductPackingCode = productPackingCode;
             Description = description;

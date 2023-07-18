@@ -1072,7 +1072,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Type = s.TrackFromType,
                         Name = s.TrackFromName,
                         Box = s.TrackFromBox
+                    },
+                    DOSales = new DeliveryOrderSales() { 
+                        Id = s.DeliveryOrderSalesId,
+                        No = s.DeliveryOrderSalesNo,
+                        Type = s.DeliveryOrderSalesType
                     }
+                   
 
 
                 }).ToList()
@@ -1135,10 +1141,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              PackingLength = b.PackagingLength,
                              Description = b.Description.Trim(),
                              TrackName = b.TrackFromType +" - "+ b.TrackFromName+" - "+ b.TrackFromBox,
-                             UomUnit = b.UomUnit
+                             UomUnit = b.UomUnit,
+                             DeliveryOrderSalesNo = b.DeliveryOrderSalesNo
 
                          }).ToList();
-            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.TrackName, s.Description }).Select(d => new DPOutputWarehouseMonitoringViewModel()
+            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.TrackName, s.Description, s.DeliveryOrderSalesNo}).Select(d => new DPOutputWarehouseMonitoringViewModel()
             {
                 ProductionOrderId = d.First().ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -1155,7 +1162,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 PackingLength = d.First().PackingLength,
                 Description = d.First().Description,
                 TrackName = d.First().TrackName,
-                UomUnit = d.First().UomUnit
+                UomUnit = d.First().UomUnit,
+                DeliveryOrderSalesNo = d.Key.DeliveryOrderSalesNo
 
 
             }).OrderBy(o => o.ProductionOrderId).ToList();
@@ -1175,7 +1183,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 PackagingQty = totalPacking,
                 Balance = totalInQty,
                 UomUnit = "MTR",
-                Description = ""
+                Description = "",
+                DeliveryOrderSalesNo = ""
             });
 
             return result;
@@ -1187,6 +1196,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             DataTable dt = new DataTable();
 
             //dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "DO Sales", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
@@ -1204,7 +1214,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (data.Count() == 0)
             {
-                dt.Rows.Add("", "", "", "", "", "", "", 0, "", 0, 0);
+                dt.Rows.Add("", "","", "", "", "", "", "", 0, "", 0, 0);
             }
             else
             {
@@ -1216,14 +1226,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.AddHours(offset).Date.ToString("d");
                     // var sldbegin = item.SaldoBegin;
                     //saldoBegin =+ item.SaldoBegin;
-                    dt.Rows.Add(item.ProductionOrderNo, dateIn, item.ProductPackingCode, item.Construction, item.Color, item.Motif,
+                    dt.Rows.Add(item.DeliveryOrderSalesNo, item.ProductionOrderNo, dateIn, item.ProductPackingCode, item.Construction, item.Color, item.Motif,
                         item.Grade, item.TrackName, item.PackagingQty, item.PackagingUnit, item.PackingLength, item.Balance);
 
                     packagingQty += item.PackagingQty;
                     total += item.Balance;
                 }
 
-                dt.Rows.Add("", "", "", "", "","", "", "", packagingQty, "", 0, total);
+               // dt.Rows.Add("", "", "", "", "","", "", "", packagingQty, "", 0, total);
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
