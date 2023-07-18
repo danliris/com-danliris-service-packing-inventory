@@ -386,6 +386,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     string bonNo = GenerateBonNo(totalCurrentYearData + 1, DateTime.Now.Date);
 
+                    
 
 
                     var model = new DPWarehouseInputModel(
@@ -434,12 +435,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                    s.YarnMaterial.Name,
                                    s.FinishWidth,
                                    s.MaterialOrigin,
-                                   s.ProductionOrder.CreatedUtc
+                                   s.ProductionOrder.CreatedUtc,
+                                   s.Grade != "BS" ? 1360 : 0,
+                                   s.Grade != "BS" ? "Jalur" : null,
+                                   s.Grade != "BS" ? "FAST MOVE" : null
+
+
+
 
                                    )).ToList()
                         );
 
                     //model.Area.Trim();
+                    
                     model.FlagForCreate(_identityProvider.Username, UserAgent);
 
                     _dbSet.Add(model);
@@ -453,7 +461,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.FlagForCreate(_identityProvider.Username, UserAgent);
 
                         #region save or update summary table
-                        var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+
+                        DPWarehouseSummaryModel modelSummary;
+
+                        if (item.Grade != "BS")
+                        {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 1360);
+                        }
+                        else {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+                        }
+                        
                         if (modelSummary == null)
                         {
 
@@ -491,6 +509,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.YarnMaterialName,
                                         item.Unit,
                                         item.UomUnit,
+                                        item.Grade != "BS" ? 1360 : 0,
+                                        item.Grade != "BS" ? "Jalur" : null,
+                                        item.Grade != "BS" ? "FAST MOVE" : null,
+                                        null,
                                         0,
                                         item.Description,
                                         item.ProductSKUId,
@@ -617,7 +639,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                item.YarnMaterial.Name,
                                                item.FinishWidth,
                                                item.MaterialOrigin,
-                                               item.ProductionOrder.CreatedUtc
+                                               item.ProductionOrder.CreatedUtc,
+                                               item.Grade != "BS" ? 1360 : 0,
+                                                item.Grade != "BS" ? "Jalur" : null,
+                                                item.Grade != "BS" ? "FAST MOVE" : null
 
                                                );
 
@@ -626,8 +651,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         _dbSetItems.Add(modelItem);
 
                         #region save or update summary table
-                        
-                        var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+
+                        DPWarehouseSummaryModel modelSummary;
+
+                        if (item.Grade != "BS")
+                        {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 1360);
+                        }
+                        else
+                        {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+                        }
+                        //var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
                         if (modelSummary == null)
                         {
 
@@ -665,6 +700,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.YarnMaterial.Name,
                                         item.Unit,
                                         item.UomUnit,
+                                        item.Grade != "BS" ? 1360 : 0,
+                                        item.Grade != "BS" ? "Jalur" : null,
+                                        item.Grade != "BS" ? "FAST MOVE" : null,
+                                        null,
                                         0,
                                         item.Description,
                                         item.ProductSKUId,
@@ -751,7 +790,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int count = 0;
             foreach (var item in model.DPWarehouseInputItems)
             {
-                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == 0);
+                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == item.TrackId);
 
                 var modelMovement = new DPWarehouseMovementModel(
                             DateTime.Now,
@@ -781,6 +820,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             0,
                             "",
                             "",
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
                             item.ProductPackingId,
                             item.ProductPackingCode,
                             item.Description
@@ -791,8 +836,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 _dbSetMovement.Add(modelMovement);
 
-
                 
+                //int trackId = 0;
+                //string trackType = "";
+                //string trackName = "";
+                //string trackBox = "";
+
+                //if(item.Grade =="A")
+
+                //EntityExtension.FlagForUpdate(item, _identityProvider.Username, UserAgent);
+
+
+
 
             }
 
@@ -808,7 +863,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in modelItem)
             {
-                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == 0);
+                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == item.TrackId);
 
                 var modelMovement = new DPWarehouseMovementModel(
                             DateTime.Now,
@@ -838,6 +893,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             0,
                             "",
                             "",
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
                             item.ProductPackingId,
                             item.ProductPackingCode,
                             item.Description
