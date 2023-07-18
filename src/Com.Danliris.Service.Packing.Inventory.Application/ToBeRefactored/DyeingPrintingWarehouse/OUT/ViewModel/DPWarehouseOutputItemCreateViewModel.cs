@@ -58,5 +58,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public int DPWarehouseSummaryId { get; set; }
         public Track Track { get; set; }
+        public  DeliveryOrderSales DOSales { get; set; }
     }
 }

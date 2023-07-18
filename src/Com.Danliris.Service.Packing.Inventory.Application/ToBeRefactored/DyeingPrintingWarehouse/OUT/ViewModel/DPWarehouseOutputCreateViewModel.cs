@@ -24,8 +24,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            //if (string.IsNullOrEmpty(Area))
-            //    yield return new ValidationResult("Area harus diisi", new List<string> { "Area" });
+
+            if (DestinationArea == "SHIPPING") {
+                if (string.IsNullOrEmpty(DeliveryOrderSalesNo))
+                    yield return new ValidationResult("DO Sales harus diisi", new List<string> { "DeliveryOrderSales" });
+            }
+            
 
             //if (string.IsNullOrEmpty(Type))
             //    yield return new ValidationResult("Jenis harus diisi", new List<string> { "Type" });
