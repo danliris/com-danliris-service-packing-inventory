@@ -1113,12 +1113,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (productionOrderId != 0)
             {
-                inputItemsQuery = _dbSetItem.AsNoTracking().Where(s => s.ProductionOrderId == productionOrderId);
+                inputItemsQuery = inputItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
             }
 
             if (track != 0)
             {
-                inputItemsQuery = _dbSetItem.AsNoTracking().Where(s => s.TrackFromId == track);
+                inputItemsQuery = inputItemsQuery.Where(s => s.TrackFromId == track);
             }
 
 
@@ -1142,10 +1142,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              Description = b.Description.Trim(),
                              TrackName = b.TrackFromType +" - "+ b.TrackFromName+" - "+ b.TrackFromBox,
                              UomUnit = b.UomUnit,
-                             DeliveryOrderSalesNo = b.DeliveryOrderSalesNo
+                             DeliveryOrderSalesNo = b.DeliveryOrderSalesNo,
+                             DestinationArea = b.DestinationArea
 
                          }).ToList();
-            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.TrackName, s.Description, s.DeliveryOrderSalesNo}).Select(d => new DPOutputWarehouseMonitoringViewModel()
+            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.TrackName, s.Description, s.DeliveryOrderSalesNo, s.DestinationArea}).Select(d => new DPOutputWarehouseMonitoringViewModel()
             {
                 ProductionOrderId = d.First().ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -1163,7 +1164,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Description = d.First().Description,
                 TrackName = d.First().TrackName,
                 UomUnit = d.First().UomUnit,
-                DeliveryOrderSalesNo = d.Key.DeliveryOrderSalesNo
+                DeliveryOrderSalesNo = d.Key.DeliveryOrderSalesNo,
+                DestinationArea = d.Key.DestinationArea
 
 
             }).OrderBy(o => o.ProductionOrderId).ToList();
@@ -1184,7 +1186,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Balance = totalInQty,
                 UomUnit = "MTR",
                 Description = "",
-                DeliveryOrderSalesNo = ""
+                DeliveryOrderSalesNo = "",
+                DestinationArea = ""
             });
 
             return result;

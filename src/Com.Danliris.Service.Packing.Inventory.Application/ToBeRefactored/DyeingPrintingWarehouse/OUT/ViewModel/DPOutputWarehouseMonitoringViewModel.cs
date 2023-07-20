@@ -22,6 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public DateTime DateIn { get; set; }
         public string TrackName { get; set; }
         public string UomUnit { get; set; }
+        public string DestinationArea { get; set; }
         public string DeliveryOrderSalesNo { get; set; }
     }
 }

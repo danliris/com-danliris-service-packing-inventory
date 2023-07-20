@@ -1010,13 +1010,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
             {
                 //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll();
-                inputItemsQuery = _dbSetItems.AsNoTracking();
+                inputItemsQuery = _dbSetItems;
             }
             else
             {
                 //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll().Where(s =>
                 //                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
-                inputItemsQuery = _dbSetItems.AsNoTracking().Where(s =>
+                inputItemsQuery = _dbSetItems.Where(s =>
                                         s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
             }
 
@@ -1025,7 +1025,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (productionOrderId != 0)
             {
-                inputItemsQuery = _dbSetItems.AsNoTracking().Where(s => s.ProductionOrderId == productionOrderId);
+                inputItemsQuery = inputItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
             }
             var query = (from b in inputItemsQuery
                          select new DPInputWarehouseMonitoringViewModel()
