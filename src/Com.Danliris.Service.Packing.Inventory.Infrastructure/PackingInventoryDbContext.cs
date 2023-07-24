@@ -81,6 +81,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDOTS;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesDOTS;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping;
 
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
@@ -111,6 +112,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<DPWarehouseMovementModel> DPWarehouseMovements { get; set; }
         public DbSet<DPWarehouseSummaryModel> DPWarehouseSummaries { get; set; }
         public DbSet<DPWarehousePreInputModel> DPWarehousePreInputs { get; set; }
+        public DbSet<DPShippingInputModel> DPShippingInputs { get; set; }
+        public DbSet<DPShippingInputItemModel> DPShippingInputItems { get; set; }
+        public DbSet<DPShippingMovementModel> DPShippingMovements { get; set; }
+        
 
         public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
         public DbSet<FabricGradeTestModel> NewFabricGradeTests { get; set; }
