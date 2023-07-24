@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230724044116_Add_Table_DPShippingInput_and_DPShippingInputItem")]
+    partial class Add_Table_DPShippingInput_and_DPShippingInputItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1711,101 +1713,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DPShippingInputs");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingMovementModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Area");
-
-                    b.Property<double>("Balance");
-
-                    b.Property<int>("BuyerId");
-
-                    b.Property<string>("BuyerName");
-
-                    b.Property<string>("Color");
-
-                    b.Property<string>("Construction");
-
-                    b.Property<string>("CreatedAgent");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<int>("DPShippingDocumentId");
-
-                    b.Property<int>("DPShippingInputItemId");
-
-                    b.Property<int>("DPShippingOutputItemId");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<string>("DeletedAgent");
-
-                    b.Property<string>("DeletedBy");
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("DestinationArea");
-
-                    b.Property<string>("Grade");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<string>("MaterialOrigin");
-
-                    b.Property<string>("Motif");
-
-                    b.Property<double>("PackagingLength");
-
-                    b.Property<decimal>("PackagingQty");
-
-                    b.Property<string>("PackagingUnit");
-
-                    b.Property<string>("PackingType");
-
-                    b.Property<string>("ProductPackingCode");
-
-                    b.Property<int>("ProductPackingId");
-
-                    b.Property<string>("ProductTextileCode");
-
-                    b.Property<int>("ProductTextileId");
-
-                    b.Property<string>("ProductTextileName");
-
-                    b.Property<int>("ProductionOrderId");
-
-                    b.Property<string>("ProductionOrderNo");
-
-                    b.Property<string>("ProductionOrderType");
-
-                    b.Property<string>("Remark");
-
-                    b.Property<string>("Type");
-
-                    b.Property<string>("Unit");
-
-                    b.Property<string>("UomUnit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DPShippingMovements");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseInputItemModel", b =>
