@@ -115,6 +115,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<DPShippingInputModel> DPShippingInputs { get; set; }
         public DbSet<DPShippingInputItemModel> DPShippingInputItems { get; set; }
         public DbSet<DPShippingMovementModel> DPShippingMovements { get; set; }
+        public DbSet<DPShippingOutputModel> DPShippingOutputs { get; set; }
+        public DbSet<DPShippingOutputItemModel> DPShippingOutputItems { get; set; }
         
 
         public DbSet<FabricQualityControlModel> NewFabricQualityControls { get; set; }
