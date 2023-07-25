@@ -46,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
-            query = query.Where(w => w.Date.AddHours(offset).Date >= DateFrom.Date && w.Date.AddHours(offset).Date <= DateTo.Date);
+            query = query.Where(w => w.ReceiptDate.AddHours(offset).Date >= DateFrom.Date && w.ReceiptDate.AddHours(offset).Date <= DateTo.Date);
 
             query = query.OrderBy(w => w.BuyerCode).ThenBy(b => b.NoteNo);
             
