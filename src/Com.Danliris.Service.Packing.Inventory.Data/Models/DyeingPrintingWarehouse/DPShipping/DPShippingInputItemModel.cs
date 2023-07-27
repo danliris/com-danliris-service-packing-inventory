@@ -57,6 +57,110 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string MaterialOrigin { get; set; }
         public string DeliveryOrderSalesType { get; set; }
         public DPShippingInputModel DPShippingInput { get; set; }
+       
+
+        public DPShippingInputItemModel(
+            int productionOrderId,
+         string productionOrderNo,
+         int materialId,
+         string materialName,
+         int materialConstructionId,
+         string materialConstructionName,
+         string materialWidth,
+         int buyerId,
+         string buyerName,
+         string construction,
+         string unit,
+         string color,
+         string motif,
+         string uomUnit,
+         double balance,
+         double balanceRemains,
+         string packingInstruction,
+         string productionOrderType,
+         string productionOrderOrderQuantity,
+         DateTimeOffset createdUtcOrderNo,
+         string remark,
+         string grade,
+         string description,
+         int deliveryOrderSalesId,
+         string deliveryOrderSalesNo,
+         string packagingUnit,
+         string packagingType,
+         decimal packagingQty,
+         double packagingLength,
+         string areaOrigin,
+         int dPShippingInputId,
+         int productSKUId,
+         int fabricSKUId,
+         string productSKUCode,
+         int productPackingId,
+         int fabricPackingId,
+         string productPackingCode,
+         int processTypeId,
+         string processTypeName,
+         int yarnMaterialId,
+         string yarnMaterialName,
+         double inputPackagingQty,
+         double inputQuantity,
+         string finishWidth,
+         string destinationBuyerName,
+         string materialOrigin,
+         string deliveryOrderSalesType
+
+            ) 
+        
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialConstructionId = materialConstructionId;
+            MaterialConstructionName = materialConstructionName;
+            MaterialWidth = materialWidth;
+            BuyerId = buyerId;
+            BuyerName = buyerName;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            BalanceRemains = balanceRemains;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            CreatedUtcOrderNo = createdUtcOrderNo;
+            Remark = remark;
+            Grade = grade;
+            Description = description;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            PackagingUnit = packagingUnit;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingLength = packagingLength;
+            AreaOrigin = areaOrigin;
+            DPShippingInputId = dPShippingInputId;
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+            InputPackagingQty = inputPackagingQty;
+            InputQuantity = inputQuantity;
+
+            FinishWidth = finishWidth;
+            DestinationBuyerName = destinationBuyerName;
+            MaterialOrigin = materialOrigin;
+            DeliveryOrderSalesType = deliveryOrderSalesType;
+            
+        }
 
 
     }

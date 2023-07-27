@@ -17,5 +17,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         {
             DPShippingInputItems = new HashSet<DPShippingInputItemModel>();
         }
+        public DPShippingInputModel(DateTimeOffset date, string shippingType, string shift, string bonNo,  ICollection<DPShippingInputItemModel> dpShippingInputItems)
+        {
+            Date = date;
+            ShippingType = shippingType;
+            Shift = shift;
+            BonNo = bonNo;
+            DPShippingInputItems = dpShippingInputItems;
+        }
     }
 }
