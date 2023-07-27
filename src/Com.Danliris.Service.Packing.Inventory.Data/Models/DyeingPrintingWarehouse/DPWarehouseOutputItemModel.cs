@@ -58,8 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string ProcessTypeName { get; private set; }
         public int YarnMaterialId { get; private set; }
         public string YarnMaterialName { get; private set; }
-        public string NextAreaInputStatus { get; private set; }
-        public bool HasNextAreaDocument { get; private set; }
+        public string NextAreaInputStatus { get;  set; }
+        public bool HasNextAreaDocument { get;  set; }
         public string FinishWidth { get; private set; }
         public DateTimeOffset DateOut { get; private set; }
         public string DestinationBuyerName { get; set; }
@@ -90,12 +90,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             string packingInstruction, string productionOrderType, double productionOrderOrderQuantity, string packagingType, decimal packagingQty, double packagingLength, string packagingUnit,
             long deliveryOrderSalesId, string deliveryOrderSalesNo, string deliveryOrderSalesType, string productionMachine, string area, string description, int dPWarehouseOutputId, int productSKUId, int fabricSKUId, string productSKUCode,
             int productPackingId, int fabricPackingId, string productPackingCode, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, 
-            string finishWidth, string materialOrigin,  int dPWarehouseSummaryId, int trackFromId, string trackFromType, string trackFromName, string trackFromBox, string destinationArea
+            string finishWidth, string materialOrigin,  int dPWarehouseSummaryId, int trackFromId, string trackFromType, string trackFromName, string trackFromBox, string destinationArea,
+            string destinationBuyerName
             ) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
             MaterialId = materialId;
+            MaterialName = materalName;
             MaterialConstructionId = materialConstructionId;
             MaterialConstructionName = materialConstructionName;
             MaterialWidth = materialWidth;
@@ -142,6 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             TrackFromName = trackFromName;
             TrackFromBox = trackFromBox;
             DestinationArea = destinationArea;
+            DestinationBuyerName = destinationBuyerName;
 
         }
 

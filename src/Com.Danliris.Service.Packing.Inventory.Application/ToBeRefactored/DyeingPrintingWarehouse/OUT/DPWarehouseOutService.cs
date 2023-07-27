@@ -135,7 +135,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Name = p.TrackName,
                         Box = p.TrackBox
                     },
-                    DPWarehouseSummaryId = p.Id
+                    DPWarehouseSummaryId = p.Id,
+                    FinishWidth = p.FinishWidth
 
 
                 }).ToList();
@@ -280,7 +281,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                   s.Track.Type,
                                   s.Track.Name,
                                   s.Track.Box,
-                                  viewModel.DestinationArea
+                                  viewModel.DestinationArea,
+                                  viewModel.DestinationBuyerName
 
                          )
                         ).ToList()
@@ -390,7 +392,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                    item.Track.Type,
                                    item.Track.Name,
                                    item.Track.Box,
-                                   viewModel.DestinationArea
+                                   viewModel.DestinationArea,
+                                   viewModel.DestinationBuyerName
                           );
                         modelItem.FlagForCreate(_identityProvider.Username, UserAgent);
                         listItem.Add(modelItem);

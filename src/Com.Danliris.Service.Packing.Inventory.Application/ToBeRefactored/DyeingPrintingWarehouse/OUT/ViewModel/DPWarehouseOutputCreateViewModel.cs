@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public long DeliveryOrderSalesId { get; set; }
         public string DeliveryOrderSalesNo { get; set; }
         public string DeliveryOrderSalesType { get; set; }
+        public string DestinationBuyerName { get; set; }
         public ICollection<DPWarehouseOutputItemCreateViewModel> DyeingPrintingWarehouseOutputItems { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

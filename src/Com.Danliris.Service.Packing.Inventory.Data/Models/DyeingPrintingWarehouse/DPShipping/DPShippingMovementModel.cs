@@ -39,5 +39,74 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string  ProductTextileCode { get; set; }
         public string  ProductTextileName { get; set; }
 
+        public DPShippingMovementModel(
+         DateTimeOffset date,
+         string area,
+         
+         string type,
+         int dPShippingInputItemId,
+         int dPShippingOutputItemId,
+         int dPShippingDocumentId,
+         int productionOrderId,
+         string productionOrderNo,
+         int buyerId,
+         string buyerName,
+         string construction,
+         string unit,
+         string color,
+         string motif,
+         string uomUnit,
+         double balance,
+         string grade,
+         string productionOrderType,
+         string remark,
+         string description,
+         string packingType,
+         double packagingLength,
+         decimal packagingQty,
+         string packagingUnit,
+         string materialOrigin,
+         string productPackingCode,
+         int productPackingId,
+         int productTextileId,
+         string productTextileCode,
+         string productTextileName
+        )
+        {
+            Date = date;
+            Area = area;
+            
+            Type = type;
+            DPShippingInputItemId = dPShippingInputItemId;
+            DPShippingOutputItemId = dPShippingOutputItemId;
+            DPShippingDocumentId = dPShippingDocumentId;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            BuyerId = buyerId;
+            BuyerName = buyerName;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            Remark = remark;
+            Description = description;
+            PackingType = packingType;
+            PackagingLength = packagingLength;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            MaterialOrigin = materialOrigin;
+            ProductPackingCode = productPackingCode;
+            ProductPackingId = productPackingId;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
+        }
+
     }
+
+    
 }
