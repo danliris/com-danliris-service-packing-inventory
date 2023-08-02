@@ -168,7 +168,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 try
                 {
-                    var model = _dbSet.AsNoTracking().FirstOrDefault(s => s.Date.Date == viewModel.Date.Date);
+                    var model = _dbSet.AsNoTracking().FirstOrDefault(s => s.Date.Date == viewModel.Date.Date && s.ShippingType == "GUDANG JADI");
                     var listItem = new List<DPShippingInputItemModel>();
 
                     if (model == null)
@@ -634,5 +634,39 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return vm;
         }
+
+        //public ListResult<PreInputShippingViewModel> GetDistinctDO(int page, int size, string filter, string order, string keyword)
+        //{
+        //    var query = _dbSetItem.AsNoTracking().OrderByDescending(s => s.LastModifiedUtc)
+        //        .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument);
+        //    List<string> SearchAttributes = new List<string>()
+        //    {
+        //        "DeliveryOrderSalesNo"
+        //    };
+
+        //    query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+
+        //    Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+        //    query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
+
+        //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+        //    query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
+        //    var data = query
+        //        .GroupBy(d => d.DeliveryOrderSalesId)
+        //        .Select(s => s.First())
+        //        .Skip((page - 1) * size).Take(size)
+        //        .OrderBy(s => s.ProductionOrderNo)
+        //        .Select(s => new OutputPreShippingProductionOrderViewModel()
+        //        {
+        //            DeliveryOrder = new DeliveryOrderSales()
+        //            {
+        //                Id = s.DeliveryOrderSalesId,
+        //                No = s.DeliveryOrderSalesNo
+
+        //            }
+        //        });
+
+        //    return new ListResult<OutputPreShippingProductionOrderViewModel>(data.ToList(), page, size, query.Count());
+        //}
     }
 }
