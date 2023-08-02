@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,5 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<int> Create(InputShippingViewModel viewModel);
         Task<InputShippingViewModel> ReadById(int id);
         Task<InputShippingViewModel> ReadByIdBon(int id);
+        MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
+        ListResult<PreInputShippingViewModel> GetDOLoader(int page, int size, string filter, string order, string keyword);
     }
 }

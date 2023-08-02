@@ -17,6 +17,9 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Com.Moonlay.Models;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
+using System.IO;
+using System.Data;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingIN
 {
@@ -136,7 +139,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         public ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword)
         {
-            var query = _dbSet.AsNoTracking();
+            var query = _dbSet.AsNoTracking().Where(x => x.ShippingType == DyeingPrintingArea.GUDANGJADI && !x.IsDeleted);
             List<string> SearchAttributes = new List<string>()
             {
                 "BonNo"
@@ -635,38 +638,214 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        //public ListResult<PreInputShippingViewModel> GetDistinctDO(int page, int size, string filter, string order, string keyword)
-        //{
-        //    var query = _dbSetItem.AsNoTracking().OrderByDescending(s => s.LastModifiedUtc)
-        //        .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument);
-        //    List<string> SearchAttributes = new List<string>()
-        //    {
-        //        "DeliveryOrderSalesNo"
-        //    };
+        public MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet)
+        {
+            //var query = _repository.ReadAll()
+            //    .Where(s => s.Area == SHIPPING && s.DyeingPrintingAreaInputProductionOrders.Any(d => !d.HasOutputDocument));
+            var query = _dbSet.AsNoTracking()
+               .Where(s => s.ShippingType == DyeingPrintingArea.GUDANGJADI);
 
-        //    query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Search(query, SearchAttributes, keyword);
+            if (dateFrom.HasValue && dateTo.HasValue)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&
+                            s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (!dateFrom.HasValue && dateTo.HasValue)
+            {
+                query = query.Where(s => s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (dateFrom.HasValue && !dateTo.HasValue)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date);
+            }
 
-        //    Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-        //    query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Filter(query, FilterDictionary);
+            query = query.OrderBy(x => x.BonNo);
 
-        //    Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-        //    query = QueryHelper<DyeingPrintingAreaOutputProductionOrderModel>.Order(query, OrderDictionary);
-        //    var data = query
-        //        .GroupBy(d => d.DeliveryOrderSalesId)
-        //        .Select(s => s.First())
-        //        .Skip((page - 1) * size).Take(size)
-        //        .OrderBy(s => s.ProductionOrderNo)
-        //        .Select(s => new OutputPreShippingProductionOrderViewModel()
-        //        {
-        //            DeliveryOrder = new DeliveryOrderSales()
-        //            {
-        //                Id = s.DeliveryOrderSalesId,
-        //                No = s.DeliveryOrderSalesNo
+            var modelAll = query.Select(s => new
+            {
 
-        //            }
-        //        });
+                SppList = s.DPShippingInputItems.Select(d => new
+                {
+                    s.BonNo,
+                    d.DeliveryOrderSalesNo,
+                    d.ProductionOrderId,
+                    d.ProductionOrderNo,
+                    s.Date,
+                    d.ProductionOrderOrderQuantity,
+                    d.Construction,
+                    d.MaterialOrigin,
+                    d.Unit,
+                    d.BuyerName,
+                    d.Color,
+                    d.Motif,
+                    d.Grade,
+                    d.Remark,
+                    d.InputPackagingQty,
+                    d.PackagingUnit,
+                    d.InputQuantity,
+                    d.UomUnit,
+                    d.ProductPackingCode
+                })
+            });
 
-        //    return new ListResult<OutputPreShippingProductionOrderViewModel>(data.ToList(), page, size, query.Count());
-        //}
+            if (type == "BON")
+            {
+                modelAll = modelAll.Select(s => new
+                {
+
+                    SppList = s.SppList.GroupBy(r => new { r.ProductionOrderId, r.Grade }).Select(d => new
+                    {
+                        d.First().BonNo,
+                        d.First().DeliveryOrderSalesNo,
+                        d.First().ProductionOrderId,
+                        d.First().ProductionOrderNo,
+                        d.First().Date,
+                        d.First().ProductionOrderOrderQuantity,
+                        d.First().Construction,
+                        d.First().MaterialOrigin,
+                        d.First().Unit,
+                        d.First().BuyerName,
+                        d.First().Color,
+                        d.First().Motif,
+                        d.First().Grade,
+                        d.First().Remark,
+                        InputPackagingQty = d.Sum(x => x.InputPackagingQty),
+                        d.First().PackagingUnit,
+                        InputQuantity = d.Sum(x => x.InputQuantity),
+                        d.First().UomUnit,
+                        d.First().ProductPackingCode
+
+
+                    })
+                });
+            }
+            else
+            {
+                modelAll = modelAll.Select(s => new
+                {
+
+                    SppList = s.SppList.Select(d => new
+                    {
+                        d.BonNo,
+                        d.DeliveryOrderSalesNo,
+                        d.ProductionOrderId,
+                        d.ProductionOrderNo,
+                        d.Date,
+                        d.ProductionOrderOrderQuantity,
+                        d.Construction,
+                        d.MaterialOrigin,
+                        d.Unit,
+                        d.BuyerName,
+                        d.Color,
+                        d.Motif,
+                        d.Grade,
+                        d.Remark,
+                        d.InputPackagingQty,
+                        d.PackagingUnit,
+                        d.InputQuantity,
+                        d.UomUnit,
+                        d.ProductPackingCode
+
+
+                    })
+                });
+            }
+
+
+
+            var query1 = modelAll;
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Delivery Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
+            //dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Asal Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Pack", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Pack", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+
+            if (query1.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "", "", "", "",  "", "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var model in query1)
+                {
+                    //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
+                    foreach (var item in model.SppList.OrderBy(s => s.ProductionOrderNo))
+                    {
+                        var dateIn = item.Date.Equals(DateTimeOffset.MinValue) ? "" : item.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                        dt.Rows.Add(item.BonNo,
+                                     item.DeliveryOrderSalesNo,
+                                     item.ProductionOrderNo,
+                                     item.ProductPackingCode,
+                                     dateIn,
+                                     item.ProductionOrderOrderQuantity,
+                                     item.Construction,
+                                     item.MaterialOrigin,
+                                     item.Unit,
+                                     item.BuyerName,
+                                     item.Color,
+                                     item.Motif,
+                                     item.Grade,
+                                     item.Remark,
+                                     item.InputPackagingQty.ToString("N2", CultureInfo.InvariantCulture),
+                                     item.PackagingUnit,
+                                     item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                                     item.UomUnit); ;
+                    }
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Shipping") }, true);
+        }
+
+        public ListResult<PreInputShippingViewModel> GetDOLoader(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _dbSetOutputWarhouseItem.AsNoTracking().OrderByDescending(s => s.LastModifiedUtc)
+                .Where(s => s.DestinationArea == DyeingPrintingArea.SHIPPING && !s.HasNextAreaDocument);
+            List<string> SearchAttributes = new List<string>()
+            {
+                "DeliveryOrderSalesNo"
+            };
+
+            query = QueryHelper<DPWarehouseOutputItemModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<DPWarehouseOutputItemModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<DPWarehouseOutputItemModel>.Order(query, OrderDictionary);
+            var data = query
+                .GroupBy(d => d.DeliveryOrderSalesId)
+                .Select(s => s.First())
+                .Skip((page - 1) * size).Take(size)
+                .OrderBy(s => s.ProductionOrderNo)
+                .Select(s => new PreInputShippingViewModel()
+                {
+                    DeliveryOrder = new DeliveryOrderSales()
+                    {
+                        Id = s.DeliveryOrderSalesId,
+                        No = s.DeliveryOrderSalesNo
+
+                    }
+                });
+
+            return new ListResult<PreInputShippingViewModel>(data.ToList(), page, size, query.Count());
+        }
     }
 }

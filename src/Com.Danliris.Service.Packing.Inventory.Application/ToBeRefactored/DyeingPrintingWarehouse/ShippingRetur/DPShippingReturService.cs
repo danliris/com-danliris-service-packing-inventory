@@ -17,6 +17,9 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOrCategory;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using System.IO;
+using System.Data;
+using System.Globalization;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingRetur
 {
@@ -460,7 +463,115 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return vm;
         }
 
-        
+        public MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, int offSet)
+        {
+            var query = _dbSet.AsNoTracking()
+               .Where(s => s.ShippingType == DyeingPrintingArea.RETURBUYER);
+
+            if (dateFrom.HasValue && dateTo.HasValue)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date &&
+                            s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (!dateFrom.HasValue && dateTo.HasValue)
+            {
+                query = query.Where(s => s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date <= dateTo.Value.Date);
+            }
+            else if (dateFrom.HasValue && !dateTo.HasValue)
+            {
+                query = query.Where(s => dateFrom.Value.Date <= s.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date);
+            }
+
+            query = query.OrderBy(x => x.BonNo);
+
+            var modelAll = query.Select(s => new
+            {
+
+                SppList = s.DPShippingInputItems.Select(d => new
+                {
+                    s.BonNo,
+                    d.DeliveryOrderReturNo,
+                    d.ProductionOrderId,
+                    d.ProductionOrderNo,
+                    s.Date,
+                    d.ProductionOrderOrderQuantity,
+                    d.Construction,
+                    d.MaterialOrigin,
+                    d.Unit,
+                    d.BuyerName,
+                    d.Color,
+                    d.Motif,
+                    d.Grade,
+                    d.Remark,
+                    d.InputPackagingQty,
+                    d.PackagingUnit,
+                    d.InputQuantity,
+                    d.UomUnit,
+                    d.ProductPackingCode
+                })
+            });
+
+            var query1 = modelAll;
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. Delivery Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No. SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Tanggal Masuk", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Order", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Material", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Asal Material", DataType = typeof(string) });
+            //dt.Columns.Add(new DataColumn() { ColumnName = "Nama Barang", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Unit", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Buyer", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Warna", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Motif", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty Pack", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Pack", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Qty", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+
+            if (query1.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", "", "", "","", "", "", "",  "", "", "", "", "", "", "", "");
+            }
+            else
+            {
+                foreach (var model in query1)
+                {
+                    //foreach (var item in model.DyeingPrintingAreaInputProductionOrders.Where(d => !d.HasOutputDocument).OrderBy(s => s.ProductionOrderNo))
+                    foreach (var item in model.SppList.OrderBy(s => s.ProductionOrderNo))
+                    {
+                        var dateIn = item.Date.Equals(DateTimeOffset.MinValue) ? "" : item.Date.ToOffset(new TimeSpan(offSet, 0, 0)).Date.ToString("d");
+
+                        dt.Rows.Add(item.BonNo,
+                                     item.DeliveryOrderReturNo,
+                                     item.ProductionOrderNo,
+                                     item.ProductPackingCode,
+                                     dateIn,
+                                     item.ProductionOrderOrderQuantity,
+                                     item.Construction,
+                                     item.MaterialOrigin,
+                                     item.Unit,
+                                     item.BuyerName,
+                                     item.Color,
+                                     item.Motif,
+                                     item.Grade,
+                                     item.Remark,
+                                     item.InputPackagingQty.ToString("N2", CultureInfo.InvariantCulture),
+                                     item.PackagingUnit,
+                                     item.InputQuantity.ToString("N2", CultureInfo.InvariantCulture),
+                                     item.UomUnit);
+                    }
+                }
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, "Shipping") }, true);
+
+        }
 
 
 
