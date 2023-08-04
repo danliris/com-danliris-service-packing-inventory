@@ -31,6 +31,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly DbSet<DPShippingInputModel> _dbSet;
         private readonly DbSet<DPShippingInputItemModel> _dbSetItem;
         private readonly DbSet<DPShippingMovementModel> _dbSetShippingMovement;
+        private readonly DbSet<DPWarehouseInputModel> _dbSetInputWarehouse;
+        private readonly DbSet<DPWarehouseInputItemModel> _dbSetInputItemWarehouse;
+        private readonly DbSet<DPWarehouseSummaryModel> _dbSetSummary;
+        private readonly DbSet<DPWarehouseMovementModel> _dbSetMovement;
+        private readonly IDPWarehouseInputRepository _dPWarehouseInputRepository;
+        private readonly IDPWarehouseSummaryRepository _dPWarehouseSummaryRepository;
         private readonly IIdentityProvider _identityProvider;
         private const string UserAgent = "Repository";
         public DPShippingInService(PackingInventoryDbContext dbContext, IServiceProvider serviceProvider)
@@ -40,8 +46,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _dbSet = dbContext.Set<DPShippingInputModel>();
             _dbSetItem = dbContext.Set<DPShippingInputItemModel>();
             _dbSetShippingMovement = dbContext.Set<DPShippingMovementModel>();
+            _dbSetSummary = dbContext.Set<DPWarehouseSummaryModel>();
+            _dPWarehouseSummaryRepository = serviceProvider.GetService<IDPWarehouseSummaryRepository>();
             _dbContext = dbContext;
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            _dPWarehouseInputRepository = serviceProvider.GetService<IDPWarehouseInputRepository>();
+            _dbSetMovement = dbContext.Set<DPWarehouseMovementModel>();
+            _dbSetInputWarehouse = dbContext.Set<DPWarehouseInputModel>();
+            _dbSetInputItemWarehouse = dbContext.Set<DPWarehouseInputItemModel>();
         }
 
         public List<PreInputShippingViewModel> GetOutputPreShippingProductionOrders(long deliveriOrderSalesId)
@@ -177,7 +189,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     if (model == null)
                     {
                         int totalCurrentYearData = _dbSet.AsNoTracking().Count(s => s.CreatedUtc.Year == viewModel.Date.Year);
-                        string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date);
+                        string bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, false);
 
                         model = new DPShippingInputModel(
                                 viewModel.Date, 
@@ -393,12 +405,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return count;
         }
 
-        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date)
+        private string GenerateBonNo(int totalPreviousData, DateTimeOffset date, bool isRetur)
         {
-            
 
+            if (!isRetur)
+            {
                 return string.Format("{0}.{1}.{2}", DyeingPrintingArea.SP, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
-            
+            }
+            else {
+                return string.Format("{0}.{1}.{2}", DyeingPrintingArea.GJ, date.ToString("yy"), totalPreviousData.ToString().PadLeft(4, '0'));
+            }
 
         }
 
@@ -846,6 +862,374 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 });
 
             return new ListResult<PreInputShippingViewModel>(data.ToList(), page, size, query.Count());
+        }
+
+        public async Task<int> Reject(InputShippingViewModel viewModel)
+        {
+            int Created = 0;
+
+            using (var transaction = this._dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var model = _dPWarehouseInputRepository.GetDbSet()
+                //.Include(s => s.DyeingPrintingAreaInputProductionOrders)
+                .FirstOrDefault(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                s.Date.AddHours(7).ToString("dd/MM/yyyy") == DateTime.Now.Date.AddHours(7).ToString("dd/MM/yyyy") &&
+                s.Shift == "DAILY SHIFT");
+                    var listSummary = new List<DPWarehouseSummaryModel>();
+                    var listItem = new List<DPWarehouseInputItemModel>();
+                    if (model == null)
+                    {
+                        int totalCurrentYearData = _dPWarehouseInputRepository.ReadAllIgnoreQueryFilter().Count(s => s.Area == DyeingPrintingArea.GUDANGJADI &&
+                                                                                             s.CreatedUtc.Year == DateTime.Now.Date.Year);
+
+                        string bonNo = GenerateBonNo(totalCurrentYearData + 1, DateTime.Now.Date, true);
+
+                        var modelCreate = new DPWarehouseInputModel(
+                                DateTime.Now.Date,
+                                "GUDANG JADI",
+                                "DAILY SHIFT",
+                                bonNo,
+                                true,
+                                viewModel.ShippingProductionOrders.Select(s => new DPWarehouseInputItemModel(
+                                   s.ProductionOrder.Id,
+                                   s.ProductionOrder.No,
+                                   s.Material.Id,
+                                   s.Material.Name,
+                                   s.MaterialConstruction.Id,
+                                   s.MaterialConstruction.Name,
+                                   s.MaterialWidth,
+                                   s.BuyerId,
+                                   s.Buyer,
+                                   s.Construction,
+                                   s.Unit,
+                                   s.Color,
+                                   s.Motif,
+                                   s.UomUnit,
+                                   s.Remark,
+                                   s.Grade,
+                                   s.Balance,
+                                   s.PackingInstruction,
+                                   s.ProductionOrder.Type,
+                                   s.ProductionOrder.OrderQuantity,
+                                   s.PackingType,
+                                   s.PackagingQty,
+                                   s.PackingLength,
+                                   s.PackagingUnit,
+                                   s.Area,
+                                   s.Description,
+                                   s.Id,
+                                   s.ProductSKUId,
+                                   s.FabricSKUId,
+                                   s.ProductSKUCode,
+                                   s.ProductPackingId,
+                                   s.FabricPackingId,
+                                   s.ProductPackingCode,
+                                   s.ProcessType.Id,
+                                   s.ProcessType.Name,
+                                   s.YarnMaterial.Id,
+                                   s.YarnMaterial.Name,
+                                   s.FinishWidth,
+                                   s.MaterialOrigin,
+                                   s.ProductionOrder.CreatedUtc,
+                                   s.Grade != "BS" ? 1360 : 0,
+                                   s.Grade != "BS" ? "Jalur" : null,
+                                   s.Grade != "BS" ? "FAST MOVE" : null
+
+
+                                   )).ToList()
+                        );
+
+                        modelCreate.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                        _dbSetInputWarehouse.Add(modelCreate);
+
+
+                        foreach (var item in modelCreate.DPWarehouseInputItems)
+                        {
+                            item.FlagForCreate(_identityProvider.Username, UserAgent);
+                            DPWarehouseSummaryModel modelSummary;
+                            if (item.Grade != "BS")
+                            {
+                                modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 1360);
+                            }
+                            else
+                            {
+                                modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+                            }
+
+
+                            //if (modelSummary == null)
+                            //{
+
+                            //    modelSummary = new DPWarehouseSummaryModel(
+                            //                item.Balance,
+                            //                item.Balance,
+                            //                0,
+                            //                item.BuyerId,
+                            //                item.Buyer,
+                            //                "",
+                            //                item.Color,
+                            //                item.Grade,
+                            //                item.Construction,
+                            //                item.MaterialConstructionId,
+                            //                item.MaterialConstructionName,
+                            //                item.MaterialId,
+                            //                item.MaterialName,
+                            //                item.MaterialWidth,
+                            //                item.Motif,
+                            //                item.PackingInstruction,
+                            //                item.PackagingQty,
+                            //                item.PackagingQty,
+                            //                0,
+                            //                item.PackagingLength,
+                            //                item.PackagingType,
+                            //                item.PackagingUnit,
+                            //                item.ProductionOrderId,
+                            //                item.ProductionOrderNo,
+                            //                item.ProductionOrderType,
+                            //                item.ProductionOrderOrderQuantity,
+                            //                item.CreatedUtcOrderNo,
+                            //                item.ProcessTypeId,
+                            //                item.ProcessTypeName,
+                            //                item.YarnMaterialId,
+                            //                item.YarnMaterialName,
+                            //                item.Unit,
+                            //                item.UomUnit,
+                            //                item.Grade != "BS" ? 1360 : 0,
+                            //                item.Grade != "BS" ? "Jalur" : null,
+                            //                item.Grade != "BS" ? "FAST MOVE" : null,
+                            //                null,
+                            //                0,
+                            //                item.Description,
+                            //                item.ProductSKUId,
+                            //                item.FabricSKUId,
+                            //                item.ProductSKUCode,
+                            //                item.ProductPackingId,
+                            //                item.FabricPackingId,
+                            //                item.ProductPackingCode,
+                            //                item.MaterialOrigin,
+                            //                item.Remark,
+                            //                item.FinishWidth
+
+                            //        );
+                            //    modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                            //    listSummary.Add(modelSummary);
+
+                            //    _dbSetSummary.Add(modelSummary);
+                            //}
+                            //else
+                            //{
+                                double balanceUpdate = modelSummary.Balance + item.Balance;
+                                double balanceRemainsUpdate = modelSummary.BalanceRemains + item.Balance;
+                                decimal packagingQtyUpdate = modelSummary.PackagingQty + item.PackagingQty;
+                                decimal packagingQtyRemainsUpdate = modelSummary.PackagingQtyRemains + item.PackagingQty;
+                                //modelSummary.FlagForUpdate(_identityProvider.Username, UserAgent);
+                                //modelSummary.SetBalanceRemains(balanceUpdate, _identityProvider.Username, UserAgent);
+                                //var modelSummaries = _dbSetSummary.FirstOrDefault(entity => entity.Id == modelSummary.Id);
+                                //modelSummaries.BalanceRemains = balanceUpdate;
+                                modelSummary.Balance = balanceUpdate;
+                                modelSummary.BalanceRemains = balanceRemainsUpdate;
+                                modelSummary.PackagingQty = packagingQtyUpdate;
+                                modelSummary.PackagingQtyRemains = packagingQtyRemainsUpdate;
+                                //EntityExtension.FlagForUpdate(modelSummaries, _identityProvider.Username, UserAgent);
+                                EntityExtension.FlagForUpdate(modelSummary, _identityProvider.Username, UserAgent);
+                                listSummary.Add(modelSummary);
+
+
+                           // }
+                        }
+
+
+                        foreach (var item in viewModel.ShippingProductionOrders)
+                        {
+
+
+                            var modelOutput = _dbSetOutputWarhouseItem.FirstOrDefault(x => x.Id == item.Id);
+
+                            modelOutput.NextAreaInputStatus = "DITOLAK";
+                            modelOutput.HasNextAreaDocument = true;
+
+                            EntityExtension.FlagForUpdate(modelOutput, _identityProvider.Username, UserAgent);
+                        }
+
+                        Created = await _dbContext.SaveChangesAsync();
+                        await createMovement(modelCreate.DPWarehouseInputItems.ToList(), modelCreate.BonNo, listSummary);
+                    }
+                    else
+                    {
+                        foreach (var item in viewModel.ShippingProductionOrders)
+                        {
+                            var modelItem = new DPWarehouseInputItemModel(
+                                                   item.ProductionOrder.Id,
+                                                   item.ProductionOrder.No,
+                                                   item.Material.Id,
+                                                   item.Material.Name,
+                                                   item.MaterialConstruction.Id,
+                                                   item.MaterialConstruction.Name,
+                                                   item.MaterialWidth,
+                                                   item.BuyerId,
+                                                   item.Buyer,
+                                                   item.Construction,
+                                                   item.Unit,
+                                                   item.Color,
+                                                   item.Motif,
+                                                   item.UomUnit,
+                                                   item.Remark,
+                                                   item.Grade,
+                                                   item.Balance,
+                                                   item.PackingInstruction,
+                                                   item.ProductionOrder.Type,
+                                                   item.ProductionOrder.OrderQuantity,
+                                                   item.PackingType,
+                                                   item.PackagingQty,
+                                                   item.PackingLength,
+                                                   item.PackagingUnit,
+                                                   item.Area,
+                                                   item.Description,
+                                                   model.Id,
+                                                   item.ProductSKUId,
+                                                   item.FabricSKUId,
+                                                   item.ProductSKUCode,
+                                                   item.ProductPackingId,
+                                                   item.FabricPackingId,
+                                                   item.ProductPackingCode,
+                                                   item.ProcessType.Id,
+                                                   item.ProcessType.Name,
+                                                   item.YarnMaterial.Id,
+                                                   item.YarnMaterial.Name,
+                                                   item.FinishWidth,
+                                                   item.MaterialOrigin,
+                                                   item.ProductionOrder.CreatedUtc,
+                                                   item.Grade != "BS" ? 1360 : 0,
+                                                    item.Grade != "BS" ? "Jalur" : null,
+                                                    item.Grade != "BS" ? "FAST MOVE" : null
+
+                                                   );
+
+                            modelItem.FlagForCreate(_identityProvider.Username, UserAgent);
+                            listItem.Add(modelItem);
+                            _dbSetInputItemWarehouse.Add(modelItem);
+
+
+                            #region save or update summary table
+
+                            DPWarehouseSummaryModel modelSummary;
+
+                            if (item.Grade != "BS")
+                            {
+                                modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 1360);
+                            }
+                            else
+                            {
+                                modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+                            }
+                            
+                                double balanceUpdate = modelSummary.Balance + (item.Balance);
+                                double balanceRemainsUpdate = modelSummary.BalanceRemains + (item.Balance);
+                                decimal packagingQtyUpdate = modelSummary.PackagingQty + (decimal)item.PackagingQty;
+                                decimal packagingQtyRemainsUpdate = modelSummary.PackagingQtyRemains + (decimal)item.PackagingQty;
+                                //modelSummary.FlagForUpdate(_identityProvider.Username, UserAgent);
+                                //modelSummary.SetBalanceRemains(balanceUpdate, _identityProvider.Username, UserAgent);
+                                //var modelSummaries = _dbSetSummary.FirstOrDefault(entity => entity.Id == modelSummary.Id);
+                                //modelSummaries.BalanceRemains = balanceUpdate;
+                                modelSummary.Balance = balanceUpdate;
+                                modelSummary.BalanceRemains = balanceRemainsUpdate;
+                                modelSummary.PackagingQty = packagingQtyUpdate;
+                                modelSummary.PackagingQtyRemains = packagingQtyRemainsUpdate;
+                                //EntityExtension.FlagForUpdate(modelSummaries, _identityProvider.Username, UserAgent);
+                                EntityExtension.FlagForUpdate(modelSummary, _identityProvider.Username, UserAgent);
+                                listSummary.Add(modelSummary);
+
+
+                            
+                            #endregion
+                            var modelOutput = _dbSetOutputWarhouseItem.FirstOrDefault(x => x.Id == item.Id);
+
+                            modelOutput.NextAreaInputStatus = "DITOLAK";
+                            modelOutput.HasNextAreaDocument = true;
+
+                            EntityExtension.FlagForUpdate(modelOutput, _identityProvider.Username, UserAgent);
+                        }
+                        Created = await _dbContext.SaveChangesAsync();
+
+
+                    }
+                    
+
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            
+            return Created;
+
+        }
+
+        private async Task<int> createMovement(List<DPWarehouseInputItemModel> modelItem, string bonNo, List<DPWarehouseSummaryModel> modelSum)
+        {
+            int count = 0;
+
+            foreach (var item in modelItem)
+            {
+                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == item.TrackId);
+
+                var modelMovement = new DPWarehouseMovementModel(
+                            DateTime.Now,
+                            DyeingPrintingArea.GUDANGJADI,
+                            DyeingPrintingArea.IN,
+                            item.DPWarehouseInputId,
+                            item.Id,
+                            bonNo,
+                            IdSum.Id,
+                            item.ProductionOrderId,
+                            item.ProductionOrderNo,
+                            item.Buyer,
+                            item.Construction,
+                            item.Unit,
+                            item.Color,
+                            item.Motif,
+                            item.UomUnit,
+                            item.Balance,
+                            item.Grade,
+                            item.ProductionOrderType,
+                            item.Remark,
+                            item.PackagingType,
+                            item.PackagingQty,
+                            item.PackagingUnit,
+                            item.PackagingLength,
+                            item.MaterialOrigin,
+                            0,
+                            "",
+                            "",
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
+                            item.ProductPackingId,
+                            item.ProductPackingCode,
+                            item.Description
+
+                            );
+
+                modelMovement.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                _dbSetMovement.Add(modelMovement);
+
+
+
+            }
+
+            count = await _dbContext.SaveChangesAsync();
+            return count;
         }
     }
 }
