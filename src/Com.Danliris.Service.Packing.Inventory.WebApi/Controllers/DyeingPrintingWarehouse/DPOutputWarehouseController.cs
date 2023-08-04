@@ -109,7 +109,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                var result = new
+                {
+                    error = ex.Message,
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = ex.Message
+                };
+
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
 
         }
