@@ -17,5 +17,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<InputShippingViewModel> ReadByIdBon(int id);
         MemoryStream GenerateExcel(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet);
         ListResult<PreInputShippingViewModel> GetDOLoader(int page, int size, string filter, string order, string keyword);
+        Task<int> Reject(InputShippingViewModel viewModel);
     }
 }

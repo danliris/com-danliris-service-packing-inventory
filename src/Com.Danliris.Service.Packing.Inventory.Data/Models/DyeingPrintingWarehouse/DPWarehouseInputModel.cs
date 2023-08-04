@@ -13,6 +13,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string BonNo { get; private set; }
         public string Group { get; private set; }
         public string ShippingType { get; private set; }
+        public bool IsReject { get; set; }
         public ICollection<DPWarehouseInputItemModel> DPWarehouseInputItems { get; private set; }
 
         public DPWarehouseInputModel()
@@ -28,6 +29,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             Shift = shift;
             BonNo = bonNo;
             Group = group;
+            DPWarehouseInputItems = dPWarehouseInputItems;
+        }
+
+        // for Reject
+        public DPWarehouseInputModel(DateTimeOffset date, string area, string shift, string bonNo, bool isReject,
+            ICollection<DPWarehouseInputItemModel> dPWarehouseInputItems)
+        {
+            Date = date;
+            Area = area;
+            Shift = shift;
+            BonNo = bonNo;
+            IsReject = isReject;
             DPWarehouseInputItems = dPWarehouseInputItems;
         }
 

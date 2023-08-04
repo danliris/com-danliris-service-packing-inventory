@@ -103,7 +103,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                var result = new
+                {
+                    error = ex.Message,
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = ex.Message
+                };
+
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
 
         }
@@ -178,6 +187,53 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
 
             }
+        }
+
+        [HttpPost("reject")]
+        public async Task<IActionResult> Reject([FromBody] InputShippingViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
+            try
+            {
+                VerifyUser();
+                ValidateService.Validate(viewModel);
+                var result = await _service.Reject(viewModel);
+
+                return Created("/", result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                var result = new
+                {
+                    error = ex.Message,
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = ex.Message
+                };
+
+                
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
+            }
+
         }
     }
 }
