@@ -112,7 +112,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var InvIndex = 13;
             ///
             sheet.Row(13).Height = 20;
-            sheet.Cells[$"A{InvIndex}"].Value = "COMMERCIAL INVOICE";
+            if (viewModel.InvoiceNo.Substring(0, 2) == "SM" || viewModel.InvoiceNo.Substring(0, 3) == "SMR")
+            {
+                sheet.Cells[$"A{InvIndex}"].Value = "NON-COMMERCIAL INVOICE";
+            }
+            else
+            {
+                sheet.Cells[$"A{InvIndex}"].Value = "COMMERCIAL INVOICE";
+            }
             sheet.Cells[$"A{InvIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             sheet.Cells[$"A{InvIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[$"A{InvIndex}:H{InvIndex}"].Merge = true;
