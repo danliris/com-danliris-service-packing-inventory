@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //var queryInvItm = itemrepository.ReadAll();
 
             var queryPL = plrepository.ReadAll()
-                .Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date < DateTo.Date
+                .Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date
                     && (w.InvoiceType == "DL" || w.InvoiceType == "DS" || w.InvoiceType == "DLR" || w.InvoiceType == "SMR"));
 
             var joinQuery = (from a in queryInv
@@ -93,40 +93,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                 Rate = 0,                              
                                 CurrencyCode = "USD"
                             });
-
-            //List<GarmentFinanceExportSalesJournalTempViewModel> dataQuery = new List<GarmentFinanceExportSalesJournalTempViewModel>();
-
-            //foreach (var invoice in joinQuery.ToList())
-            //{
-            //    GarmentCurrency currency = GetCurrencyPEBDate(invoice.PEBDate.Date.ToShortDateString());
-            //    var rate = currency != null ? Convert.ToDecimal(currency.rate) : 0;
-            //    invoice.Rate = rate;
-            //    dataQuery.Add(invoice);
-            //}
-
-            //foreach (var dataz in joinQuery)
-            //{
-            //    if (dataz.PEBDate != DateTimeOffset.MinValue)
-            //    {
-            //        GarmentCurrency currency = GetCurrencyPEBDate(dataz.PEBDate.Date.ToShortDateString());
-
-            //        var rate = currency != null ? Convert.ToDecimal(currency.rate) : 0;
-
-            //        dataz.Rate = rate;
-            //    }
-            //    //data1.Add(new GarmentFinanceExportSalesJournalTempViewModel
-            //    //{
-            //    //    InvoiceType = i.InvoiceType,
-            //    //    //RO_Number = i.RO_Number,
-            //    //    PEBDate = i.PEBDate,
-            //    //    TotalAmount = i.TotalAmount,
-            //    //    Rate = rate,
-            //    //    //Qty = i.Qty,
-            //    //    //Price = i.Price,
-            //    //    //AmountCC = 0,
-            //    //});
-            //};
-
             //
 
             var currencyFilters = joinQuery
@@ -145,7 +111,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 rate = Convert.ToDecimal(currencies.Where(q => q.code == dataz.CurrencyCode && q.date.Date == dataz.PEBDate.AddHours(offset).Date).Select(s => s.rate).LastOrDefault());
 
                 dataz.Rate = rate;
-                dataz.TotalAmount = dataz.TotalAmount * rate;
+                dataz.TotalAmount = dataz.TotalAmount; //  * rate;
 
                 data1.Add(new GarmentFinanceExportSalesJournalTempViewModel
                 {
@@ -160,18 +126,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var join = from a in data1
                        select new GarmentFinanceExportSalesJournalViewModel
                        {
-                           remark= a.InvoiceType== "DL" || a.InvoiceType == "DS" ? "       PENJ.EXPORT LNGS.BR JADI" : "       PENJ.EXPORT LGS.LAIN LAIN",
+                           remark= a.InvoiceType== "DL" || a.InvoiceType == "DS" ? "       PENJ.BR.JADI EXPORT LANGSUNG" : "       PENJ.LAIN - LAIN EXPORT LANGS.",
                            credit= a.TotalAmount * a.Rate,
                            debit= 0,
-                           account= a.InvoiceType == "DL" || a.InvoiceType == "DS" ? "41204" : "41206"
+                           account= a.InvoiceType == "DL" || a.InvoiceType == "DS" ? "503120" : "503320"
                        };
                 
-            var debit = new GarmentFinanceExportSalesJournalViewModel
+        var debit = new GarmentFinanceExportSalesJournalViewModel
             {
-                remark = "PIUTANG USAHA EXPORT",
+                remark = "PIUTANG USAHA EKSPOR GARMENT",
                 credit = 0,
                 debit = join.Sum(a => a.credit),
-                account = "11204"   
+                account = "111300"
             };
             data.Add(debit);
 
@@ -196,74 +162,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 data.Add(obj);
             }
 
-            //
-            //foreach (GarmentFinanceExportSalesJournalTempViewModel i in data1)
-            //{
-            //    var data2 = GetCostCalculation(i.RO_Number);
-
-            //    datax.Add(new GarmentFinanceExportSalesJournalTempViewModel
-            //    {
-            //        InvoiceType = i.InvoiceType,
-            //        RO_Number = i.RO_Number,
-            //        PEBDate = i.PEBDate,
-            //        TotalAmount = i.TotalAmount,
-            //        Rate = i.Rate,
-            //        Qty = i.Qty,
-            //        Price = i.Price,
-            //        AmountCC = data2 == null || data2.Count == 0 ? 0 : data2.FirstOrDefault().AmountCC * i.Qty,
-            //    });
-            //};
-            ////
-            //var debit3 = new GarmentFinanceExportSalesJournalViewModel
-            //{
-            //    remark = "HARGA POKOK PENJUALAN(AG2)",
-            //    credit = 0,
-            //    debit = Convert.ToDecimal(datax.Sum(a => a.AmountCC)),
-            //    account = "500.00.2.000",
-            //};
-            //if (debit3.debit > 0)
-            //{
-            //    data.Add(debit3);
-            //}
-            //else
-            //{
-            //    var debit3x = new GarmentFinanceExportSalesJournalViewModel
-            //    {
-            //        remark = "HARGA POKOK PENJUALAN(AG2)",
-            //        credit = 0,
-            //        debit = 0,
-            //        account = "500.00.2.000",
-            //    };
-            //    data.Add(debit3x);
-            //}
-            ////
-            //var stock = new GarmentFinanceExportSalesJournalViewModel
-            //{
-            //    remark = "       PERSEDIAAN BARANG JADI (AG2)",
-            //    credit = Convert.ToDecimal(datax.Sum(a => a.AmountCC)),
-            //    debit = 0,
-            //    account = "114.01.2.000",
-            //};
-
-            //if (stock.credit > 0)
-            //{
-            //    data.Add(stock);
-            //}
-            //else
-            //{
-            //    var stockx = new GarmentFinanceExportSalesJournalViewModel
-            //    {
-            //        remark = "       PERSEDIAAN BARANG JADI (AG2)",
-            //        credit = 0,
-            //        debit = 0,
-            //        account = "114.01.2.000",
-            //    };
-            //    data.Add(stockx);
-            //}
-
             var total= new GarmentFinanceExportSalesJournalViewModel
             {
-                remark = "",
+                remark = "J U M L A H :",
                 credit = join.Sum(a => a.credit),
                 debit = join.Sum(a => a.credit),
                 account = ""
@@ -271,34 +172,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             data.Add(total);
             return data;
         }
-
-        //public List<CostCalculationGarmentForJournal> GetCostCalculation(string RO_Number)
-        //{
-        //    string costcalcUri = "cost-calculation-garments/dataforjournal";
-        //    IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
-
-        //    var response = httpClient.GetAsync($"{ApplicationSetting.SalesEndpoint}{costcalcUri}?RO_Number={RO_Number}").Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var content = response.Content.ReadAsStringAsync().Result;
-        //        Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
-
-        //        List<CostCalculationGarmentForJournal> viewModel;
-        //        if (result.GetValueOrDefault("data") == null)
-        //        {
-        //            viewModel = null;
-        //        }
-        //        else
-        //        {
-        //            viewModel = JsonConvert.DeserializeObject<List<CostCalculationGarmentForJournal>>(result.GetValueOrDefault("data").ToString());
-        //        }
-        //        return viewModel;
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
 
         async Task<List<GarmentDetailCurrency>> GetCurrencies(List<CurrencyFilter> filters)
         {
@@ -354,10 +227,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     var sheet = package.Workbook.Worksheets.Add(item.Value);
 
-                    sheet.Column(1).Width = 50;
-                    sheet.Column(2).Width = 15;
-                    sheet.Column(3).Width = 20;
-                    sheet.Column(4).Width = 20;
+                    sheet.Column(1).Width = 100;
+                    sheet.Column(2).Width = 20;
+                    sheet.Column(3).Width = 25;
+                    sheet.Column(4).Width = 25;
 
                     #region KopTable
                     sheet.Cells[$"A1:D1"].Value = "PT. DAN LIRIS";

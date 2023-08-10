@@ -465,6 +465,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteService, GarmentShippingDetailLocalSalesNoteService>();
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IGarmentCreditAdviceMIIMonitoringService, GarmentCreditAdviceMIIMonitoringService>();
+            services.AddTransient<IGarmentFinanceDetailLocalSalesJournalService, GarmentFinanceDetailLocalSalesJournalService>();
+            services.AddTransient<IGarmentFinanceDetailExportSalesJournalService, GarmentFinanceDetailExportSalesJournalService>();
 
             #endregion
 
