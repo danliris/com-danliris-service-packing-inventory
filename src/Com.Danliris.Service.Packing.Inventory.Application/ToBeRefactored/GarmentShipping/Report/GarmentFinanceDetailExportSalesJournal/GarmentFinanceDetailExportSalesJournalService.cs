@@ -14,6 +14,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectPr
 using Newtonsoft.Json;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using OfficeOpenXml;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentRecapOmzetReport;
+using System.Net.Http;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report
 {
@@ -34,28 +36,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _serviceProvider = serviceProvider;
         }
-        private GarmentCurrency GetCurrencyPEBDate(string stringDate)
-        {
-            var jsonSerializerSettings = new JsonSerializerSettings
-            {
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+        //private GarmentCurrency GetCurrencyPEBDate(string stringDate)
+        //{
+        //    var jsonSerializerSettings = new JsonSerializerSettings
+        //    {
+        //        MissingMemberHandling = MissingMemberHandling.Ignore
+        //    };
 
-            var httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+        //    var httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var currencyUri = ApplicationSetting.CoreEndpoint + $"master/garment-detail-currencies/sales-debtor-currencies-peb?stringDate={stringDate}";
-            var currencyResponse = httpClient.GetAsync(currencyUri).Result.Content.ReadAsStringAsync();
+        //    var currencyUri = ApplicationSetting.CoreEndpoint + $"master/garment-detail-currencies/sales-debtor-currencies-peb?stringDate={stringDate}";
+        //    var currencyResponse = httpClient.GetAsync(currencyUri).Result.Content.ReadAsStringAsync();
 
-            var currencyResult = new BaseResponse<GarmentCurrency>()
-            {
-                data = new GarmentCurrency()
-            };
-            Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(currencyResponse.Result);
-            var json = result.Single(p => p.Key.Equals("data")).Value;
-            var data = JsonConvert.DeserializeObject<GarmentCurrency>(json.ToString());
+        //    var currencyResult = new BaseResponse<GarmentCurrency>()
+        //    {
+        //        data = new GarmentCurrency()
+        //    };
+        //    Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(currencyResponse.Result);
+        //    var json = result.Single(p => p.Key.Equals("data")).Value;
+        //    var data = JsonConvert.DeserializeObject<GarmentCurrency>(json.ToString());
 
-            return data;
-        }
+        //    return data;
+        //}
         public List<GarmentFinanceDetailExportSalesJournalViewModel> GetReportQuery(DateTime? dateFrom, DateTime? dateTo, int offset)
         {
 
@@ -68,94 +70,70 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
             List<GarmentFinanceDetailExportSalesJournalViewModel> data = new List<GarmentFinanceDetailExportSalesJournalViewModel>();
-            List<GarmentFinanceDetailExportSalesJournalTempViewModel> data1 = new List<GarmentFinanceDetailExportSalesJournalTempViewModel>();
+            List<GarmentFinanceDetailExportSalesJournalViewModel> data1 = new List<GarmentFinanceDetailExportSalesJournalViewModel>();
 
             var queryInv = repository.ReadAll();
-            var queryInvItm = itemrepository.ReadAll();
-
+         
             var queryPL = plrepository.ReadAll()
-                .Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom && w.TruckingDate.AddHours(offset).Date <= DateTo.Date
-                    && w.PackingListType != "LOKAL" && (w.InvoiceType == "AG" || w.InvoiceType == "DS" || w.InvoiceType == "AGR" || w.InvoiceType == "SMR"));
+                  .Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date
+                     && (w.InvoiceType == "DL" || w.InvoiceType == "DS" || w.InvoiceType == "DLR" || w.InvoiceType == "SMR"));
 
             var joinQuery = from a in queryInv
-                            join c in queryInvItm on a.Id equals c.GarmentShippingInvoiceId
                             join b in queryPL on a.PackingListId equals b.Id
                             where a.IsDeleted == false && b.IsDeleted == false
-
-                            select new GarmentFinanceDetailExportSalesJournalTempViewModel
+                            select new GarmentFinanceDetailExportSalesJournalViewModel
                             {
                                 invoicetype = b.InvoiceType,
                                 invoiceno = a.InvoiceNo,
                                 truckingdate = b.TruckingDate,
                                 pebdate = a.PEBDate,
                                 buyer = a.BuyerAgentCode + "-" + a.BuyerAgentName,
-                                pebno = a.PEBNo,
-                                rono = c.RONo,
-                                currencycode = "IDR",
+                                pebno = a.PEBNo,                   
+                                currencycode = "USD",
                                 rate = 1,
-                                qty = c.Quantity,
-                                price = c.Price,
-                                amount = Convert.ToDecimal(c.Quantity) * c.Price,
-                                vatamount = (Convert.ToDecimal(c.Quantity) * c.Price) * 11/100,                               
-                                amountcc = 0,
+                                amount = a.TotalAmount,
+                                coaname = "-",
+                                account = "-",
+                                debit = 0,
+                                credit = 0,
                             };
-
-
-
             //
-            foreach (GarmentFinanceDetailExportSalesJournalTempViewModel i in joinQuery)
+            var currencyFilters = joinQuery
+                        .GroupBy(o => new { o.pebdate, o.currencycode })
+                        //.Select(o => new CurrencyFilter { date = o.Key.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime, code = o.Key.CurrencyCode })
+                        .Select(o => new CurrencyFilter { date = o.Key.pebdate.AddHours(offset).Date, code = o.Key.currencycode })
+                        .ToList();
+
+            var currencies = GetCurrencies(currencyFilters).Result;
+
+            decimal rate;
+
+            foreach (var dataz in joinQuery)
             {
-                var data2 = GetCostCalculation(i.rono);
-              
-                GarmentCurrency currency = GetCurrencyPEBDate(i.pebdate.Date.ToShortDateString());
-                var rate = currency != null ? Convert.ToDecimal(currency.rate) : 0;
+                // rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date == data.PEBDate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).DateTime).Select(s => s.rate).LastOrDefault());
+                rate = Convert.ToDecimal(currencies.Where(q => q.code == dataz.currencycode && q.date.Date == dataz.pebdate.AddHours(offset).Date).Select(s => s.rate).LastOrDefault());
 
-                data1.Add(new GarmentFinanceDetailExportSalesJournalTempViewModel
+                dataz.rate = rate;
+            
+                data1.Add(new GarmentFinanceDetailExportSalesJournalViewModel
                 {
-                    invoicetype = i.invoicetype,
-                    invoiceno = i.invoiceno,
-                    truckingdate = i.truckingdate,
-                    pebdate = i.pebdate,
-                    buyer = i.buyer,
-                    pebno = i.pebno,
-                    rono = i.rono,
-                    currencycode = "USD",
+                    invoicetype = dataz.invoicetype,
+                    invoiceno = dataz.invoiceno,
+                    truckingdate = dataz.truckingdate,
+                    buyer = dataz.buyer,
+                    pebno = dataz.pebno,
+                    pebdate = dataz.pebdate,
+                    currencycode = dataz.currencycode,
                     rate = rate,
-                    qty = i.qty,
-                    price = i.price,
-                    amount = i.amount,
-                    vatamount = i.vatamount,                  
-                    amountcc = data2 == null || data2.Count == 0 ? 0 : data2.FirstOrDefault().AmountCC * i.qty,
+                    amount = dataz.amount * dataz.rate,
+                    coaname = "-",
+                    account = "-",
+                    debit = 0,
+                    credit = 0,
                 });
-            };
-            //
-
-            var joinQuery1 = from a in data1
-                            
-                             group new { AmtInv = a.amount, VatAmt = a.vatamount, AmtCC=a.amountcc } by new
-
-                             { a.invoicetype, a.invoiceno, a.truckingdate, a.pebno, a.buyer, a.currencycode, a.rate } into G
-
-                             select new GarmentFinanceDetailExportSalesJournalViewModel
-                             {
-                                 invoicetype = G.Key.invoicetype,
-                                 invoiceno = G.Key.invoiceno,
-                                 truckingdate = G.Key.truckingdate,
-                                 buyer = G.Key.buyer,
-                                 pebno = G.Key.pebno,
-                                 currencycode = G.Key.currencycode,
-                                 rate = G.Key.rate,
-                                 amount = Math.Round(G.Sum(c => c.AmtInv), 2) * G.Key.rate,
-                                 vatamount = 0,
-                                 amountcc = Math.Round(G.Sum(c => c.AmtCC), 2) ,
-                                 coaname = "-",
-                                 account = "-",
-                                 debit = 0,
-                                 credit = 0,
-                             };
-            //
-
-            foreach (GarmentFinanceDetailExportSalesJournalViewModel x in joinQuery1.OrderBy(x => x.invoiceno))
+            }
+            ///
+            foreach (GarmentFinanceDetailExportSalesJournalViewModel x in data1.OrderBy(x => x.invoiceno))
             {
                 var debit = new GarmentFinanceDetailExportSalesJournalViewModel
                 {
@@ -167,10 +145,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     currencycode = x.currencycode,
                     rate = x.rate,
                     amount = 0,
-                    vatamount = 0,
-                    amountcc = 0,
-                    coaname = "PIUTANG USAHA LOKAL(AG2)",
-                    account = "112.00.2.000",
+                    coaname = "PIUTANG USAHA EKSPOR GARMENT",
+                    account = "111300",
                     debit = x.amount,
                     credit = 0,
                 };
@@ -179,7 +155,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 var credit1 = new GarmentFinanceDetailExportSalesJournalViewModel
                 {
-                   invoicetype = x.invoicetype,
+                    invoicetype = x.invoicetype,
                     invoiceno = x.invoiceno,
                     truckingdate = x.truckingdate,
                     buyer = x.buyer,
@@ -187,57 +163,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     currencycode = x.currencycode,
                     rate = x.rate,
                     amount = 0,
-                    vatamount = 0,
-                    amountcc = 0,
-                    coaname = x.invoicetype == "AG" || x.invoicetype == "DS" ? "       PENJUALAN LOKAL (AG2)" : "       PENJUALAN LAIN-LAIN LOKAL (AG2)",
-                    account = x.invoicetype == "AG" || x.invoicetype == "DS" ? "411.00.2.000" : "411.00.2.000",
+                    account = x.invoicetype == "DL" || x.invoicetype == "DS" ? "503120" : "503320",
+                    coaname = x.invoicetype == "DL" || x.invoicetype == "DS" ? "       PENJ.BR.JADI EXPORT LANGSUNG" : "       PENJ.LAIN - LAIN EXPORT LANGS.",
                     debit = 0,
                     credit = x.amount,
                 };
 
                 data.Add(credit1);
-
-                ///
-
-                var debit3 = new GarmentFinanceDetailExportSalesJournalViewModel
-                {
-                    invoicetype = x.invoicetype,
-                    invoiceno = x.invoiceno,
-                    truckingdate = x.truckingdate,
-                    buyer = x.buyer,
-                    pebno = x.pebno,
-                    currencycode = x.currencycode,
-                    rate = x.rate,
-                    amount = 0,
-                    vatamount = 0,
-                    amountcc = 0,
-                    coaname = "HARGA POKOK PENJUALAN(AG2)",
-                    account = "500.00.2.000",
-                    debit = Convert.ToDecimal(x.amountcc),
-                    credit = 0,
-                };
-                data.Add(debit3);
-
-                //
-                var stock = new GarmentFinanceDetailExportSalesJournalViewModel
-                {
-                    invoicetype = x.invoicetype,
-                    invoiceno = x.invoiceno,
-                    truckingdate = x.truckingdate,
-                    buyer = x.buyer,
-                    pebno = x.pebno,
-                    currencycode = x.currencycode,
-                    rate = x.rate,
-                    amount = 0,
-                    vatamount = 0,
-                    amountcc = 0,
-                    coaname = "       PERSEDIAAN BARANG JADI (AG2)",
-                    account = "114.01.2.000",
-                    debit = 0,
-                    credit = Convert.ToDecimal(x.amountcc),
-                };
-                data.Add(stock);
-
             }
 
             var total = new GarmentFinanceDetailExportSalesJournalViewModel
@@ -250,12 +182,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 currencycode = "",
                 rate = 0,
                 amount = 0,
-                vatamount = 0,
-                amountcc = 0,
                 coaname = "",
                 account = "J U M L A H",
-                debit = joinQuery1.Sum(a => a.amount) + Convert.ToDecimal(joinQuery1.Sum(a => a.amountcc)),
-                credit = joinQuery1.Sum(a => a.amount) + Convert.ToDecimal(joinQuery1.Sum(a => a.amountcc)),
+                debit = data1.Sum(a => a.amount),
+                credit = data1.Sum(a => a.amount),
             };
           
             data.Add(total);
@@ -263,31 +193,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return data;
         }
 
-        public List<CostCalculationGarmentForJournal> GetCostCalculation(string RO_Number)
+        async Task<List<GarmentDetailCurrency>> GetCurrencies(List<CurrencyFilter> filters)
         {
-            string costcalcUri = "cost-calculation-garments/dataforjournal";
+            string uri = "master/garment-detail-currencies/single-by-code-date-peb";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = httpClient.GetAsync($"{ApplicationSetting.SalesEndpoint}{costcalcUri}?RO_Number={RO_Number}").Result;
+            var response = await httpClient.SendAsync(HttpMethod.Get, $"{ApplicationSetting.CoreEndpoint}{uri}", new StringContent(JsonConvert.SerializeObject(filters), Encoding.Unicode, "application/json"));
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
                 Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
-
-                List<CostCalculationGarmentForJournal> viewModel;
-                if (result.GetValueOrDefault("data") == null)
-                {
-                    viewModel = null;
-                }
-                else
-                {
-                    viewModel = JsonConvert.DeserializeObject<List<CostCalculationGarmentForJournal>>(result.GetValueOrDefault("data").ToString());
-                }
+                List<GarmentDetailCurrency> viewModel = JsonConvert.DeserializeObject<List<GarmentDetailCurrency>>(result.GetValueOrDefault("data").ToString());
                 return viewModel;
             }
             else
             {
-                return null;
+                return new List<GarmentDetailCurrency>();
             }
         }
 
@@ -334,10 +255,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Column(5).Width = 50;
                     sheet.Column(6).Width = 15;
 
-                    sheet.Column(9).Width = 15;
-                    sheet.Column(10).Width = 15;
-                    sheet.Column(11).Width = 20;
-                    sheet.Column(12).Width = 20;
+                    sheet.Column(7).Width = 15;
+                    sheet.Column(8).Width = 15;
+                    sheet.Column(9).Width = 20;
+                    sheet.Column(10).Width = 20;
 
                     #region KopTable
                     sheet.Cells[$"A1:D1"].Value = "PT AMBASSADOR GARMINDO";

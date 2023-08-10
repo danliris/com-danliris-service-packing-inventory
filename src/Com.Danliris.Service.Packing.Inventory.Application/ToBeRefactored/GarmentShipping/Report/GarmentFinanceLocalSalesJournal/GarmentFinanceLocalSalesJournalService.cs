@@ -41,28 +41,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             List<GarmentFinanceLocalSalesJournalViewModel> data = new List<GarmentFinanceLocalSalesJournalViewModel>();
 
             var queryHeader = repository.ReadAll()
-                .Where(w => w.Date.AddHours(offset).Date >= DateFrom.Date && w.Date.AddHours(offset).Date < DateTo.Date
+                .Where(w => w.IsDeleted == false && w.Date.AddHours(offset).Date >= DateFrom.Date && w.Date.AddHours(offset).Date <= DateTo.Date
                     && (w.TransactionTypeCode == "LBL" || w.TransactionTypeCode == "LBM" || w.TransactionTypeCode == "SBJ" 
                     || w.TransactionTypeCode == "SMR" || w.TransactionTypeCode=="LJS" || w.TransactionTypeCode == "LBJ"))
                     .Select(a=>new { a.Id, a.TransactionTypeCode, a.UseVat});
 
             var query = from a in queryHeader
                         join b in repositoryItem.ReadAll() on a.Id equals b.LocalSalesNoteId
+                        where b.IsDeleted == false
                         select new GarmentFinanceLocalSalesJournalViewModel
                         {
-                            remark = a.TransactionTypeCode == "LJS" ? "     PENJ.LOKAL JASA" : a.TransactionTypeCode == "LBJ" ? "     PENJ.BARANG JADI LOKAL" : "     PENJ.LOKAL LAIN LAIN",
+                            remark = a.TransactionTypeCode == "LJS" ? "     PENJUALAN JASA LOKAL" : a.TransactionTypeCode == "LBJ" ? "     PENJUALAN BARANG JADI LOKAL" : "     PENJUALAN LAIN-LAIN LOKAL",
                             credit = b.Quantity * b.Price,
                             debit = a.UseVat ? (b.Quantity * b.Price * 110 / 100) : (b.Quantity * b.Price),
-                            account = a.TransactionTypeCode == "LJS" ? "41103" : a.TransactionTypeCode == "LBJ" ? "41101" : "41104",
+                            account = a.TransactionTypeCode == "LJS" ? "501320" : a.TransactionTypeCode == "LBJ" ? "501120" : "501420",
                             type = a.TransactionTypeCode == "LJS" ? "C" : a.TransactionTypeCode == "LBJ" ? "D" : "B",                            
                         };
-               
+
            var debit = new GarmentFinanceLocalSalesJournalViewModel
             {
-                remark = " PIUTANG USAHA LOKAL",
+                remark = "PIUTANG USAHA LOKAL GARMENT",
                 credit = 0,
                 debit = query.Sum(a => a.debit),
-                account = "11202",                   
+                account = "110300",                
                 type = "A"
             };
             data.Add(debit);
@@ -89,12 +90,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 data.Add(obj);
             }
+           
             var ppn = new GarmentFinanceLocalSalesJournalViewModel
             {
                 remark = "     PPN KELUARAN",
-                credit = query.Sum(a => a.debit)- query.Sum(a => a.credit),
+                credit = query.Sum(a => a.debit) - query.Sum(a => a.credit),
                 debit = 0,
-                account = "21402",
+                account = "341300",                  
                 type = "E"
             };
 
@@ -102,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var total = new GarmentFinanceLocalSalesJournalViewModel
             {
-                remark = "",
+                remark = "J U M L A H :",
                 credit = debit.debit,
                 debit = debit.debit,
                 account = "",
