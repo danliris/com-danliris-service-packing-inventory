@@ -61,7 +61,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
             string color,
             string grade,
             string width,
-            bool afterStockOpname
+            bool afterStockOpname,
+            string finishWidth
             )
         {
             Code = code;
@@ -88,6 +89,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
             Grade = grade;
             Width = width;
             AfterStockOpname = afterStockOpname;
+            FinishWidth = finishWidth;
         }
 
         [MaxLength(64)]
@@ -124,5 +126,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.ProductByDivisionOr
         [MaxLength(32)]
         public string Width { get; set; }
         public bool AfterStockOpname { get; set; }
+        public string FinishWidth { get; set; }
     }
 }
