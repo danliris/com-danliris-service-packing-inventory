@@ -24,5 +24,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         public string motif { get; set; }
         public string color { get; set; }
         public DateTime CreatedUtcOrderNo { get; set; }
+        public string FinishWidth { get; set; }
     }
 }

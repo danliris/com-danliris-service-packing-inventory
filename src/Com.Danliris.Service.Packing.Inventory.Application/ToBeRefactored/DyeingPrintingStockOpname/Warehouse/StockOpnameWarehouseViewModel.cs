@@ -69,6 +69,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DetailErrors += "ProductionOrder: 'SPP Harus Diisi!',";
                     }
 
+                    if (item.TrackId == 0)
+                    {
+                        Count++;
+                        DetailErrors += "track: 'Jalur Harus Diisi',";
+                    }
 
                     if (item.Balance <= 0)
                     {

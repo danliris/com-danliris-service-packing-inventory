@@ -74,11 +74,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public string ProductPackingCode { get; private set; }
         #endregion
 
+        public string FinishWidth { get; set; }
+
 
         public DyeingPrintingStockOpnameSummaryModel(double balance, double balanceRemains, int buyerId, string buyer, string color, string construction, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, decimal packagingQtyRemains, double packagingLength, string packagingType, string packagingUnit,
             long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, string description)
+             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, string description, string finishWidth)
         {
             Balance = balance;
             BalanceRemains = balanceRemains;
@@ -122,6 +124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             TrackBox = trackBox;
             CreatedUtcOrderNo = createdUtcOrderNo;
             Description = description;
+            FinishWidth = finishWidth;
         }
 
 
@@ -129,7 +132,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public DyeingPrintingStockOpnameSummaryModel(double balance, double balanceRemains, int buyerId, string buyer, string color, string construction, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, decimal packagingQtyRemains, double packagingLength, string packagingType, string packagingUnit,
             long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, double splitQuantity, string description)
+             string remark, string status, string unit, string uomUnit, int fabricSKUId, int productSKUId, string productSKUCode, int productPackingId, string productPackingCode, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, double splitQuantity, string description, string finishWidth)
         {
             Balance = balance;
             BalanceRemains = balanceRemains;
@@ -174,6 +177,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             CreatedUtcOrderNo = createdUtcOrderNo;
             SplitQuantity = splitQuantity;
             Description = description;
+            FinishWidth = finishWidth;
         }
 
 
