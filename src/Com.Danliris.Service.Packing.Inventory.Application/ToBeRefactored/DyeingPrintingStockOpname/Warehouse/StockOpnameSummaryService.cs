@@ -277,7 +277,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             viewModel.Items[i].Track.Box,
                                                             dbModel.CreatedUtcOrderNo,
                                                             dbModel.SplitQuantity + viewModel.Items[i].PackingQtyDiff,
-                                                            dbModel.Description
+                                                            dbModel.Description,
+                                                            dbModel.FinishWidth
 
                                                             );
 
@@ -386,7 +387,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             viewModel.Items[i].Track.Box,
                                                             dbModel.CreatedUtcOrderNo,
                                                             modelSummary.SplitQuantity,
-                                                            dbModel.Description
+                                                            dbModel.Description,
+                                                            dbModel.FinishWidth
 
                                                             );
 
@@ -435,7 +437,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                             viewModel.Items[i].Track.Name,
                                                             viewModel.Items[i].Track.Box,
                                                             dbModel.CreatedUtcOrderNo,
-                                                            dbModel.Description
+                                                            dbModel.Description,
+                                                            dbModel.FinishWidth
 
                                                             );
 

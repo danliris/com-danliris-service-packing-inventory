@@ -189,7 +189,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingLength = s.PackagingLength,
                     ProductPackingType = s.PackagingUnit,
                     DocumentNo = s.DocumentNo,
-                    Grade = s.Grade
+                    Grade = s.Grade,
+                    FinishWidth = s.FinishWidth
                 });
 
                 //int result = 0;
