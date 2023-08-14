@@ -350,7 +350,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
                     productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, form.yarnMaterialId, gradeId, uom.Id,
                         form.materialId, form.materialName, form.materialConstructionId, form.materialConstructionName,
-                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, false);
+                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, false, form.FinishWidth);
 
                     _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                     _unitOfWork.Commit();
@@ -426,7 +426,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
 
                     productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, form.yarnMaterialId, gradeId, uom.Id,
                         form.materialId, form.materialName, form.materialConstructionId, form.materialConstructionName,
-                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, true);
+                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, true, form.FinishWidth);
 
                     _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                     _unitOfWork.Commit();
