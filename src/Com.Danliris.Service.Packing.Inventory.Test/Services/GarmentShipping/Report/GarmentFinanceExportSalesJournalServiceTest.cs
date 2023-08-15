@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using Xunit;
@@ -31,32 +32,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
                 .Setup(x => x.GetAsync(It.IsAny<string>()))
                 .ReturnsAsync(messageC);
 
-            HttpClientService
-                .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-currencies/sales-debtor-currencies")))
-                .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new
-                    {
-                        apiVersion = "1.0",
-                        statusCode = 200,
-                        message = "Ok",
-                        data = JsonConvert.SerializeObject(new GarmentCurrency { })
-                    }))
-                });
+            //HttpClientService
+            //    .Setup(x => x.GetAsync(It.IsRegex($"^master/garment-currencies/sales-debtor-currencies")))
+            //    .ReturnsAsync(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+            //    {
+            //        Content = new StringContent(JsonConvert.SerializeObject(new
+            //        {
+            //            apiVersion = "1.0",
+            //            statusCode = 200,
+            //            message = "Ok",
+            //            data = JsonConvert.SerializeObject(new GarmentCurrency { })
+            //        }))
+            //    });
 
-            
+
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repository);
 
             spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
                .Returns(plrepository);
-            
+
             spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider());
 
-            spMock
-                .Setup(x => x.GetService(typeof(IHttpClientService)))
-                .Returns(HttpClientService.Object);
+            //spMock
+            //    .Setup(x => x.GetService(typeof(IHttpClientService)))
+            //    .Returns(HttpClientService.Object);
+
             return spMock;
         }
 
@@ -88,9 +90,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model1 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                });
 
-            var result = service.GetReportData(model1.TruckingDate.Month, model1.TruckingDate.Year, 7);
+            //var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            var result = service.GetReportData(model1.TruckingDate.Date, model1.TruckingDate.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -117,9 +131,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>() { model1 }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                });
 
-            var result = service.GenerateExcel(model1.TruckingDate.Month, model1.TruckingDate.Year, 7);
+            //var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            var result = service.GenerateExcel(model1.TruckingDate.Date, model1.TruckingDate.Date, 7);
 
             Assert.NotNull(result);
         }
@@ -136,9 +162,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
             repoMock1.Setup(s => s.ReadAll())
                 .Returns(new List<GarmentPackingListModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var httpMock = new Mock<IHttpClientService>();
+            httpMock.Setup(s => s.SendAsync(HttpMethod.Get, It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new { data = new List<GarmentCurrency> { new GarmentCurrency() { code = "usd" } } }))
+                });
 
-            var result = service.GenerateExcel(1, 1, 7);
+            //var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+            var spMock = GetServiceProvider(repoMock.Object, repoMock1.Object);
+            spMock.Setup(s => s.GetService(typeof(IHttpClientService)))
+                .Returns(httpMock.Object);
+
+            var service = GetService(spMock.Object);
+
+            var result = service.GenerateExcel(DateTime.MinValue.Date, DateTime.MinValue.Date, 7);
 
             Assert.NotNull(result);
         }
