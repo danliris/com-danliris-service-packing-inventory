@@ -25,6 +25,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         public double qtyin { get; set; }
         public string noorder { get; set; }
+        public string SPPNo { get; set; }
+        public decimal MaterialLength { get; set; }
     }
     public class OrderQuantityForStatusOrder
     {
