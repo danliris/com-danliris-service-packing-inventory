@@ -144,7 +144,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.TrackName,
                                                                 s.TrackBox,
                                                                 s.ProductionOrder.CreatedUtc,
-                                                                s.Description == null ? null : s.Description.Trim()
+                                                                s.Description == null ? null : s.Description.Trim(),
+                                                                s.FinishWidth
 
 
                                                                 )).ToList(), false);
@@ -170,7 +171,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         motif = item.Motif,
                         color = item.Color,
                         Width = item.MaterialWidth,
-                        CreatedUtcOrderNo = item.CreatedUtcOrderNo
+                        CreatedUtcOrderNo = item.CreatedUtcOrderNo,
+                        FinishWidth = item.FinishWidth,
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePackingSO(new FabricPackingAutoCreateFormDto()
@@ -233,8 +235,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackName,
                                                                 item.TrackBox,
                                                                 item.CreatedUtcOrderNo,
-                                                                item.Description == null ? null : item.Description.Trim()
-
+                                                                item.Description == null ? null : item.Description.Trim(),
+                                                                item.FinishWidth
                                                                 );
 
                         result += await _stockOpnameSummaryRepository.InsertAsync(modelSummary);
@@ -303,7 +305,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackName,
                                                                 item.TrackBox,
                                                                 item.ProductionOrder.CreatedUtc,
-                                                                item.Description == null? null: item.Description.Trim()
+                                                                item.Description == null? null: item.Description.Trim(),
+                                                                item.FinishWidth
                                                                 );
 
                     modelItem.DyeingPrintingStockOpnameId = model.Id;
@@ -324,7 +327,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         motif = item.Motif,
                         color = item.Color,
                         Width = item.MaterialWidth,
-                        CreatedUtcOrderNo = item.ProductionOrder.CreatedUtc
+                        CreatedUtcOrderNo = item.ProductionOrder.CreatedUtc,
+                        FinishWidth = item.FinishWidth
                     });
 
                     var packingData = _fabricPackingSKUService.AutoCreatePackingSO(new FabricPackingAutoCreateFormDto()
@@ -388,7 +392,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 item.TrackName,
                                                                 item.TrackBox,
                                                                 item.ProductionOrder.CreatedUtc,
-                                                                item.Description == null ? null : item.Description.Trim()
+                                                                item.Description == null ? null : item.Description.Trim(),
+                                                                item.FinishWidth
 
 
                                                                 );
@@ -547,7 +552,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 s.TrackName,
                 s.TrackBox,
                 s.ProductionOrder.CreatedUtc,
-                s.Description)
+                s.Description,
+                s.FinishWidth)
                 {
                     Id = s.Id
                 }).ToList(), false);
@@ -725,7 +731,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         Box = s.TrackBox
                     },
                     ProductPackingCode = s.ProductPackingCode,
-                    Description = s.Description
+                    Description = s.Description,
+                    FinishWidth = s.FinishWidth
                     
                 }).ToList()
             };

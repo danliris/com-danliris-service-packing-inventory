@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
             catch (ServiceValidationException ex)
             {
-                var Result = new
+                var result = new
                 {
                     error = ResultFormatter.Fail(ex),
                     apiVersion = "1.0.0",
@@ -66,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                     message = "Data does not pass validation"
                 };
 
-                return new BadRequestObjectResult(Result);
+                return new BadRequestObjectResult(result);
             }
             catch (Exception ex)
             {

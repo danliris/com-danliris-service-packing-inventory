@@ -43,6 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public string ProductPackingCode { get; private set; }
         public string TypeOut { get; private set; }
         public string Description { get; set; }
+        public string FinishWidth { get; set; }
 
         public DyeingPrintingStockOpnameMutationModel DyeingPrintingStockOpnameMutation { get; set; }
 
