@@ -60,7 +60,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             var queryResult = new List<OutputWarehouseItemListViewModel>();
             var query = _dPWarehouseSummaryRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).
-                                                                   Where(s => s.ProductPackingCode.Contains(packingCode) && s.TrackId == trackId
+                                                                   Where(s => s.ProductPackingCode.Contains(packingCode) && s.TrackId == trackId && s.BalanceRemains > 0
                                                                   );
 
             if (query != null)

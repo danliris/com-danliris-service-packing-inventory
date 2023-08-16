@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly DbSet<DPShippingInputItemModel> _dbSetItem;
         private readonly DbSet<DPShippingMovementModel> _dbSetShippingMovement;
         private readonly DbSet<FabricProductPackingModel> _dbSetFabricProduct;
+        private readonly DbSet<FabricProductSKUModel> _dbSetFabricProductSku;
         private readonly IIdentityProvider _identityProvider;
         private const string UserAgent = "Repository";
 
@@ -40,6 +41,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _dbSetItem = dbContext.Set<DPShippingInputItemModel>();
             _dbSetShippingMovement = dbContext.Set<DPShippingMovementModel>();
             _dbSetFabricProduct = dbContext.Set<FabricProductPackingModel>();
+            _dbSetFabricProductSku = dbContext.Set<FabricProductSKUModel>();
             _dbContext = dbContext;
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
@@ -316,19 +318,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         //}
         public ListResult<barcodeViewModel> GetCodeLoader(int page, int size, string filter, string order, string keyword)
         {
-            var query = _dbSetFabricProduct.AsTracking();
+            var query = from a in _dbSetFabricProduct
+                        join b in _dbSetFabricProductSku on a.FabricProductSKUId equals b.Id
+                        select new barcodeViewModel() {
+                            Code = a.Code,
+                            ProductPackingId = a.ProductPackingId,
+                            ProductSKUId = a.ProductSKUId,
+                            FabricProductSKUId = a.FabricProductSKUId,
+                            FabricPackingId = a.Id,
+                            ProductionOrderNo = b.ProductionOrderNo,
+                            PackingLength = a.PackingSize
+                           
+                        }
+                        ;
             List<string> SearchAttributes = new List<string>()
             {
                 "Code"
             };
 
-            query = QueryHelper<FabricProductPackingModel>.Search(query, SearchAttributes, keyword);
+            query = QueryHelper<barcodeViewModel>.Search(query, SearchAttributes, keyword);
 
             Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
-            query = QueryHelper<FabricProductPackingModel>.Filter(query, FilterDictionary);
+            query = QueryHelper<barcodeViewModel>.Filter(query, FilterDictionary);
 
             Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
-            query = QueryHelper<FabricProductPackingModel>.Order(query, OrderDictionary);
+            query = QueryHelper<barcodeViewModel>.Order(query, OrderDictionary);
             var data = 
                 query.Skip((page - 1) * size).Take(size).Select(s => new barcodeViewModel()
                 {
@@ -336,7 +350,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = s.ProductPackingId,
                     ProductSKUId = s.ProductSKUId,
                     FabricProductSKUId = s.FabricProductSKUId,
-                    FabricPackingId = s.Id
+                    FabricPackingId = s.Id,
+                    ProductionOrderNo = s.ProductionOrderNo,
+                    PackingLength = s.PackingLength
                     
 
 
