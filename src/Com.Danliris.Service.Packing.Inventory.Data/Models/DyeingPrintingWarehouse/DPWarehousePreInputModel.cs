@@ -151,6 +151,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
                 this.FlagForUpdate(user, agent);
             }
         }
+
+        public void SetPackagingQty(decimal newPackagingQTy, string user, string agent)
+        {
+            if (newPackagingQTy != PackagingQty)
+            {
+                PackagingQty = newPackagingQTy;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetPackagingQtyRemains(decimal newPackagingQtyRemains, string user, string agent)
+        {
+            if (newPackagingQtyRemains != PackagingQtyRemains)
+            {
+                PackagingQtyRemains = newPackagingQtyRemains;
+                this.FlagForUpdate(user, agent);
+            }
+        }
     }
 
     

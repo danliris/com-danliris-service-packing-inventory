@@ -67,6 +67,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string DestinationBuyerName { get; set; }
         public string MaterialOrigin { get; set; }
         public string DeliveryOrderSalesType { get; private set; }
+        #region Track
+        public int TrackId { get; private set; }
+        public string TrackType { get; private set; }
+        public string TrackName { get; private set; }
+        public string TrackBox { get; private set; }
+        #endregion
 
         public DPWarehouseInputModel DPWarehouseInput { get; set; }
 
@@ -80,7 +86,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             string packingInstruction, string productionOrderType, double productionOrderOrderQuantity, string packagingType, decimal packagingQty, double packagingLength, string packagingUnit,
              string area, string description, int dPWarehouseInputId, int productSKUId, int fabricSKUId, string productSKUCode,
             int productPackingId, int fabricPackingId, string productPackingCode, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-            string finishWidth, string materialOrigin, DateTime createdUtcOrderNo) : this()
+            string finishWidth, string materialOrigin, DateTime createdUtcOrderNo, int trackId, string trackType, string trackName) : this()
         {
             ProductionOrderId = productionOrderId;
             ProductionOrderNo = productionOrderNo;
@@ -125,6 +131,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             FinishWidth = finishWidth;
             MaterialOrigin = materialOrigin;
             CreatedUtcOrderNo = createdUtcOrderNo;
+            TrackId = trackId;
+            TrackType = trackType;
+            TrackName = trackName;
             //DeliveryOrderSalesType = deliveryOrderSalesType;
         }
 

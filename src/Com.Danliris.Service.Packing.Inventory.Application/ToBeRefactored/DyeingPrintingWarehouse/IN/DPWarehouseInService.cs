@@ -386,6 +386,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     string bonNo = GenerateBonNo(totalCurrentYearData + 1, DateTime.Now.Date);
 
+                    
 
 
                     var model = new DPWarehouseInputModel(
@@ -434,12 +435,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                    s.YarnMaterial.Name,
                                    s.FinishWidth,
                                    s.MaterialOrigin,
-                                   s.ProductionOrder.CreatedUtc
+                                   s.ProductionOrder.CreatedUtc,
+                                   s.Grade != "BS" ? 1360 : 0,
+                                   s.Grade != "BS" ? "Jalur" : null,
+                                   s.Grade != "BS" ? "FAST MOVE" : null
+
+
+
 
                                    )).ToList()
                         );
 
                     //model.Area.Trim();
+                    
                     model.FlagForCreate(_identityProvider.Username, UserAgent);
 
                     _dbSet.Add(model);
@@ -453,7 +461,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.FlagForCreate(_identityProvider.Username, UserAgent);
 
                         #region save or update summary table
-                        var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+
+                        DPWarehouseSummaryModel modelSummary;
+
+                        if (item.Grade != "BS")
+                        {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 1360);
+                        }
+                        else {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+                        }
+                        
                         if (modelSummary == null)
                         {
 
@@ -491,6 +509,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.YarnMaterialName,
                                         item.Unit,
                                         item.UomUnit,
+                                        item.Grade != "BS" ? 1360 : 0,
+                                        item.Grade != "BS" ? "Jalur" : null,
+                                        item.Grade != "BS" ? "FAST MOVE" : null,
+                                        null,
                                         0,
                                         item.Description,
                                         item.ProductSKUId,
@@ -500,7 +522,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.FabricPackingId,
                                         item.ProductPackingCode,
                                         item.MaterialOrigin,
-                                        item.Remark
+                                        item.Remark,
+                                        item.FinishWidth
 
                                 );
                             modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -616,7 +639,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                item.YarnMaterial.Name,
                                                item.FinishWidth,
                                                item.MaterialOrigin,
-                                               item.ProductionOrder.CreatedUtc
+                                               item.ProductionOrder.CreatedUtc,
+                                               item.Grade != "BS" ? 1360 : 0,
+                                                item.Grade != "BS" ? "Jalur" : null,
+                                                item.Grade != "BS" ? "FAST MOVE" : null
 
                                                );
 
@@ -625,8 +651,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         _dbSetItems.Add(modelItem);
 
                         #region save or update summary table
-                        
-                        var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+
+                        DPWarehouseSummaryModel modelSummary;
+
+                        if (item.Grade != "BS")
+                        {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 1360);
+                        }
+                        else
+                        {
+                            modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
+                        }
+                        //var modelSummary = _dPWarehouseSummaryRepository.GetDbSet().FirstOrDefault(s => s.ProductPackingCode.Contains(item.ProductPackingCode) && s.TrackId == 0);
                         if (modelSummary == null)
                         {
 
@@ -664,6 +700,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.YarnMaterial.Name,
                                         item.Unit,
                                         item.UomUnit,
+                                        item.Grade != "BS" ? 1360 : 0,
+                                        item.Grade != "BS" ? "Jalur" : null,
+                                        item.Grade != "BS" ? "FAST MOVE" : null,
+                                        null,
                                         0,
                                         item.Description,
                                         item.ProductSKUId,
@@ -673,7 +713,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                         item.FabricPackingId,
                                         item.ProductPackingCode,
                                         item.MaterialOrigin,
-                                        item.Remark
+                                        item.Remark,
+                                        item.FinishWidth
 
                                 );
                             modelSummary.FlagForCreate(_identityProvider.Username, UserAgent);
@@ -749,7 +790,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             int count = 0;
             foreach (var item in model.DPWarehouseInputItems)
             {
-                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == 0);
+                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == item.TrackId);
 
                 var modelMovement = new DPWarehouseMovementModel(
                             DateTime.Now,
@@ -779,6 +820,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             0,
                             "",
                             "",
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
                             item.ProductPackingId,
                             item.ProductPackingCode,
                             item.Description
@@ -789,8 +836,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                 _dbSetMovement.Add(modelMovement);
 
-
                 
+                //int trackId = 0;
+                //string trackType = "";
+                //string trackName = "";
+                //string trackBox = "";
+
+                //if(item.Grade =="A")
+
+                //EntityExtension.FlagForUpdate(item, _identityProvider.Username, UserAgent);
+
+
+
 
             }
 
@@ -806,7 +863,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             foreach (var item in modelItem)
             {
-                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == 0);
+                var IdSum = modelSum.FirstOrDefault(x => x.ProductPackingCode == item.ProductPackingCode && x.TrackId == item.TrackId);
 
                 var modelMovement = new DPWarehouseMovementModel(
                             DateTime.Now,
@@ -836,9 +893,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             0,
                             "",
                             "",
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
+                            item.TrackId,
+                            item.TrackType,
+                            item.TrackName,
                             item.ProductPackingId,
                             item.ProductPackingCode,
                             item.Description
+                            
 
                             );
 
@@ -946,13 +1010,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
             {
                 //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll();
-                inputItemsQuery = _dbSetItems.AsNoTracking();
+                inputItemsQuery = _dbSetItems;
             }
             else
             {
                 //stockOpnameMutationQuery = _stockOpnameMutationRepository.ReadAll().Where(s =>
                 //                    s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
-                inputItemsQuery = _dbSetItems.AsNoTracking().Where(s =>
+                inputItemsQuery = _dbSetItems.Where(s =>
                                         s.CreatedUtc.AddHours(7).Date >= dateFrom.Date && s.CreatedUtc.AddHours(7).Date <= dateTo.Date);
             }
 
@@ -961,7 +1025,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             if (productionOrderId != 0)
             {
-                inputItemsQuery = _dbSetItems.AsNoTracking().Where(s => s.ProductionOrderId == productionOrderId);
+                inputItemsQuery = inputItemsQuery.Where(s => s.ProductionOrderId == productionOrderId);
             }
             var query = (from b in inputItemsQuery
                          select new DPInputWarehouseMonitoringViewModel()
@@ -979,9 +1043,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                              DateIn = b.CreatedUtc.AddHours(7),
                              PackagingQty = b.PackagingQty,
                              PackingLength = b.PackagingLength,
-                             Description = b.Description.Trim()
+                             Description = b.Description.Trim(),
+                             UomUnit = b.UomUnit
                          }).ToList();
-            var result = query.GroupBy(s => new { s.ProductPackingCode  }).Select(d => new DPInputWarehouseMonitoringViewModel()
+            var result = query.GroupBy(s => new { s.ProductPackingCode, s.DateIn.Date, s.Description }).Select(d => new DPInputWarehouseMonitoringViewModel()
             {
                 ProductionOrderId = d.First().ProductionOrderId,
                 ProductionOrderNo = d.First().ProductionOrderNo,
@@ -992,13 +1057,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 Color = d.First().Color,
                 Construction = d.First().Construction,
                 Motif = d.First().Motif,
-
+                UomUnit = d.First().UomUnit,
                 Balance = d.Sum(a => a.Balance),
                 DateIn = d.First().DateIn,
                 PackagingQty = d.Sum(a => a.PackagingQty),
                 PackingLength = d.First().PackingLength,
-                Description = d.First().Description
+                Description = d.First().Description,
+                
             }).OrderBy(o => o.ProductionOrderId).ToList();
+
+            var totalPacking = result.Sum(x => x.PackagingQty);
+            var totalInQty = result.Sum(x => x.Balance);
+            result.Add(new DPInputWarehouseMonitoringViewModel()
+            {
+                ProductionOrderNo = "",
+                ProductPackingCode = "",
+                Construction = "",
+                Color = "",
+                Motif = "",
+                Grade = "",
+                
+                PackagingUnit = "Total",
+                PackagingQty = totalPacking,
+                Balance = totalInQty,
+                UomUnit = "MTR",
+                Description = ""
+            });
 
             return result;
 
@@ -1044,10 +1128,95 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     total += item.Balance;
                 }
 
-                dt.Rows.Add("", "", "", "", "", "", "", packagingQty, "", 0, total);
+                //dt.Rows.Add("", "", "", "", "", "", "", packagingQty, "", 0, total);
             }
 
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Laporan Stock {0}", "SO")) }, true);
+
+        }
+
+        public List<MonitoringPreInputWarehouseViewModel> GetMonitoringPreInput(int productionOrderId, string productPackingCode)
+        {
+            IQueryable<DPWarehousePreInputModel> preInput;
+
+            if (productionOrderId != 0)
+            {
+                preInput = _dPWarehousePreInputRepository.ReadAll().Where(x => x.ProductionOrderId == productionOrderId && x.ProductPackingCode == (string.IsNullOrWhiteSpace(productPackingCode) ? x.ProductPackingCode : productPackingCode));
+            }
+            else {
+                preInput = _dPWarehousePreInputRepository.ReadAll().Where(x => x.ProductPackingCode == (string.IsNullOrWhiteSpace(productPackingCode) ? x.ProductPackingCode : productPackingCode));
+            }
+
+                var Query = preInput.Where( s => s.BalanceRemains >0).Select( s => 
+            
+                            new MonitoringPreInputWarehouseViewModel() { 
+
+                                ProductionOrderNo = s.ProductionOrderNo,
+                                ProductPackingCode = s.ProductPackingCode,
+                                Balance = s.Balance,
+                                BalanceRemains = s.BalanceRemains,
+                                BalanceReceipt = s.BalanceReceipt,
+                                BalanceReject = s.BalanceReject,
+                                PackagingQty = s.PackagingQty,
+                                PackagingQtyRemains = s.PackagingQtyRemains,
+                                PackagingQtyReceipt = s.PackagingQtyReceipt,
+                                PackagingQtyReject = s.PackagingQtyReject,
+                                PackagingLength = s.PackagingLength,
+                                PackagingUnit = s.PackagingUnit,
+                                Description = s.Description,
+                                Grade = s.Grade,
+                                UomUnit = s.UomUnit,
+                                LastModifiedUtc = s.LastModifiedUtc
+            
+                            }).ToList();
+            Query.OrderByDescending(s => s.LastModifiedUtc);
+
+            return Query;
+        }
+
+        public MemoryStream GenerateExcelPreInput( int productionOrderId, string productPackingCode)
+        {
+            var data = GetMonitoringPreInput( productionOrderId, productPackingCode);
+            DataTable dt = new DataTable();
+
+            //dt.Columns.Add(new DataColumn() { ColumnName = "No Bon", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "No SPP", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Barcode", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Qty Pack", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang Per Pack", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Sisa Qty", DataType = typeof(double) });
+
+            dt.Columns.Add(new DataColumn() { ColumnName = "Satuan", DataType = typeof(string) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Keterangan", DataType = typeof(string) });
+
+
+            if (data.Count() == 0)
+            {
+                dt.Rows.Add("", "", "", 0, 0, "", 0, "", "");
+            }
+            else
+            {
+                decimal packagingQty = 0;
+                double total = 0;
+
+                foreach (var item in data)
+                {
+                    //var dateIn = item.DateIn.Equals(DateTimeOffset.MinValue) ? "" : item.DateIn.AddHours(offset).Date.ToString("d");
+                    // var sldbegin = item.SaldoBegin;
+                    //saldoBegin =+ item.SaldoBegin;
+                    dt.Rows.Add(item.ProductionOrderNo,  item.ProductPackingCode, item.Grade, item.BalanceRemains, item.PackagingLength,
+                        item.PackagingUnit, item.PackagingQtyRemains, item.UomUnit, item.Description);
+
+                    packagingQty += item.PackagingQtyRemains;
+                    total += item.BalanceRemains;
+                }
+
+                dt.Rows.Add("", "", "", packagingQty, 0, "", total, "", "");
+            }
+
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Monitoring SPP Belum Diterima {0}","SO")) }, true);
 
         }
 

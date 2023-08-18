@@ -53,7 +53,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(model.Date.Month, model.Date.Year, 7);
+            var result = service.GetReportData(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(model.Date.Month, model.Date.Year, 7);
+            var result = service.GetReportData(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -103,7 +103,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(model.Date.Month, model.Date.Year, 7);
+            var result = service.GetReportData(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -129,7 +129,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
 
-            var result = service.GenerateExcel(model.Date.Month, model.Date.Year, 7);
+            var result = service.GenerateExcel(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotNull(result);
         }
@@ -149,7 +149,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GenerateExcel(1, 1, 7);
+            var result = service.GenerateExcel(DateTime.MinValue.Date, DateTime.MinValue.Date, 7);
 
             Assert.NotNull(result);
         }

@@ -115,7 +115,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                var result = new
+                {
+                    error = ex.Message,
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = ex.Message
+                };
+
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
 
         }
@@ -152,7 +161,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
             catch (Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                var result = new
+                {
+                    error = ex.Message,
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = ex.Message
+                };
+
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
 
         }
@@ -188,7 +206,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                     //apiVersion = ApiVersion,
                     data = data,
                     info = new { count = data.Count(), total = data.Count() },
-
+                    total = data.Count(),
                     message = General.OK_MESSAGE,
                     statusCode = General.OK_STATUS_CODE
                 });
@@ -227,5 +245,60 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("preinput")]
+        public IActionResult GetMonitoringPreInput( [FromQuery] int productionOrderId, [FromQuery] string productPackingCode)
+        {
+            try
+            {
+                VerifyUser();
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var data = _service.GetMonitoringPreInput( productionOrderId, productPackingCode);
+                return Ok(new
+                {
+                    //apiVersion = ApiVersion,
+                    data = data,
+                    info = new { count = data.Count(), total = data.Count() },
+                    total = data.Count(),
+                    message = General.OK_MESSAGE,
+                    statusCode = General.OK_STATUS_CODE
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("preinput-xls")]
+        public IActionResult GetMonitoringPreInputXls([FromQuery] int productionOrderId, [FromQuery] string productPackingCode)
+        {
+            try
+            {
+                VerifyUser();
+                byte[] xlsInBytes;
+                int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var Result = _service.GenerateExcelPreInput( productionOrderId, productPackingCode);
+                string filename = "";
+
+                //if (dateFrom == DateTimeOffset.MinValue && dateTo == DateTimeOffset.MinValue)
+                //{
+                    filename = $"Monitoring SPP Belum Di Terima Gudang Barang Jadi.xlsx";
+                //}
+                //else
+                //{
+                //    filename = $"Monitoring Penerimaan Gudang Barang Jadi {dateFrom.ToString("yyyy MM dd")} - {dateTo.ToString("yyyy MM dd")}.xlsx";
+                //}
+                xlsInBytes = Result.ToArray();
+                var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                return file;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+
     }
 }

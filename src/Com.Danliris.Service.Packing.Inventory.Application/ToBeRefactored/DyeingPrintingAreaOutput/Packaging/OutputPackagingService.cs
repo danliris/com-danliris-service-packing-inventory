@@ -922,7 +922,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             var preInputModel = new DPWarehousePreInputModel(
                                 item.QtyOut, item.QtyOut, 0, 0, item.BuyerId, item.Buyer, item.Color, item.Construction, item.Grade, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialProduct.Id, item.MaterialProduct.Name, item.MaterialWidth,
-                                item.Motif, item.PackingInstruction, item.PackagingQTY, item.PackagingQTY, item.PackagingQTY, 0, item.PackingLength, item.PackagingType, item.PackagingUnit, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
+                                item.Motif, item.PackingInstruction, item.PackagingQTY, item.PackagingQTY, 0, 0, item.PackingLength, item.PackagingType, item.PackagingUnit, item.ProductionOrder.Id, item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity,
                                 item.ProductionOrder.CreatedUtc, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, item.Unit, item.UomUnit, item.Remark, item.Keterangan,
                                 packingData.ProductSKUId, packingData.FabricSKUId, packingData.ProductSKUCode, packingData.ProductPackingId, packingData.FabricPackingId, packingData.ProductPackingCode, item.MaterialOrigin, item.FinishWidth
                                 );
@@ -933,6 +933,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             await _preInputrepository.UpdateBalance(preInput.Id, item.QtyOut);
                             await _preInputrepository.UpdateBalanceRemainsIn(preInput.Id, item.QtyOut);
+                            await _preInputrepository.UpdatePackagingQty(preInput.Id, item.PackagingQTY);
+                            await _preInputrepository.UpdatePackagingQtyRemains(preInput.Id, item.PackagingQTY);
                         }
                     }
 
@@ -1004,6 +1006,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             await _preInputrepository.UpdateBalance(preInput.Id, item.QtyOut);
                             await _preInputrepository.UpdateBalanceRemainsIn(preInput.Id, item.QtyOut);
+                            await _preInputrepository.UpdatePackagingQty(preInput.Id, item.PackagingQTY);
+                            await _preInputrepository.UpdatePackagingQtyRemains(preInput.Id, item.PackagingQTY);
                         }
                     }
                     
@@ -1333,6 +1337,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = s.BonNo,
                         NoSPP = d.ProductionOrderNo,
+                        ProductPackingCode = d.ProductPackingCode,
                         QtyOrder = d.ProductionOrderOrderQuantity,
                         Material = d.Construction,
                         MaterialOrigin = d.MaterialOrigin,
@@ -1351,6 +1356,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.UomUnit,
                         DateOut = d.DateOut,
                         ProductTextileName = d.ProductTextileName,
+                        
                     })
                 });
 
@@ -1362,6 +1368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = d.First().BonNo,
                         NoSPP = d.Key.NoSPP,
+                        ProductPackingCode = d.First().ProductPackingCode,
                         QtyOrder = d.First().QtyOrder,
                         Material = d.First().Material,
                         MaterialOrigin = d.First().MaterialOrigin,
@@ -1380,6 +1387,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.First().SAT,
                         DateOut = d.First().DateOut,
                         ProductTextileName = d.First().ProductTextileName,
+                        
                     })
                 });
 
@@ -1393,6 +1401,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     {
                         BonNo = d.BonNo,
                         NoSPP = d.NoSPP,
+                        ProductPackingCode = d.ProductPackingCode,
                         QtyOrder = d.QtyOrder,
                         Material = d.Material,
                         MaterialOrigin = d.MaterialOrigin,
@@ -1411,6 +1420,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.SAT,
                         DateOut = d.DateOut,
                         ProductTextileName = d.ProductTextileName,
+                       
                     })
                 });
 
@@ -1453,6 +1463,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 {"BonNo","NO BON" },
                 {"NoSPP","NO SP" },
+                { "ProductPackingCode", "BARCODE"},
                 {"DateOut","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
                 {"Material","MATERIAL"},

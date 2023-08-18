@@ -79,9 +79,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             int? productTextileId,
             string productTextileCode,
             string productTextileName,
+            
+            int trackFromId,
+            string trackFromType,
+            string trackFromName,
+            int trackToId,
+            string trackToType,
+            string trackToName,
+
             int productPackingId,
             string productPackingCode,
             string description
+            
             )
         {
             Date = date;
@@ -105,7 +114,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductionOrderType = productionOrderType;
             Remark = remark;
             PackingType = packingType;
-
             PackagingQty = packagingQty;
             PackagingUnit = packagingUnit;
             PackagingLength = packagingLength;
@@ -113,11 +121,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
+            
+            TrackFromId = trackFromId;
+            TrackFromType = trackFromType;
+            TrackFromName = trackFromName;
+
+            TrackToId = trackToId;
+            TrackToType = trackToType;
+            TrackToName = trackToName;
+
             ProductPackingId = productPackingId;
             ProductPackingCode = productPackingCode;
             Description = description;
-
-
+        
         }
 
         //update track
@@ -206,6 +222,82 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
 
 
         }
+
+        // Output 
+        public DPWarehouseMovementModel(DateTimeOffset date,
+            string area,
+            string type,
+            int dPDocumentId,
+            int dPDocumentItemId,
+            string dPDocumentBonNo,
+            int dPSummaryId,
+            long productionOrderId,
+            string productionOrderNo,
+            string buyer,
+            string construction,
+            string unit,
+            string color,
+            string motif,
+            string uomUnit,
+            double balance,
+            string grade,
+            string productionOrderType,
+            string remark,
+            string packingType,
+            decimal packagingQty,
+            string packagingUnit,
+            double packagingLength,
+            string materialOrigin,
+            int? productTextileId,
+            string productTextileCode,
+            string productTextileName,
+            int productPackingId,
+            string productPackingCode,
+            string description,
+            int trackFromId,
+            string trackFromType,
+            string trackFromName,
+            string trackFromBox
+            )
+        {
+            Date = date;
+            Area = area;
+            Type = type;
+
+            DPDocumentId = dPDocumentId;
+            DPDocumentItemId = dPDocumentItemId;
+            DPDocumentBonNo = dPDocumentBonNo;
+            DPSummaryId = dPSummaryId;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            Remark = remark;
+            PackingType = packingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            PackagingLength = packagingLength;
+            MaterialOrigin = materialOrigin;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
+            ProductPackingId = productPackingId;
+            ProductPackingCode = productPackingCode;
+            Description = description;
+            TrackFromId = trackFromId;
+            TrackFromType = trackFromType;
+            TrackFromName = trackFromName;
+            TrackFromBox = trackFromBox;
+        }
+
+
 
     }
 }
