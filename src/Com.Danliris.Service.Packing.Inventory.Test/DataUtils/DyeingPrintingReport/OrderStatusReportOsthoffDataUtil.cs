@@ -14,7 +14,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingRe
             ProductionViewModel data = new ProductionViewModel()
             {
                 noorder="OrderNo",
-                qtyin=1
+                qtyin=1,
+                SPPNo= "OrderNo",
+                MaterialLength=1
             };
             datas.Add(data);
             Dictionary<string, object> result = new Dictionary<string, object>();
