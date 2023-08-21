@@ -155,16 +155,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
             }
         }
 
-        [HttpGet("xls/{id}")]
-        public async Task<IActionResult> GetExcel(int id)
+        [HttpGet("xls-view")]
+        public async Task<IActionResult> GetExcel([FromQuery] int id, [FromQuery] bool isBon)
         {
             try
             {
                 VerifyUser();
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-                var Result = await _service.GenerateExcel(id,clientTimeZoneOffset);
-                string filename = "Packing Area Note Dyeing/Printing.xlsx";
+                var Result = await _service.GenerateExcel(id, isBon, clientTimeZoneOffset);
+
+                string filename = "";
+
+                if (isBon)
+                {
+                    filename = "Packing Area Note Dyeing/Printing per BON.xlsx";
+                }
+                else {
+                    filename = "Packing Area Note Dyeing/Printing per Packing List.xlsx";
+                }
+
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;
@@ -184,7 +194,16 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 byte[] xlsInBytes;
                 int clientTimeZoneOffset = Convert.ToInt32(timezone);
                 var Result = _service.GenerateExcelAll(dateFrom, dateTo, type, clientTimeZoneOffset);
-                string filename = "Packing Area Note Dyeing/Printing.xlsx";
+                string filename = "";
+
+                if (type =="BON")
+                {
+                    filename = "Packing Area Note Dyeing/Printing per BON.xlsx";
+                }
+                else
+                {
+                    filename = "Packing Area Note Dyeing/Printing per Packing List.xlsx";
+                }
                 xlsInBytes = Result.ToArray();
                 var file = File(xlsInBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
                 return file;

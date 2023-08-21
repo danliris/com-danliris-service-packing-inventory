@@ -178,7 +178,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         ProductPackingCode = s.ProductPackingCode,
                         HasPrintingProductPacking = s.HasPrintingProductPacking,
                         DateIn=s.DateIn,
-                        DateOut=s.DateOut
+                        DateOut=s.DateOut,
+                        
                     }).ToList(),
                     PackagingProductionOrdersAdj = model.DyeingPrintingAreaOutputProductionOrders.Select(s => new InputPlainAdjPackagingProductionOrder()
                     {
@@ -1142,11 +1143,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         }
 
 
-        public async Task<MemoryStream> GenerateExcel(int id,int timeZone)
+        public async Task<MemoryStream> GenerateExcel(int id, bool isBon, int timeZone)
         {
+            var model = new OutputPackagingViewModel();
 
-            var model = await _repository.ReadByIdAsync(id);
-            var query = model.DyeingPrintingAreaOutputProductionOrders;
+            if (isBon)
+            {
+                model = await ReadByIdBon(id);
+            }
+            else {
+                model = await ReadById(id);
+            }
+            
+            var query = model.PackagingProductionOrders;
             //var query = GetQuery(date, group, zona, timeOffSet);
             DataTable dt = new DataTable();
 
@@ -1155,7 +1164,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 {"ProductionOrderNo","No SPP" },
                 {"DateOut","Tanggal Keluar" },
-                {"ProductionOrderOrderQuantity","Qty Order" },
+                {"QtyOrder","Qty Order" },
                 {"Buyer","Buyer" },
                 {"Unit","Unit"},
                 {"MaterialOrigin","Asal Material" },
@@ -1165,10 +1174,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"ProductionMachine","Mesin Produksi"},
                 {"PackagingType","Jenis"},
                 {"Grade","Grade"},
-                {"PackagingQty","Qty Packaging"},
+                {"PackagingQTY","Qty Packaging"},
                 {"PackagingUnit","Packaging"},
                 {"UomUnit","Satuan"},
-                {"Balance","Saldo"},
+                {"QtyOut","Saldo"},
                 //{"Balance","Qty Keluar" },
                 {"Description","Keterangan" },
                 {"Menyerahkan","Menyerahkan" },
@@ -1220,7 +1229,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             #region Render Excel Header
             ExcelPackage package = new ExcelPackage();
-            var sheet = package.Workbook.Worksheets.Add("BON PACKAGING");
+
+            string nameSheet;
+            if (isBon) {
+                nameSheet = "BON";
+            }
+            else {
+                nameSheet = "PACKING LIST";
+            }
+            
+            var sheet = package.Workbook.Worksheets.Add(nameSheet);
             sheet.Cells[1, 1].Value = "TANGGAL";
             sheet.Cells[1, 2].Value = model.Date.ToString("dd MMM yyyy", new CultureInfo("id-ID"));
 
@@ -1286,6 +1304,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             return stream;
         }
+
+        
 
         public MemoryStream GenerateExcelAll(DateTimeOffset? dateFrom, DateTimeOffset? dateTo, string type, int offSet)
         {
@@ -1356,6 +1376,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.UomUnit,
                         DateOut = d.DateOut,
                         ProductTextileName = d.ProductTextileName,
+                        PackagingLength = d.PackagingLength
                         
                     })
                 });
@@ -1387,6 +1408,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.First().SAT,
                         DateOut = d.First().DateOut,
                         ProductTextileName = d.First().ProductTextileName,
+                        PackagingLength = d.First().PackagingLength
                         
                     })
                 });
@@ -1420,6 +1442,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         SAT = d.SAT,
                         DateOut = d.DateOut,
                         ProductTextileName = d.ProductTextileName,
+                        PackagingLength = d.PackagingLength
                        
                     })
                 });
@@ -1462,7 +1485,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             Dictionary<string, string> mappedClass = new Dictionary<string, string>
             {
                 {"BonNo","NO BON" },
-                {"NoSPP","NO SP" },
+                {"NoSPP","NO SPP" },
                 { "ProductPackingCode", "BARCODE"},
                 {"DateOut","Tanggal Keluar" },
                 {"QtyOrder","QTY ORDER" },
@@ -1476,11 +1499,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 {"ProductionMachine","Mesin Produksi"},
                 {"Jenis","JENIS"},
                 {"Grade","GRADE"},
-                {"Ket","KET"},
-                {"QtyPack","QTY Pack"},
-                {"Pack","PACK"},
-                {"Qty","QTY" },
-                {"SAT","SAT" },
+                {"Ket","KETERANGAN"},
+                {"QtyPack","QTY PACKING"},
+                {"Pack","JENIS PACKING"},
+                {"PackagingLength","PANJANG PER PACKING"},
+                {"Qty","QTY KELUAR" },
+                {"SAT","SATUAN" },
                 {"NextAreaInputStatus","Status" },
             };
             var listClass = query.ToList().FirstOrDefault().GetType().GetProperties();
@@ -1524,7 +1548,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
             #region Render Excel Header
             ExcelPackage package = new ExcelPackage();
-            var sheet = package.Workbook.Worksheets.Add("BON PACKAGING");
+            var sheet = package.Workbook.Worksheets.Add(type);
 
             int startHeaderColumn = 1;
             int endHeaderColumn = mappedClass.Count;
