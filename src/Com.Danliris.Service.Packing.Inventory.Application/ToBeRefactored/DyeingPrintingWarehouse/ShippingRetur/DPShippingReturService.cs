@@ -327,7 +327,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             FabricProductSKUId = a.FabricProductSKUId,
                             FabricPackingId = a.Id,
                             ProductionOrderNo = b.ProductionOrderNo,
-                            PackingLength = a.PackingSize
+                            PackingLength = a.PackingSize,
+                            Grade = b.Grade
                            
                         }
                         ;
@@ -352,7 +353,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     FabricProductSKUId = s.FabricProductSKUId,
                     FabricPackingId = s.Id,
                     ProductionOrderNo = s.ProductionOrderNo,
-                    PackingLength = s.PackingLength
+                    PackingLength = s.PackingLength,
+                    Grade = s.Grade
                     
 
 

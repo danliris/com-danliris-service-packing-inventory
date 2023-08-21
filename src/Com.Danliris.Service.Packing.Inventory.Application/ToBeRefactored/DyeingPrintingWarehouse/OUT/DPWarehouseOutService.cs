@@ -1212,9 +1212,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             dt.Columns.Add(new DataColumn() { ColumnName = "Grade", DataType = typeof(string) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jalur/Rak", DataType = typeof(string) });
 
-            dt.Columns.Add(new DataColumn() { ColumnName = "Jumlah Packing", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "QTY Packing", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Jenis Packing", DataType = typeof(string) });
-            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang Satuan", DataType = typeof(double) });
+            dt.Columns.Add(new DataColumn() { ColumnName = "Panjang Per Satuan", DataType = typeof(double) });
             dt.Columns.Add(new DataColumn() { ColumnName = "Total", DataType = typeof(double) });
 
 
