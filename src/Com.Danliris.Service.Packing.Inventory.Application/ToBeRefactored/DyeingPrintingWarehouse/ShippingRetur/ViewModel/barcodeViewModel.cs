@@ -14,5 +14,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public int FabricPackingId { get; set; }
         public string ProductionOrderNo { get; set; }
         public double PackingLength { get; set; }
+        public string Grade { get; set; }
     }
 }
