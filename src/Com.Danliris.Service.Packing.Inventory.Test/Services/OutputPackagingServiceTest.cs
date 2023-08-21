@@ -1827,7 +1827,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1,1);
+            var result = await service.GenerateExcel(1, true,1);
 
             Assert.NotNull(result);
         }
@@ -1845,7 +1845,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
 
             var service = GetService(GetServiceProvider(repoMock.Object, movementRepoMock.Object, summaryRepoMock.Object, sppRepoMock.Object).Object);
 
-            var result = await service.GenerateExcel(1,7);
+            var result = await service.GenerateExcel(1,true,7);
 
             Assert.NotNull(result);
         }
