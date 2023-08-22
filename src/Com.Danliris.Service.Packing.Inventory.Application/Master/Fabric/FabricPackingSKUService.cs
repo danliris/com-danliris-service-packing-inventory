@@ -637,7 +637,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 var productSKU = _dbContext.ProductSKUs.FirstOrDefault(entity => entity.Id == fabric.ProductSKUId);
                 var description = form.Description != null ? (form.Description.ToLower()).Replace(" ", "") : null;
                 //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "").Contains(description)).OrderByDescending(entity => entity.Id).FirstOrDefault();
-                var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType && (entity.Description.ToLower()).Replace(" ", "") == description && entity.AfterStockOpname).OrderByDescending(entity => entity.Id).FirstOrDefault();
+                var latestProductPacking = _dbContext.ProductPackings.Where(entity =>
+
+                                           entity.Code.Contains(productSKU.Code)
+                                           && entity.PackingSize == form.Length
+                                           && entity.PackingType == form.PackingType
+                                           && (entity.Description.ToLower()).Replace(" ", "") == description
+                                           && entity.AfterStockOpname
+                                           && entity.YarnMaterialId == form.YarnMaterialId
+                                           && entity.MaterialConstructionId == form.MaterialConstructionId
+                                           && entity.MaterialId == form.MaterialId
+
+                                           ).OrderByDescending(entity => entity.Id).FirstOrDefault();
                 //var latestProductPacking = _dbContext.ProductPackings.Where(entity => entity.Code.Contains(productSKU.Code) && entity.PackingSize == form.Length && entity.PackingType == form.PackingType).OrderByDescending(entity => entity.Id).FirstOrDefault();
 
                 //var lower = latestProductPacking.Description.ToLower().Replace(" ", "");
@@ -649,24 +660,26 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                 {
                     var i = 1;
 
-                    if (latestProductPackingSKU != null )
+                    if (latestProductPackingSKU != null)
                     {
-                       
-                        
-                            var rollNumber = latestProductPackingSKU.Code.Substring(latestProductPackingSKU.Code.Count() - 4);
-                            i = int.Parse(rollNumber) + 1;
-                        
+
+
+                        var rollNumber = latestProductPackingSKU.Code.Substring(latestProductPackingSKU.Code.Count() - 4);
+                        i = int.Parse(rollNumber) + 1;
+
 
                     }
 
 
-                    var limit = (i - 1)+1;
+                    var limit = (i - 1) + 1;
                     for (; i <= limit; i++)
                     {
                         var code = productSKU.Code + i.ToString().PadLeft(4, '0');
                         var uom = _dbContext.IPUnitOfMeasurements.FirstOrDefault(entity => entity.Unit == form.PackingType);
                         var descriptionIn = form.Description == null ? null : form.Description.Trim();
-                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, descriptionIn, form.PackingType, true);
+                        packingModel = new ProductPackingModel(productSKU.Id, uom.Id, form.Length, code, code, form.Description, form.PackingType, true,
+                                                   form.MaterialConstructionId, form.MaterialConstructionName, form.MaterialId, form.MaterialName, form.YarnMaterialId,
+                                                   form.YarnMaterialName, form.FinishWidth);
                         _unitOfWork.ProductPackings.Insert(packingModel);
                         _unitOfWork.Commit();
                         packingCodes.Add(code);

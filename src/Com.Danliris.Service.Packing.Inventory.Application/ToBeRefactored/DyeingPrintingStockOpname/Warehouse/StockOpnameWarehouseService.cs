@@ -181,7 +181,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         PackingType = item.PackagingUnit,
                         Quantity = (int)item.PackagingQty,
                         Length = item.PackagingLength,
-                        Description = item.Description
+                        Description = item.Description,
+                        MaterialConstructionId = item.MaterialConstructionId,
+                        MaterialConstructionName = item.MaterialConstructionName,
+                        MaterialId = item.MaterialId,
+                        MaterialName = item.MaterialName,
+                        YarnMaterialId = item.YarnMaterialId,
+                        YarnMaterialName = item.YarnMaterialName,
+                        FinishWidth= item.FinishWidth
                     });
 
                     //var packingCodes = string.Join(',', packingData.ProductPackingCodes);
@@ -337,7 +344,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         PackingType = modelItem.PackagingUnit,
                         Quantity = (int)modelItem.PackagingQty,
                         Length = modelItem.PackagingLength,
-                        Description = modelItem.Description
+                        Description = modelItem.Description,
+                        MaterialConstructionId = modelItem.MaterialConstructionId,
+                        MaterialConstructionName = modelItem.MaterialConstructionName,
+                        MaterialId = modelItem.MaterialId,
+                        MaterialName = modelItem.MaterialName,
+                        YarnMaterialId = modelItem.YarnMaterialId,
+                        YarnMaterialName = modelItem.YarnMaterialName,
+                        FinishWidth = modelItem.FinishWidth
                     });
 
                     //var packingCodes = string.Join(',', packingData.ProductPackingCodes);
