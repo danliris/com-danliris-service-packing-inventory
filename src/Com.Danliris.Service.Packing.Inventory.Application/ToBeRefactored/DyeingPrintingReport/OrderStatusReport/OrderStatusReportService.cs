@@ -137,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 data.inProductionQty = inProd!=null ? Convert.ToDecimal(inProd.qtyin) : 0;
                 data.preProductionQty = data.targetQty - data.inProductionQty >= 0? data.targetQty - data.inProductionQty:0 ;
                 data.remainingSentQty = data.targetQty - data.sentBuyerQty >= 0 ? data.targetQty - data.sentBuyerQty : 0;
-                data.remainingQty= kanban!=null ? data.targetQty - kanban.MaterialLength >= 0 ? data.targetQty - kanban.MaterialLength : 0 :0;
+                data.remainingQty= kanban!=null ? data.targetQty - kanban.MaterialLength >= 0 ? data.targetQty - kanban.MaterialLength : 0 : data.targetQty;
 
                 newListData.Add(data);
             }
