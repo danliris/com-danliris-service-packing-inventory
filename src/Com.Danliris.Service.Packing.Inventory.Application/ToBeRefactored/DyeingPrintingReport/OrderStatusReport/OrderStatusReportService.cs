@@ -125,16 +125,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
             var productionData = await GetDataProduction(noOrders);
             var productionResults = productionData.data;
+            var kanbanPretreatment = await GetDataPretreatmentKanban(noOrders);
+            var kanbanPretreatmentResults = kanbanPretreatment.data;
             List<OrderStatusReportViewModel> newListData = new List<OrderStatusReportViewModel>();
             foreach(var data in dataList)
             {
                 var inProd = productionResults.Where(a => a.noorder == data.productionOrderNo).FirstOrDefault();
                 var target= sppResults.Where(x=>x.OrderId== data.productionOrderId).FirstOrDefault();
+                var kanban = kanbanPretreatmentResults.Where(a => a.SPPNo == data.productionOrderNo).FirstOrDefault();
                 data.targetQty = target.OrderQuantity;
                 data.inProductionQty = inProd!=null ? Convert.ToDecimal(inProd.qtyin) : 0;
                 data.preProductionQty = data.targetQty - data.inProductionQty >= 0? data.targetQty - data.inProductionQty:0 ;
                 data.remainingSentQty = data.targetQty - data.sentBuyerQty >= 0 ? data.targetQty - data.sentBuyerQty : 0;
-                
+                data.remainingQty= kanban!=null ? data.targetQty - kanban.MaterialLength >= 0 ? data.targetQty - kanban.MaterialLength : 0 : data.targetQty;
+
                 newListData.Add(data);
             }
             return newListData.ToList();
@@ -180,6 +184,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var filter = string.Join(",", orderno.Distinct());
             var dpUri = $"GetProductionOsthoffStatusOrder?noorder={filter}";
             //var filter= string.Join(",", orderno.Distinct());
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+            var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
+            var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filter), Encoding.Unicode, "application/json"));
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentString = await response.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+
+                var listdata = JsonConvert.DeserializeObject<List<ProductionViewModel>>(dataString);
+
+                foreach (var i in listdata)
+                {
+                    spp.data.Add(i);
+                }
+            }
+
+            return spp;
+        }
+
+        public async Task<ProductionResult> GetDataPretreatmentKanban(List<string> orderno)
+        {
+            ProductionResult spp = new ProductionResult();
+
+            var filter = string.Join(",", orderno.Distinct());
+            var dpUri = $"GetKanbanPretreatmentBySPP?noorder={filter}";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
             var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
             var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filter), Encoding.Unicode, "application/json"));

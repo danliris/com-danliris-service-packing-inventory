@@ -34,7 +34,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
             httpClientService
                 .Setup(x => x.SendAsync(HttpMethod.Get, It.Is<string>(s => s.Contains("sales/production-orders/for-status-order-report")), It.IsAny<HttpContent>()))
                 .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(new OrderStatusReportSPPDataUtil().GetResultFormatterOkString()) });
-
+            httpClientService
+                .Setup(x => x.SendAsync(HttpMethod.Get, It.Is<string>(s => s.Contains("GetKanbanPretreatmentBySPP")), It.IsAny<HttpContent>()))
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(new OrderStatusReportOsthoffDataUtil().GetResultFormatterOkString()) });
 
             var spMock = new Mock<IServiceProvider>();
             spMock.Setup(s => s.GetService(typeof(IDyeingPrintingAreaInputProductionOrderRepository)))
