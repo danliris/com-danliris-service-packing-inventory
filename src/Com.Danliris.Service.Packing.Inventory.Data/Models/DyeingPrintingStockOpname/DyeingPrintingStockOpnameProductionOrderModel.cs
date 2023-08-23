@@ -50,6 +50,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public string TrackName { get; private set; }
         public string TrackBox { get; private set; }
         public string Description { get; set; }
+        public string FinishWidth { get; set; }
 
         #region Product SKU Packing
 
@@ -82,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
         public DyeingPrintingStockOpnameProductionOrderModel(double balance, int buyerId, string buyer, string color, string construction, string documentNo, string grade, int materialConstructionId, string materialConstructionName, int materialId,
             string materialName, string materialWidth, string motif, string packingInstruction, decimal packagingQty, double packagingLength, string packagingType, string packagingUnit,
             long productionOrderId, string productionOrderNo, string productionOrderType, double productionOrderOrderQuantity, int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
-             string remark, string status, string unit, string uomUnit, bool isStockOpname, string packingCodes, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, string description)
+             string remark, string status, string unit, string uomUnit, bool isStockOpname, string packingCodes, int trackId, string trackType, string trackName, string trackBox, DateTime createdUtcOrderNo, string description, string finishWIdth)
         {
             Balance = balance;
             BuyerId = buyerId;
@@ -123,6 +124,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStock
             TrackBox = trackBox;
             CreatedUtcOrderNo = createdUtcOrderNo;
             Description = description;
+            FinishWidth = finishWIdth;
         }
 
         public DyeingPrintingStockOpnameProductionOrderModel(double balance, int buyerId, string buyer, string color, string construction, string documentNo, string grade, int materialConstructionId, string materialConstructionName, int materialId,
