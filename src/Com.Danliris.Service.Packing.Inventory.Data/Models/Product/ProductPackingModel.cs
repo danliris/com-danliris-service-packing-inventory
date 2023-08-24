@@ -12,6 +12,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
         }
 
         // UOM is packing type
+        public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, string description, string packingType, bool afterStockOpname)
+        {
+            ProductSKUId = productSKUId;
+            UOMId = uomId;
+            PackingSize = packingSize;
+            Code = code;
+            Name = name;
+            Description = description;
+            PackingType = packingType;
+            AfterStockOpname = afterStockOpname;
+
+
+        }
+
         public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, string description)
         {
             ProductSKUId = productSKUId;
@@ -20,7 +34,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
             Code = code;
             Name = name;
             Description = description;
+            
+
         }
+
         //for SO
         public ProductPackingModel(int productSKUId, int uomId, double packingSize, string code, string name, string description, string packingType, bool afterStockOpname,
                                     int materialConstructionId, string materialConstructionName, int materialId, string materialName, int yarnMaterialId, string yarnMaterialName, string finishWidth)
