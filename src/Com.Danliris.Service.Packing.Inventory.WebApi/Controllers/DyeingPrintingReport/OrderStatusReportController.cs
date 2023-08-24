@@ -58,7 +58,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("download")]
-        public async Task<IActionResult> GetXls([FromQuery] DateTime startdate, DateTime finishdate, [FromQuery] int orderType = 0)
+        public async Task<IActionResult> GetXls([FromQuery] DateTime startdate, DateTime finishdate, [FromQuery] int orderType = 0, [FromQuery] string orderTypeName = null)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
 
-                var xls = await _service.GenerateExcel(startdate, finishdate, orderType);
+                var xls = await _service.GenerateExcel(startdate, finishdate, orderType, orderTypeName);
 
                 string filename = String.Format("Laporan Status Order - {0}.xlsx", finishdate.Year);
 
