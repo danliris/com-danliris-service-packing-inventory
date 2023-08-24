@@ -72,12 +72,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 worksheet.Cells["A" + 2 + ":F" + 2 + ""].Merge = true;
                 worksheet.Cells["A" + 3 + ":F" + 3 + ""].Merge = true;
                 worksheet.Cells["A" + 4 + ":F" + 4 + ""].Merge = true;
-                worksheet.Cells["A" + 1 + ":F" + 5 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A" + 1 + ":K" + 5 + ""].Style.Font.Bold = true;
                 worksheet.Cells["A5"].LoadFromDataTable(result, true);
-                worksheet.Cells["A" + 10 + ":K" + (index + 5) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 10 + ":K" + (index + 5) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 10 + ":K" + (index + 5) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                worksheet.Cells["A" + 10 + ":K" + (index + 5) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                 worksheet.Cells["A" + 1 + ":K" + (index + 5) + ""].AutoFitColumns();
 
