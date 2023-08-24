@@ -9,6 +9,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     public interface IOrderStatusReportService
     {
         Task<List<OrderStatusReportViewModel>> GetReportData(DateTime startdate, DateTime finishdate, int orderTypeId);
-        Task<MemoryStream> GenerateExcel(DateTime startdate, DateTime finishdate, int orderTypeId);
+        Task<MemoryStream> GenerateExcel(DateTime startdate, DateTime finishdate, int orderTypeId, string orderTypeName);
     }
 }
