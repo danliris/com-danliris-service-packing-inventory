@@ -86,10 +86,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         DetailErrors += "InputQuantity: 'Qty Terima Harus Lebih dari 0!',";
                     }
 
-                    if (item.InputQtyPacking == 0)
+                    if (item.InputQtyPacking <= 0)
                     {
                         Count++;
-                        DetailErrors += "InputQuantity: 'Qty Packing Terima Harus Lebih dari 0!',";
+                        DetailErrors += "InputQtyPacking: 'Qty Packing Terima Harus Lebih dari 0!',";
                     }
 
                     if (item.PackingLength == 0)
