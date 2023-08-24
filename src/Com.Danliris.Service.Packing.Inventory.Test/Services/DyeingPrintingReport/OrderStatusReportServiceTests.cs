@@ -106,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
             var service = GetService(GetServiceProvider(repoMock1.Object, repoOutMock.Object).Object);
 
 
-            var result = await service.GenerateExcel(DateTime.Now.AddDays(-30), DateTime.Now, outputProductionOrderModel.ProcessTypeId);
+            var result = await service.GenerateExcel(DateTime.Now.AddDays(-30), DateTime.Now, outputProductionOrderModel.ProcessTypeId, "");
 
             Assert.NotNull(result);
         }
@@ -126,7 +126,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
 
             var service = GetService(GetServiceProvider(repoMock1.Object, repoOutMock.Object).Object);
 
-            var result = service.GenerateExcel(DateTime.Now, DateTime.Now, 7);
+            var result = service.GenerateExcel(DateTime.Now, DateTime.Now, 7,"");
 
             Assert.NotNull(result);
         }
