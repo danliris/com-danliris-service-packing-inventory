@@ -1216,7 +1216,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 dt.Rows.Add("", "", "", packagingQty, 0, "", total, "", "");
             }
 
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Monitoring SPP Belum Diterima {0}","SO")) }, true);
+            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(dt, string.Format("Monitoring SPP Belum Diterima ")) }, true);
 
         }
 
