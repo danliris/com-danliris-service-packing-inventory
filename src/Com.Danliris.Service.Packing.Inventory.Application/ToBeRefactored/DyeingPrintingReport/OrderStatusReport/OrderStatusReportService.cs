@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _productionOutRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _serviceProvider = serviceProvider;
         }
+
         public async Task<MemoryStream> GenerateExcel(DateTime startdate, DateTime finishdate, int orderTypeId, string orderTypeName)
         {
             var list = await GetReportQuery(startdate, finishdate, orderTypeId);
@@ -47,6 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             result.Columns.Add(new DataColumn() { ColumnName = "Sudah Dikirim ke Buyer (m)", DataType = typeof(double) });
             result.Columns.Add(new DataColumn() { ColumnName = "Sisa Belum Kirim ke Buyer", DataType = typeof(double) });
 
+
             int index = 0;
             if (list.ToArray().Count() == 0)
                 result.Rows.Add("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0); // to allow column name to be generated properly for empty data as template
@@ -60,6 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                            item.qcQty, item.producedQty, item.sentGJQty, item.sentBuyerQty, item.remainingSentQty);
                 }
             }
+
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
@@ -87,6 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 return stream;
             }
             //return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
+
         }
 
         public async Task<List<OrderStatusReportViewModel>> GetReportData(DateTime startdate, DateTime finishdate, int orderTypeId)
@@ -153,6 +157,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
             var productionData = await GetDataProduction(noOrders);
             var productionResults = productionData.data;
+
             var kanbanPretreatment = await GetDataPretreatmentKanban(noOrders);
             var kanbanPretreatmentResults = kanbanPretreatment.data;
             List<OrderStatusReportViewModel> newListData = new List<OrderStatusReportViewModel>();
@@ -166,7 +171,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 data.preProductionQty = data.targetQty - data.inProductionQty >= 0? data.targetQty - data.inProductionQty:0 ;
                 data.remainingSentQty = data.targetQty - data.sentBuyerQty >= 0 ? data.targetQty - data.sentBuyerQty : 0;
                 data.remainingQty= kanban!=null ? data.targetQty - kanban.MaterialLength >= 0 ? data.targetQty - kanban.MaterialLength : 0 : data.targetQty;
-
                 newListData.Add(data);
             }
             return newListData.ToList();

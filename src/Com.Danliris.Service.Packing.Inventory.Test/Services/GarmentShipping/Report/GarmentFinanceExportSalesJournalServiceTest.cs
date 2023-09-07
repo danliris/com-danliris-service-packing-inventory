@@ -45,13 +45,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
             //        }))
             //    });
 
-            
             spMock.Setup(s => s.GetService(typeof(IGarmentShippingInvoiceRepository)))
                 .Returns(repository);
 
             spMock.Setup(s => s.GetService(typeof(IGarmentPackingListRepository)))
                .Returns(plrepository);
-            
+
             spMock.Setup(s => s.GetService(typeof(IIdentityProvider)))
                 .Returns(new IdentityProvider());
 
@@ -103,7 +102,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
                 .Returns(httpMock.Object);
 
             var service = GetService(spMock.Object);
-
             var result = service.GetReportData(model1.TruckingDate.Date, model1.TruckingDate.Date, 7);
 
             Assert.NotEmpty(result.ToList());
