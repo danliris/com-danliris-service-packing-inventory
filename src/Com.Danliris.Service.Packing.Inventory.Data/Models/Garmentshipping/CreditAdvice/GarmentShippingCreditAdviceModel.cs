@@ -11,6 +11,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         public string InvoiceNo { get; private set; }
         public DateTimeOffset Date { get; private set; }
         public double Amount { get; private set; }
+        public double LessFabricCost { get; private set; }
+        public double DHLCharges { get; private set; }
         public double AmountToBePaid { get; private set; }
         public double AmountPaid { get; private set; }
         public double BalanceAmount { get; private set; }
@@ -70,7 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
         {
         }
 
-        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, double amountPaid, double balanceAmount, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerCode, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAccountNo, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark)
+        public GarmentShippingCreditAdviceModel(int packingListId, int invoiceId, string invoiceNo, DateTimeOffset date, double amount, double amountToBePaid, double amountPaid, double balanceAmount, string paymentTerm, string receiptNo, string lCNo, bool valas, string lCType, double inkaso, double disconto, string sRNo, DateTimeOffset negoDate, DateTimeOffset paymentDate, string condition, double bankComission, double discrepancyFee, double nettNego, DateTimeOffset bTBCADate, double bTBAmount, double bTBRatio, double bTBRate, double bTBTransfer, double bTBMaterial, double billDays, double billAmount, string billCA, int buyerId, string buyerCode, string buyerName, string buyerAddress, int bankAccountId, string bankAccountName, string bankAccountNo, string bankAddress, double creditInterest, double bankCharges, double otherCharge, DateTimeOffset documentPresente, string cargoPolicyNo, DateTimeOffset cargoPolicyDate, double cargoPolicyValue, string accountsReceivablePolicyNo, DateTimeOffset accountsReceivablePolicyDate, double accountsReceivablePolicyValue, DateTimeOffset documentSendDate, string remark, double lessFabricCost, double dhlCharges)
         {
             PackingListId = packingListId;
             InvoiceId = invoiceId;
@@ -123,6 +125,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             AccountsReceivablePolicyValue = accountsReceivablePolicyValue;
             DocumentSendDate = documentSendDate;
             Remark = remark;
+            DHLCharges = dhlCharges;
+            LessFabricCost = lessFabricCost;
         }
 
         public void SetInvoiceId(int invoiceId, string userName, string userAgent)
@@ -423,6 +427,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Cre
             if (BalanceAmount != balanceAmount)
             {
                 BalanceAmount = balanceAmount;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetDHLCharges(double dhlCharges, string userName, string userAgent)
+        {
+            if (DHLCharges != dhlCharges)
+            {
+                DHLCharges = dhlCharges;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetLessFabricCost(double lessFabricCost, string userName, string userAgent)
+        {
+            if (LessFabricCost != lessFabricCost)
+            {
+                LessFabricCost = lessFabricCost;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
