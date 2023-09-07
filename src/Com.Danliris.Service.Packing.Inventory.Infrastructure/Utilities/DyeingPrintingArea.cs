@@ -44,8 +44,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities
 
         public static readonly string ZONAGUDANG = "ZONA GUDANG";
         public static readonly string RETURBARANG = "RETUR BARANG";
+        public static readonly string RETURBUYER = "RETUR BUYER";
 
         public static readonly string STOCK_OPNAME = "STOCK OPNAME";
         public static readonly string SO = "SO";
+        public static readonly string MOVE = "MOVE";
     }
 }

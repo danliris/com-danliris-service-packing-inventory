@@ -90,7 +90,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
         {
             var serviceMock = new Mock<IOrderStatusReportService>();
             serviceMock
-                .Setup(s => s.GenerateExcel( It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Setup(s => s.GenerateExcel( It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()))
                 .ReturnsAsync(new MemoryStream());
 
             var service = serviceMock.Object;
@@ -110,7 +110,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
         {
             var serviceMock = new Mock<IOrderStatusReportService>();
             serviceMock
-                .Setup(s => s.GenerateExcel(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+                .Setup(s => s.GenerateExcel(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<string>()))
                 .ReturnsAsync(new MemoryStream());
 
             var service = serviceMock.Object;

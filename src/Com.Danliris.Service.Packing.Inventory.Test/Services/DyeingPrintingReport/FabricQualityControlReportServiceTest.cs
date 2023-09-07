@@ -37,7 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
         public void GetReportData_Success()
         {
             var item = new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL", "", false, 1, "no", "", 1, "", "", "", "", "", "", "", "", "", "",
-                "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "")
+                "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "", DateTime.Now)
             { DyeingPrintingAreaOutputId = 1 };
             var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
             var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
         public void GenerateExcel_Success()
         {
             var item = new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL", "", false, 1, "no", "", 1, "", "", "", "", "", "", "", "", "", "",
-                "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "")
+                "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "", DateTime.Now)
             { DyeingPrintingAreaOutputId = 1 };
             var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
             var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",

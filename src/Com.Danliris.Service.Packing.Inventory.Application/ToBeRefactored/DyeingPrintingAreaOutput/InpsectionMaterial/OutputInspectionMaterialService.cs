@@ -339,7 +339,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
                             item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine, "", item.ProcessType.Id,
                             item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, false, item.FinishWidth,item.DateIn,viewModel.Date,item.MaterialOrigin,
-                            item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
+                            item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc );
                            
                         productionOrders.Add(outputProductionOrder);
 
@@ -406,7 +406,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine, "", item.ProcessType.Id,
                         item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, false, item.FinishWidth,item.DateIn, viewModel.Date, item.MaterialOrigin,
-                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
+                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc);
                         
                         modelItem.DyeingPrintingAreaOutputId = model.Id;
 
@@ -465,7 +465,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                     item.Motif, item.UomUnit, "", "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
                     "","", item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false, item.FinishWidth,item.DateIn, viewModel.Date, item.MaterialOrigin,
-                    item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name)).ToList());
+                    item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc)).ToList());
                 
 
                 result = await _repository.InsertAsync(model);
@@ -490,7 +490,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                         item.Motif, item.UomUnit, "", "", "", item.Balance, item.DyeingPrintingAreaInputProductionOrderId, item.BuyerId, "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
                         "","", item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false, item.FinishWidth,item.DateIn, viewModel.Date, item.MaterialOrigin,
-                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name);
+                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc);
                        
 
                     modelItem.DyeingPrintingAreaOutputId = model.Id;
@@ -778,7 +778,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         item.Unit, item.Color, item.Motif, item.UomUnit, detail.Remark, detail.Grade, item.Status, detail.Balance, item.Id, item.BuyerId, detail.AvalType,
                         item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth, item.Machine,item.ProductionMachine, "", item.ProcessType.Id,
                         item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, skuData.ProductSKUId, skuData.FabricSKUId, skuData.ProductSKUCode, skuData.ProductSKUCode == detail.ProductSKUCode && detail.HasPrintingProductSKU, item.FinishWidth,item.DateIn, viewModel.Date, item.MaterialOrigin,
-                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name)
+                        item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc)
                     
                     {
                         Id = detail.Id
@@ -852,7 +852,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     item.ProductionOrder.No, item.ProductionOrder.Type, item.ProductionOrder.OrderQuantity, item.PackingInstruction, item.CartNo, item.Buyer, item.Construction, item.Unit, item.Color,
                     item.Motif, item.UomUnit, "", "", "", item.Balance, 0, item.BuyerId, "", item.Material.Id, item.Material.Name, item.MaterialConstruction.Id, item.MaterialConstruction.Name, item.MaterialWidth,
                     "","", item.AdjDocumentNo, item.ProcessType.Id, item.ProcessType.Name, item.YarnMaterial.Id, item.YarnMaterial.Name, 0, 0, null, false, item.FinishWidth,item.DateIn, viewModel.Date, item.MaterialOrigin,
-                    item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name)
+                    item.ProductTextile.Id, item.ProductTextile.Code, item.ProductTextile.Name, item.ProductionOrder.CreatedUtc)
                    
                     {
                         Id = item.Id
