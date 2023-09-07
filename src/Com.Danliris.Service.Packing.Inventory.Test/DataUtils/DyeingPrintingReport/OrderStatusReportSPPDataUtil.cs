@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Com.DanLiris.Service.Purchasing.WebApi.Helpers;
 using Newtonsoft.Json;
 using System;
@@ -12,11 +13,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.DyeingPrintingRe
 
         public Dictionary<string, object> GetResultFormatterOk()
         {
-            IList<long> data = new List<long>();
-            data.Add(1);
-
+            List<OrderQuantityForStatusOrder> datas = new List<OrderQuantityForStatusOrder>();
+            OrderQuantityForStatusOrder data = new OrderQuantityForStatusOrder()
+            {
+                OrderId=1,
+                OrderQuantity=1
+            };
+            datas.Add(data);
             Dictionary<string, object> result = new Dictionary<string, object>();
-            result.Add("data", data);
+            result.Add("data", datas);
             return result;
         }
 

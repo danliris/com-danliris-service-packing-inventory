@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Com.Danliris.Service.Packing.Inventory.Application.Helper;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport
 {
@@ -28,7 +30,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _productionOutRepository = serviceProvider.GetService<IDyeingPrintingAreaOutputProductionOrderRepository>();
             _serviceProvider = serviceProvider;
         }
-        public async Task<MemoryStream> GenerateExcel(DateTime startdate, DateTime finishdate, int orderTypeId)
+
+        public async Task<MemoryStream> GenerateExcel(DateTime startdate, DateTime finishdate, int orderTypeId, string orderTypeName)
         {
             var list = await GetReportQuery(startdate, finishdate, orderTypeId);
             DataTable result = new DataTable();
@@ -45,11 +48,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             result.Columns.Add(new DataColumn() { ColumnName = "Sudah Dikirim ke Buyer (m)", DataType = typeof(double) });
             result.Columns.Add(new DataColumn() { ColumnName = "Sisa Belum Kirim ke Buyer", DataType = typeof(double) });
 
+
+            int index = 0;
             if (list.ToArray().Count() == 0)
                 result.Rows.Add("", "", 0, 0, 0, 0, 0, 0, 0, 0, 0); // to allow column name to be generated properly for empty data as template
             else
             {
-                int index = 0;
                 foreach (var item in list)
                 {
                     index++;
@@ -58,7 +62,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                            item.qcQty, item.producedQty, item.sentGJQty, item.sentBuyerQty, item.remainingSentQty);
                 }
             }
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Sheet 1");
+                var type = orderTypeName != null ? orderTypeName : "-";
+                worksheet.Cells["A1"].Value = "LAPORAN STATUS ORDER BERDASARKAN DELIVERY";
+                worksheet.Cells["A2"].Value = "JENIS ORDER : " + type;
+                worksheet.Cells["A3"].Value = "TANGGAL AWAL : " + startdate.ToShortDateString() + "  TANGGAL AKHIR : " + finishdate.ToShortDateString();
+                
+                worksheet.Cells["A" + 1 + ":F" + 1 + ""].Merge = true;
+                worksheet.Cells["A" + 2 + ":F" + 2 + ""].Merge = true;
+                worksheet.Cells["A" + 3 + ":F" + 3 + ""].Merge = true;
+                worksheet.Cells["A" + 4 + ":F" + 4 + ""].Merge = true;
+                worksheet.Cells["A" + 1 + ":K" + 5 + ""].Style.Font.Bold = true;
+                worksheet.Cells["A5"].LoadFromDataTable(result, true);
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells["A" + 5 + ":K" + (index + 5) + ""].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells["A" + 1 + ":K" + (index + 5) + ""].AutoFitColumns();
+
+
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                return stream;
+            }
+            //return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
+
         }
 
         public async Task<List<OrderStatusReportViewModel>> GetReportData(DateTime startdate, DateTime finishdate, int orderTypeId)
@@ -125,16 +157,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
             var productionData = await GetDataProduction(noOrders);
             var productionResults = productionData.data;
+
+            var kanbanPretreatment = await GetDataPretreatmentKanban(noOrders);
+            var kanbanPretreatmentResults = kanbanPretreatment.data;
             List<OrderStatusReportViewModel> newListData = new List<OrderStatusReportViewModel>();
             foreach(var data in dataList)
             {
                 var inProd = productionResults.Where(a => a.noorder == data.productionOrderNo).FirstOrDefault();
                 var target= sppResults.Where(x=>x.OrderId== data.productionOrderId).FirstOrDefault();
+                var kanban = kanbanPretreatmentResults.Where(a => a.SPPNo == data.productionOrderNo).FirstOrDefault();
                 data.targetQty = target.OrderQuantity;
                 data.inProductionQty = inProd!=null ? Convert.ToDecimal(inProd.qtyin) : 0;
                 data.preProductionQty = data.targetQty - data.inProductionQty >= 0? data.targetQty - data.inProductionQty:0 ;
                 data.remainingSentQty = data.targetQty - data.sentBuyerQty >= 0 ? data.targetQty - data.sentBuyerQty : 0;
-                
+                data.remainingQty= kanban!=null ? data.targetQty - kanban.MaterialLength >= 0 ? data.targetQty - kanban.MaterialLength : 0 : data.targetQty;
                 newListData.Add(data);
             }
             return newListData.ToList();
@@ -180,6 +216,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             var filter = string.Join(",", orderno.Distinct());
             var dpUri = $"GetProductionOsthoffStatusOrder?noorder={filter}";
             //var filter= string.Join(",", orderno.Distinct());
+            IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
+            var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
+            var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filter), Encoding.Unicode, "application/json"));
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentString = await response.Content.ReadAsStringAsync();
+                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+                var dataString = content.GetValueOrDefault("data").ToString();
+
+                var listdata = JsonConvert.DeserializeObject<List<ProductionViewModel>>(dataString);
+
+                foreach (var i in listdata)
+                {
+                    spp.data.Add(i);
+                }
+            }
+
+            return spp;
+        }
+
+        public async Task<ProductionResult> GetDataPretreatmentKanban(List<string> orderno)
+        {
+            ProductionResult spp = new ProductionResult();
+
+            var filter = string.Join(",", orderno.Distinct());
+            var dpUri = $"GetKanbanPretreatmentBySPP?noorder={filter}";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
             var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
             var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filter), Encoding.Unicode, "application/json"));

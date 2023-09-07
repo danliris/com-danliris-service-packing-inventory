@@ -155,7 +155,6 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.FabricQualityControlReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.RegradingResultDocReport;
-
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.PaymentDisposition.PaymentDispositionEMKLs;
@@ -168,9 +167,13 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentCreditAdviceMII;
 
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.ProductionSubmissionReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
-
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.IN;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.DyeingPrintingWarehouse;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.UpdateTrack;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.OUT;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingIN;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingRetur;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -313,11 +316,13 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteRepository, GarmentShippingDetailLocalSalesNoteRepository>();
             services.AddTransient<IGarmentShippingDetailLocalSalesNoteItemRepository, GarmentShippingDetailLocalSalesNoteItemRepository>();
-
             services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
-
-
             services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
+            services.AddTransient<IDPWarehousePreInputRepository, DPWarehousePreInputRepository>();
+            services.AddTransient<IDPWarehouseInputRepository, DPWarehouseInputRepository>();
+            services.AddTransient<IDPWarehouseSummaryRepository, DPWarehouseSummaryRepository>();
+            services.AddTransient<IDPWarehouseOutputRepository, DPWarehouseOutputRepository>();
+            services.AddTransient<IDPWarehouseOutputRepository, DPWarehouseOutputRepository>();
 
             #endregion
 
@@ -437,14 +442,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IOmzetYearMarketingService, OmzetYearMarketingService>();
             services.AddTransient<IStockOpnameMutationService, StockOpnameMutationService>();
             services.AddTransient<IStockOpnameSummaryService, StockOpnameSummaryService>();
+            services.AddTransient<IDPWarehouseInService, DPWarehouseInService>();
+            services.AddTransient<IDPWarehouseSummaryService, DPWarehouseSummaryService>();
+            services.AddTransient<IDPWarehouseOutService, DPWarehouseOutService>();
+            services.AddTransient<IDPShippingInService, DPShippingInService>();
+            services.AddTransient<IDPShippingReturService, DPShippingReturService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IOrderStatusReportService, OrderStatusReportService>();
 
             services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
+            services.AddTransient<IOrderStatusReportService, OrderStatusReportService>();
 
-
-          
             services.AddTransient<IFabricQualityControlReportService, FabricQualityControlReportService>();
             services.AddTransient<IRegradingResultDocReportService, RegradingResultDocReportService>();
 

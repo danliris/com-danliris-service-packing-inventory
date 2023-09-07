@@ -109,6 +109,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string ProductTextileName { get; set; }
         #endregion
 
+        public int DPWarehouseOutputId { get; set; }
+        public int DPWarehouseOutputItemId { get; set; }
+
 
         /// <summary>
         /// ID SPP Input
@@ -128,6 +131,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public decimal PackingListNet { get; private set; }
         public decimal PackingListGross { get; private set; }
         public string DeliveryOrderSalesType { get; private set; }
+        public DateTime CreatedUtcOrderNo { get;  set; }
 
         public DyeingPrintingAreaOutputProductionOrderModel()
         {
@@ -180,7 +184,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
                     string unit, string color, string motif, string uomUnit, string remark, string grade, string status, double balance, int dyeingPrintingAreaInputProductionOrderId, int buyerId, string avalType,
                     int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string machine, string productionMachine, string adjDocumentNo,
                     int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, string finishWidth,DateTimeOffset dateIn, DateTimeOffset dateOut, string materialOrigin, 
-                    int? productTextileId, string productTextileCode, string productTextileName) : this()
+                    int? productTextileId, string productTextileCode, string productTextileName, DateTime createdUtcOrderNo) : this()
                    
         {
             ProductionOrderId = productionOrderId;
@@ -238,6 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
+            CreatedUtcOrderNo = createdUtcOrderNo;
         }
 
         /// <summary>
@@ -1167,6 +1172,82 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTextileName;
         }
+
+        public DyeingPrintingAreaOutputProductionOrderModel(long productionOrderId, string productionOrderNo, string cartNo, string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, string remark, string grade, string status, double balance, string packingInstruction, string productionOrderType, double productionOrderOrderQuantity,
+            string packagingType, decimal packagingQty, string packagingUnit, long deliveryOrderSalesId, string deliveryOrderSalesNo, bool hasNextAreaDocument, string area,
+            string destinationArea, int dyeingPrintingAreaInputProductionOrderId, int buyerId, int materialId, string materialName, int materialConstructionId, string materialConstructionName,
+            string materialWidth, string adjDocumentNo, int processTypeId, string processTypeName,
+            int yarnMaterialId, string yarnMaterialName, int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth, DateTimeOffset dateIn, DateTimeOffset dateOut, string destinationBuyerName, string inventoryType, string materialOrigin, string deliveryOrderSalesType,
+            int? productTextileId, string productTextileCode, string productTextileName, int dpWarehouseOutputId, int dpWarehouseOutputItemId) : this()
+
+        {
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            CartNo = cartNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Remark = remark;
+            Grade = grade;
+            Status = status;
+            Balance = balance;
+            PackingInstruction = packingInstruction;
+            ProductionOrderType = productionOrderType;
+            ProductionOrderOrderQuantity = productionOrderOrderQuantity;
+            PackagingType = packagingType;
+            PackagingQty = packagingQty;
+            PackagingUnit = packagingUnit;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            HasNextAreaDocument = hasNextAreaDocument;
+            Area = area;
+            DestinationArea = destinationArea;
+            DyeingPrintingAreaInputProductionOrderId = dyeingPrintingAreaInputProductionOrderId;
+
+            BuyerId = buyerId;
+
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialConstructionName = materialConstructionName;
+            MaterialConstructionId = materialConstructionId;
+            MaterialWidth = materialWidth;
+            FinishWidth = finishWidth;
+
+            AdjDocumentNo = adjDocumentNo;
+
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+            HasPrintingProductSKU = hasPrintingProductSKU;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+            HasPrintingProductPacking = hasPrintingProductPacking;
+
+            PackagingLength = packingLength;
+            DateIn = dateIn;
+            DateOut = dateOut;
+            DestinationBuyerName = destinationBuyerName;
+            InventoryType = inventoryType;
+            MaterialOrigin = materialOrigin;
+            DeliveryOrderSalesType = deliveryOrderSalesType;
+            ProductTextileId = productTextileId;
+            ProductTextileCode = productTextileCode;
+            ProductTextileName = productTextileName;
+            DPWarehouseOutputId = dpWarehouseOutputId;
+            DPWarehouseOutputItemId = dpWarehouseOutputItemId;
+        }
+
 
         public void SetProductionOrder(long newProductionOrderId, string newProductionOrderNo, string newProductionOrderType, double newProductionOrderQuantity, string user, string agent)
         {

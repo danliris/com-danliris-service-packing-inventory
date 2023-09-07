@@ -489,7 +489,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputPackagingService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<int>()))
                 .ReturnsAsync(new MemoryStream());
             var service = serviceMock.Object;
 
@@ -502,7 +502,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcel(1);
+            var response = await controller.GetExcel(1, true);
 
             Assert.NotNull(response);
         }
@@ -512,7 +512,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
         {
             //v
             var serviceMock = new Mock<IOutputPackagingService>();
-            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<int>()))
+            serviceMock.Setup(s => s.GenerateExcel(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<int>()))
                 .Throws(new Exception());
             var service = serviceMock.Object;
 
@@ -525,7 +525,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers
 
             var controller = GetController(service, identityProvider, validateService);
             //controller.ModelState.IsValid == false;
-            var response = await controller.GetExcel(1);
+            var response = await controller.GetExcel(1, true);
 
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }

@@ -10,6 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
         FabricSKUIdCodeDto AutoCreateSKUSO(FabricSKUAutoCreateFormDto form);
         //FabricSKUIdCodeDto AutoCreateSKU(NewFabricSKUAutoCreateFormDto form);
         FabricPackingIdCodeDto AutoCreatePacking(FabricPackingAutoCreateFormDto form);
+        //FabricPackingIdCodeDto AutoCreatePackingNuovo(FabricPackingAutoCreateFormDto form);
         FabricPackingIdCodeDto AutoCreatePackingSO(FabricPackingAutoCreateFormDto form);
         Task<int> UpdateSKU(int id, FabricSKUFormDto form);
         int DeleteSKU(int id);
