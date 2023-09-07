@@ -88,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 },
                 creditInterest = model.CreditInterest,
                 dhlCharges = model.DHLCharges,
+                lessFabricCost = model.LessFabricCost,
                 bankCharges = model.BankCharges,
                 otherCharge = model.OtherCharge,
                 documentPresente = model.DocumentPresente,
