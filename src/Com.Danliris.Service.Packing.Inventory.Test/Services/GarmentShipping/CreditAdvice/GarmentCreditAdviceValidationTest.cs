@@ -26,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 date = DateTimeOffset.MinValue,
                 paymentTerm = "LC",
                 buyer = new Buyer(),
+                dhlCharges = 0,
                 bank = new BankAccount()
             };
 
@@ -62,6 +63,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 packingListId = 1,
                 paymentTerm = "TT/OA",
                 otherCharge = -1,
+                dhlCharges = 0,
             };
 
             var result = viewModel.Validate(null);
@@ -86,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 billDays = -1,
                 billAmount = -1,
                 creditInterest = -1,
+                dhlCharges = -1,
                 bankCharges = -1
             };
 
