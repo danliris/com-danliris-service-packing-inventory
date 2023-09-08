@@ -184,6 +184,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Repositories.GarmentShippi
             modelToUpdate.SetBillAmount(model.BillAmount, data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetBillCA("model.BillCA", data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetCreditInterest(model.CreditInterest, data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetDHLCharges(model.DHLCharges, data.LastModifiedBy, data.LastModifiedAgent);
+            modelToUpdate.SetLessFabricCost(model.LessFabricCost, data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetBankCharges(model.BankCharges, data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetOtherCharge(model.OtherCharge, data.LastModifiedBy, data.LastModifiedAgent);
             modelToUpdate.SetDocumentPresente(model.DocumentPresente.AddDays(1), data.LastModifiedBy, data.LastModifiedAgent);

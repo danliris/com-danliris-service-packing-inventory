@@ -449,6 +449,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDPShippingReturService, DPShippingReturService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
+            services.AddTransient<IOrderStatusReportService, OrderStatusReportService>();
+
             services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();
             services.AddTransient<IOrderStatusReportService, OrderStatusReportService>();
 
