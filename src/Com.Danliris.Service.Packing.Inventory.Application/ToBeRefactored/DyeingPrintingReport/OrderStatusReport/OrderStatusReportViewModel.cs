@@ -10,6 +10,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string bonNo { get; set; }
         public long productionOrderId { get; set; }
         public string productionOrderNo { get; set; }
+        public string processType { get; set; }
+        public string orderType { get; set; }
         public decimal targetQty { get; set; }
         public decimal remainingQty { get; set; }
         public decimal preProductionQty { get; set; }
