@@ -110,17 +110,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
             var queryIn = from a in _productionOrderRepository.ReadAll()
-                        where sppIds.Contains(a.ProductionOrderId) 
+                          where sppIds.Contains(a.ProductionOrderId)
                           select new OrderStatusReportViewModel
-                        {
-                            productionOrderNo = a.ProductionOrderNo,
-                            targetQty = 0,
-                            productionOrderId=a.ProductionOrderId,
-                            sentBuyerQty =0,
-                            inProductionQty =0,
-                            qcQty = a.Area == "INSPECTION MATERIAL" ? Convert.ToDecimal(a.InputQuantity) : 0,
-                            sentGJQty= a.Area=="GUDANG JADI" ? Convert.ToDecimal(a.InputQuantity):0
-                        };
+                          {
+                              productionOrderNo = a.ProductionOrderNo,
+                              targetQty = 0,
+                              productionOrderId = a.ProductionOrderId,
+                              sentBuyerQty = 0,
+                              inProductionQty = 0,
+                              qcQty = a.Area == "INSPECTION MATERIAL" ? Convert.ToDecimal(a.InputQuantity) : 0,
+                              sentGJQty = a.Area == "GUDANG JADI" ? Convert.ToDecimal(a.InputQuantity) : 0,
+                              processType = a.ProcessTypeName,
+                              orderType=a.ProductionOrderType
+                          };
             var queryOut = from b in _productionOutRepository.ReadAll() 
                            where sppIds.Contains(b.ProductionOrderId)
                            select new OrderStatusReportViewModel
@@ -132,11 +134,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                 inProductionQty= Convert.ToDecimal(b.Balance),
                                 qcQty= b.Area=="INSPECTION MATERIAL" ? Convert.ToDecimal(b.Balance)*(-1) : 0,
                                 sentGJQty = 0,
+                                processType = b.ProcessTypeName,
+                                orderType = b.ProductionOrderType
                            };
 
             var joinQuery = queryIn.ToList().Union(queryOut.ToList());
             var dataList = from data in joinQuery.ToList()
-                           group data by new { data.productionOrderNo, data.productionOrderId }
+                           group data by new { data.productionOrderNo, data.productionOrderId, data.processType, data.orderType }
                            into groupdata
                            select new OrderStatusReportViewModel
                            {
@@ -148,12 +152,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                producedQty = groupdata.Sum(a => a.qcQty),
                                sentGJQty = groupdata.Sum(a => a.sentGJQty),
                                productionOrderId =groupdata.Key.productionOrderId,
+                               processType= groupdata.Key.processType,
+                               orderType = groupdata.Key.orderType
                            };
 
-            var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
-            var productionData = await GetDataProduction(noOrders);
+            //var noOrders = dataList.Select(no => no.productionOrderNo).Distinct().ToList();
+            var ProdnoOrders = dataList.Select(no => no.productionOrderNo + ";" + no.orderType + ";"+no.processType).Distinct().ToList();
+            var productionData = await GetDataProduction(ProdnoOrders);
             var productionResults = productionData.data;
-            var kanbanPretreatment = await GetDataPretreatmentKanban(noOrders);
+            var kanbanPretreatment = await GetDataPretreatmentKanban(ProdnoOrders);
             var kanbanPretreatmentResults = kanbanPretreatment.data;
             List<OrderStatusReportViewModel> newListData = new List<OrderStatusReportViewModel>();
             foreach(var data in dataList)
@@ -210,7 +217,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             ProductionResult spp = new ProductionResult();
 
             var filter = string.Join(",", orderno.Distinct());
-            var dpUri = $"GetProductionOsthoffStatusOrder?noorder={filter}";
+            var dpUri = $"GetProductionOsthoffStatusOrder";
             //var filter= string.Join(",", orderno.Distinct());
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
             var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
@@ -239,7 +246,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             ProductionResult spp = new ProductionResult();
 
             var filter = string.Join(",", orderno.Distinct());
-            var dpUri = $"GetKanbanPretreatmentBySPP?noorder={filter}";
+            var dpUri = $"GetKanbanPretreatmentBySPP";
             IHttpClientService httpClient = (IHttpClientService)_serviceProvider.GetService(typeof(IHttpClientService));
             var garmentProductionUri = ApplicationSetting.DyeingPrintingEndpoint + dpUri;
             var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(filter), Encoding.Unicode, "application/json"));
