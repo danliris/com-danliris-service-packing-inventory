@@ -140,6 +140,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     invoiceNo = model.InvoiceNo,
                     date = model.Date,
                     amount = model.Amount,
+                    lessFabricCost = model.LessFabricCost,
+                    dhlCharges = model.DHLCharges,
                     amountToBePaid = model.AmountToBePaid,
                     buyerName = model.BuyerName,
                     bankAccountName = model.BankAccountName
