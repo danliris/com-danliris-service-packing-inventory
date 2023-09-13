@@ -92,6 +92,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 approveFinanceDate=model.ApproveFinanceDate,
                 approveShippingBy=model.ApproveShippingBy,
                 approveShippingDate=model.ApproveShippingDate,
+                isSubconPackingList = model.IsSubconPackingList,
                 items = (model.Items ?? new List<GarmentShippingLocalSalesNoteItemModel>()).Select(i => new GarmentShippingLocalSalesNoteItemViewModel
                 {
                     Active = i.Active,
