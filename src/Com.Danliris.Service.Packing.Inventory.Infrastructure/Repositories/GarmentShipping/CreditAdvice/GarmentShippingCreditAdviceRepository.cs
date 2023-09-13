@@ -32,6 +32,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
             var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
             invoice.SetAmountCA(invoice.AmountCA - (decimal)model.AmountPaid, _identityProvider.Username, UserAgent);
+            invoice.SetDHLCharges(invoice.DHLCharges - (decimal)model.DHLCharges, _identityProvider.Username, UserAgent);
 
             model.FlagForDelete(_identityProvider.Username, UserAgent);
 
@@ -42,7 +43,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             var invoice = _garmentshippingInvoiceDbSet.FirstOrDefault(a => a.Id == model.InvoiceId);
             invoice.SetAmountCA(invoice.AmountCA + (decimal)model.AmountPaid, _identityProvider.Username, UserAgent);
-
+            invoice.SetDHLCharges(invoice.DHLCharges + (decimal)model.DHLCharges, _identityProvider.Username, UserAgent);
+            invoice.SetLessFabricCost((decimal)model.LessFabricCost, _identityProvider.Username, UserAgent);
+           
             model.FlagForCreate(_identityProvider.Username, UserAgent);
             _dbSet.Add(model);
 
@@ -84,6 +87,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBillAmount(model.BillAmount, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBillCA(model.BillCA, _identityProvider.Username, UserAgent);
             modelToUpdate.SetCreditInterest(model.CreditInterest, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetDHLCharges(model.DHLCharges, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetLessFabricCost(model.LessFabricCost, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankCharges(model.BankCharges, _identityProvider.Username, UserAgent);
             modelToUpdate.SetOtherCharge(model.OtherCharge, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDocumentPresente(model.DocumentPresente, _identityProvider.Username, UserAgent);

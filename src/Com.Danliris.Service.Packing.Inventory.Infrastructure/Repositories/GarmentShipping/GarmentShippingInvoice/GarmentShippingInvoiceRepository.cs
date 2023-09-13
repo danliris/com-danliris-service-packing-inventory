@@ -83,7 +83,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
 		public IQueryable<GarmentShippingInvoiceModel> ReadAll()
 		{
-			return _garmentshippingInvoiceDbSet.AsNoTracking();
+			return _garmentshippingInvoiceDbSet.Include(i => i.Items).AsNoTracking();
 		}
 
 		public Task<GarmentShippingInvoiceModel> ReadByIdAsync(int id)
@@ -131,6 +131,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 			modelToUpdate.SetCPrice(model.CPrice, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetAmountToBePaid(model.AmountToBePaid, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetAmountCA(model.AmountCA, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetLessFabricCost(model.LessFabricCost, _identityProvider.Username, USER_AGENT);
+            modelToUpdate.SetDHLCharges(model.DHLCharges, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetMemo(model.Memo, _identityProvider.Username, USER_AGENT);
 			modelToUpdate.SetTotalAmount(model.TotalAmount, _identityProvider.Username, USER_AGENT);
             modelToUpdate.SetConsigneeAddress(model.ConsigneeAddress, _identityProvider.Username, USER_AGENT);

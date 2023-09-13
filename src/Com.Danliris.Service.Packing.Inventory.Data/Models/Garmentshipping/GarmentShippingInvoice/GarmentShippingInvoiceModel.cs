@@ -39,6 +39,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public string Description { get; set; }
         public string Remark { get; set; }
         public decimal TotalAmount { get; set; }
+		public decimal LessFabricCost { get; private set; }
+		public decimal DHLCharges { get; private set; }
 		public decimal AmountToBePaid { get; set; }
         public decimal AmountCA { get; set; }
         public string CPrice { get; set; }
@@ -63,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         }
 
-		public GarmentShippingInvoiceModel(int PackingListId,string InvoiceNo, DateTimeOffset InvoiceDate, string From, string To,int BuyerAgentId, string BuyerAgentCode,string BuyerAgentName, string Consignee, string LCNo, string IssuedBy, int SectionId,string SectionCode, string ShippingPer, DateTimeOffset SailingDate, string ConfirmationOfOrderNo, int ShippingStaffId,string ShippingStaff,int FabricTypeId, string FabricType, int BankAccountId,string BankAccount, int PaymentDue, string PEBNo, DateTimeOffset PEBDate, string NPENo, DateTimeOffset NPEDate, string Description, string Remark, ICollection<GarmentShippingInvoiceItemModel> Items, decimal AmountToBePaid, decimal AmountCA, string CPrice, string Say, string Memo,bool IsUsed,string BL,DateTimeOffset BLDate, string CO, DateTimeOffset CODate, string COTP, DateTimeOffset COTPDate, ICollection<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustment,decimal TotalAmount, string consigneeAddress, string deliverTo, ICollection<GarmentShippingInvoiceUnitModel> GarmentShippingInvoiceUnit)
+		public GarmentShippingInvoiceModel(int PackingListId,string InvoiceNo, DateTimeOffset InvoiceDate, string From, string To,int BuyerAgentId, string BuyerAgentCode,string BuyerAgentName, string Consignee, string LCNo, string IssuedBy, int SectionId,string SectionCode, string ShippingPer, DateTimeOffset SailingDate, string ConfirmationOfOrderNo, int ShippingStaffId,string ShippingStaff,int FabricTypeId, string FabricType, int BankAccountId,string BankAccount, int PaymentDue, string PEBNo, DateTimeOffset PEBDate, string NPENo, DateTimeOffset NPEDate, string Description, string Remark, ICollection<GarmentShippingInvoiceItemModel> Items, decimal AmountToBePaid, decimal AmountCA, string CPrice, string Say, string Memo,bool IsUsed,string BL,DateTimeOffset BLDate, string CO, DateTimeOffset CODate, string COTP, DateTimeOffset COTPDate, ICollection<GarmentShippingInvoiceAdjustmentModel> GarmentShippingInvoiceAdjustment,decimal TotalAmount, string consigneeAddress, string deliverTo, ICollection<GarmentShippingInvoiceUnitModel> GarmentShippingInvoiceUnit, decimal LessFabricCost, decimal DHLCharges )
 		{
 			this.PackingListId = PackingListId;
 			this.InvoiceNo = InvoiceNo;
@@ -112,6 +114,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             this.ConsigneeAddress = consigneeAddress;
             this.GarmentShippingInvoiceUnit = GarmentShippingInvoiceUnit;
             this.DeliverTo = deliverTo;
+			this.LessFabricCost = LessFabricCost;
+			this.DHLCharges = DHLCharges;
 
         }
 
@@ -230,6 +234,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 			if (this.TotalAmount != totalAmount)
 			{
 				this.TotalAmount = totalAmount;
+				this.FlagForUpdate(username, uSER_AGENT);
+			}
+		}
+
+		public void SetLessFabricCost(decimal LessFabricCost, string username, string uSER_AGENT)
+		{
+			if (this.LessFabricCost != LessFabricCost)
+			{
+				this.LessFabricCost = LessFabricCost;
+				this.FlagForUpdate(username, uSER_AGENT);
+			}
+		}
+
+		public void SetDHLCharges(decimal DHLCharges, string username, string uSER_AGENT)
+		{
+			if (this.DHLCharges != DHLCharges)
+			{
+				this.DHLCharges = DHLCharges;
 				this.FlagForUpdate(username, uSER_AGENT);
 			}
 		}

@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230907011956_Add_Column_DHLCharges_on_Credit_Advices")]
+    partial class Add_Column_DHLCharges_on_Credit_Advices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3526,8 +3528,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedUtc");
 
-                    b.Property<decimal>("DHLCharges");
-
                     b.Property<string>("DeletedAgent")
                         .HasMaxLength(128);
 
@@ -3572,8 +3572,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<decimal>("LessFabricCost");
 
                     b.Property<string>("Memo");
 
@@ -7007,8 +7005,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("FinishWidth");
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastModifiedAgent");
@@ -7016,14 +7012,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy");
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("MaterialConstructionId");
-
-                    b.Property<string>("MaterialConstructionName");
-
-                    b.Property<int>("MaterialId");
-
-                    b.Property<string>("MaterialName");
 
                     b.Property<string>("Name")
                         .HasMaxLength(512);
@@ -7036,10 +7024,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<int>("ProductSKUId");
 
                     b.Property<int>("UOMId");
-
-                    b.Property<int>("YarnMaterialId");
-
-                    b.Property<string>("YarnMaterialName");
 
                     b.HasKey("Id");
 
