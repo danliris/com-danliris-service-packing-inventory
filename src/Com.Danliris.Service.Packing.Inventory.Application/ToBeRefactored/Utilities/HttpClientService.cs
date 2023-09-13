@@ -33,5 +33,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
 
             return await _client.SendAsync(request);
         }
+
+        public async Task<HttpResponseMessage> PutAsync(string url, string token, HttpContent content)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return await _client.PutAsync(url, content);
+        }
+
+        public async Task<HttpResponseMessage> PutAsync(string url, HttpContent content)
+        {
+            return await _client.PutAsync(url, content);
+        }
     }
 }

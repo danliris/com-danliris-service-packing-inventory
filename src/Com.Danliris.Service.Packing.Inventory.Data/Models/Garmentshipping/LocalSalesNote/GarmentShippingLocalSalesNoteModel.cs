@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public int BankId { get; private set; }
         public string BankName { get; private set; }
         public string AccountNumber { get; private set; }
-
+        public bool IsSubconPackingList { get; set; }
         public ICollection<GarmentShippingLocalSalesNoteItemModel> Items { get; private set; }
 
         public GarmentShippingLocalSalesNoteModel()
@@ -256,6 +256,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (RejectedReason != rejectedReason)
             {
                 RejectedReason = rejectedReason;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetIsSubconPackingList (bool isSubconPackingList, string userName, string userAgent)
+        {
+            if (IsSubconPackingList != isSubconPackingList)
+            {
+                IsSubconPackingList = isSubconPackingList;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
