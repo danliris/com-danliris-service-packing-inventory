@@ -23,6 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal DPP { get; set; }
         public decimal PPN { get; set; }
         public decimal Total { get; set; }
+        public DateTimeOffset LCLDate { get; set; }
     }
 
     public class GarmentDetailLocalSalesOmzetViewModel
