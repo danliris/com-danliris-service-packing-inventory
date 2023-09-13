@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230908061453_add-table-GReceiptSubconPackingList")]
+    partial class addtableGReceiptSubconPackingList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,6 +282,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("Area")
                         .HasMaxLength(64);
 
+                    b.Property<string>("AreaOrigin");
+
                     b.Property<double>("AvalALength");
 
                     b.Property<double>("AvalBLength");
@@ -323,6 +327,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedUtc");
 
                     b.Property<DateTime>("CreatedUtcOrderNo");
+
+                    b.Property<int>("DPPreInputWarehouseId");
 
                     b.Property<DateTimeOffset>("DateIn");
 
@@ -541,6 +547,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<int>("DPPreInputWarehouseId");
 
                     b.Property<DateTimeOffset>("Date");
 
@@ -765,6 +773,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("CreatedUtcOrderNo");
+
+                    b.Property<int>("DPWarehouseOutputId");
+
+                    b.Property<int>("DPWarehouseOutputItemId");
 
                     b.Property<DateTimeOffset>("DateIn");
 
@@ -1533,6 +1547,1262 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.ToTable("DyeingPrintingStockOpnameSummaries");
                 });
 
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingInputItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("AreaOrigin");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<double>("BalanceRemains");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("CreatedUtcOrderNo");
+
+                    b.Property<int>("DPShippingInputId");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("DeliveryOrderReturId");
+
+                    b.Property<string>("DeliveryOrderReturNo");
+
+                    b.Property<int>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo");
+
+                    b.Property<string>("DeliveryOrderSalesType");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DestinationBuyerName");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<double>("InputPackagingQty");
+
+                    b.Property<double>("InputQuantity");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<int>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<string>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DPShippingInputId");
+
+                    b.ToTable("DPShippingInputItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingInputModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("BonNo");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Shift");
+
+                    b.Property<string>("ShippingType");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPShippingInputs");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingMovementModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<int>("DPShippingDocumentId");
+
+                    b.Property<int>("DPShippingInputItemId");
+
+                    b.Property<int>("DPShippingOutputItemId");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DestinationArea");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingType");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductTextileCode");
+
+                    b.Property<int>("ProductTextileId");
+
+                    b.Property<string>("ProductTextileName");
+
+                    b.Property<int>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPShippingMovements");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingOutputItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("BuyerName");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("CreatedUtcOrderNo");
+
+                    b.Property<int>("DPShippingOutputId");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo");
+
+                    b.Property<string>("DeliveryOrderSalesType");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DestinationArea");
+
+                    b.Property<string>("DestinationBuyerName");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("HasNextAreaDocument");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<string>("PackingListBaleNo");
+
+                    b.Property<decimal>("PackingListGross");
+
+                    b.Property<decimal>("PackingListNet");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<int>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<string>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("ShippingGrade");
+
+                    b.Property<string>("ShippingRemark");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DPShippingOutputId");
+
+                    b.ToTable("DPShippingOutputItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingOutputModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("BonNo");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<int>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo");
+
+                    b.Property<string>("DestinationArea");
+
+                    b.Property<string>("DestinationBuyerName");
+
+                    b.Property<bool>("HasOuputArea");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("PackingListAuthorized");
+
+                    b.Property<string>("PackingListDescription");
+
+                    b.Property<string>("PackingListIssuedBy");
+
+                    b.Property<string>("PackingListLCNumber");
+
+                    b.Property<string>("PackingListNo");
+
+                    b.Property<string>("PackingListRemark");
+
+                    b.Property<string>("PackingType");
+
+                    b.Property<string>("ShippingCode");
+
+                    b.Property<bool>("UpdateBySales");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPShippingOutputs");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseInputItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<string>("Buyer");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("CreatedUtcOrderNo");
+
+                    b.Property<int>("DPWarehouseInputId");
+
+                    b.Property<DateTimeOffset>("DateIn");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<long>("DeliveryOrderReturId");
+
+                    b.Property<string>("DeliveryOrderReturNo");
+
+                    b.Property<long>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo");
+
+                    b.Property<string>("DeliveryOrderSalesType");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DestinationBuyerName");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<decimal>("InputPackagingQty");
+
+                    b.Property<double>("InputQuantity");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("TrackBox");
+
+                    b.Property<int>("TrackId");
+
+                    b.Property<string>("TrackName");
+
+                    b.Property<string>("TrackType");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DPWarehouseInputId");
+
+                    b.ToTable("DPWarehouseInputItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseInputModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("BonNo");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("Group");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsReject");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("Shift");
+
+                    b.Property<string>("ShippingType");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPWarehouseInputs");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseMovementModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<string>("Buyer");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<string>("DPDocumentBonNo");
+
+                    b.Property<int>("DPDocumentId");
+
+                    b.Property<int>("DPDocumentItemId");
+
+                    b.Property<int>("DPSummaryId");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingType");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductTextileCode");
+
+                    b.Property<int?>("ProductTextileId");
+
+                    b.Property<string>("ProductTextileName");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("TrackFromBox");
+
+                    b.Property<int>("TrackFromId");
+
+                    b.Property<string>("TrackFromName");
+
+                    b.Property<string>("TrackFromType");
+
+                    b.Property<string>("TrackToBox");
+
+                    b.Property<int>("TrackToId");
+
+                    b.Property<string>("TrackToName");
+
+                    b.Property<string>("TrackToType");
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPWarehouseMovements");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseOutputItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<string>("Buyer");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<int>("DPWarehouseOutputId");
+
+                    b.Property<int>("DPWarehouseSummaryId");
+
+                    b.Property<DateTimeOffset>("DateOut");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<long>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo");
+
+                    b.Property<string>("DeliveryOrderSalesType");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("DestinationArea");
+
+                    b.Property<string>("DestinationBuyerName");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("HasNextAreaDocument");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<string>("NextAreaInputStatus");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<string>("PackingListBaleNo");
+
+                    b.Property<decimal>("PackingListGross");
+
+                    b.Property<decimal>("PackingListNet");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<string>("ProductTextileCode");
+
+                    b.Property<int?>("ProductTextileId");
+
+                    b.Property<string>("ProductTextileName");
+
+                    b.Property<string>("ProductionMachine");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("ShippingGrade");
+
+                    b.Property<string>("ShippingRemark");
+
+                    b.Property<string>("TrackFromBox");
+
+                    b.Property<int>("TrackFromId");
+
+                    b.Property<string>("TrackFromName");
+
+                    b.Property<string>("TrackFromType");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DPWarehouseOutputId");
+
+                    b.ToTable("DPWarehouseOutputItems");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseOutputModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Area");
+
+                    b.Property<string>("BonNo");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTimeOffset>("Date");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<long>("DeliveryOrderSalesId");
+
+                    b.Property<string>("DeliveryOrderSalesNo");
+
+                    b.Property<string>("DestinationArea");
+
+                    b.Property<string>("Group");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<string>("PackingListAuthorized");
+
+                    b.Property<string>("PackingListDescription");
+
+                    b.Property<string>("PackingListIssuedBy");
+
+                    b.Property<string>("PackingListLCNumber");
+
+                    b.Property<string>("PackingListNo");
+
+                    b.Property<string>("PackingListRemark");
+
+                    b.Property<string>("PackingType");
+
+                    b.Property<string>("Shift");
+
+                    b.Property<string>("ShippingCode");
+
+                    b.Property<string>("Type");
+
+                    b.Property<bool>("UpdateBySales");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPWarehouseOutputs");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehousePreInputModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<double>("BalanceReceipt");
+
+                    b.Property<double>("BalanceReject");
+
+                    b.Property<double>("BalanceRemains");
+
+                    b.Property<string>("Buyer");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("CartNo");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("CreatedUtcOrderNo");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<decimal>("PackagingQtyReceipt");
+
+                    b.Property<decimal>("PackagingQtyReject");
+
+                    b.Property<decimal>("PackagingQtyRemains");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("TrackBox");
+
+                    b.Property<int>("TrackId");
+
+                    b.Property<string>("TrackName");
+
+                    b.Property<string>("TrackType");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPWarehousePreInputs");
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseSummaryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<double>("Balance");
+
+                    b.Property<double>("BalanceOut");
+
+                    b.Property<double>("BalanceRemains");
+
+                    b.Property<string>("Buyer");
+
+                    b.Property<int>("BuyerId");
+
+                    b.Property<string>("CartNo");
+
+                    b.Property<string>("Color");
+
+                    b.Property<string>("Construction");
+
+                    b.Property<string>("CreatedAgent");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedUtc");
+
+                    b.Property<DateTime>("CreatedUtcOrderNo");
+
+                    b.Property<string>("DeletedAgent");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<DateTime>("DeletedUtc");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("FabricPackingId");
+
+                    b.Property<int>("FabricSKUId");
+
+                    b.Property<string>("FinishWidth");
+
+                    b.Property<string>("Grade");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastModifiedAgent");
+
+                    b.Property<string>("LastModifiedBy");
+
+                    b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<int>("MaterialConstructionId");
+
+                    b.Property<string>("MaterialConstructionName");
+
+                    b.Property<int>("MaterialId");
+
+                    b.Property<string>("MaterialName");
+
+                    b.Property<string>("MaterialOrigin");
+
+                    b.Property<string>("MaterialWidth");
+
+                    b.Property<string>("Motif");
+
+                    b.Property<double>("PackagingLength");
+
+                    b.Property<decimal>("PackagingQty");
+
+                    b.Property<decimal>("PackagingQtyOut");
+
+                    b.Property<decimal>("PackagingQtyRemains");
+
+                    b.Property<string>("PackagingType");
+
+                    b.Property<string>("PackagingUnit");
+
+                    b.Property<string>("PackingInstruction");
+
+                    b.Property<int>("ProcessTypeId");
+
+                    b.Property<string>("ProcessTypeName");
+
+                    b.Property<string>("ProductPackingCode");
+
+                    b.Property<int>("ProductPackingId");
+
+                    b.Property<string>("ProductSKUCode");
+
+                    b.Property<int>("ProductSKUId");
+
+                    b.Property<long>("ProductionOrderId");
+
+                    b.Property<string>("ProductionOrderNo");
+
+                    b.Property<double>("ProductionOrderOrderQuantity");
+
+                    b.Property<string>("ProductionOrderType");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<double>("SplitQuantity");
+
+                    b.Property<string>("TrackBox");
+
+                    b.Property<int>("TrackId");
+
+                    b.Property<string>("TrackName");
+
+                    b.Property<string>("TrackType");
+
+                    b.Property<string>("Unit");
+
+                    b.Property<string>("UomUnit");
+
+                    b.Property<int>("YarnMaterialId");
+
+                    b.Property<string>("YarnMaterialName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DPWarehouseSummaries");
+                });
+
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.FabricQualityControl.CriteriaModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1989,6 +3259,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("CreditInterest");
 
+                    b.Property<double>("DHLCharges");
+
                     b.Property<DateTimeOffset>("Date");
 
                     b.Property<string>("DeletedAgent")
@@ -2029,6 +3301,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<double>("LessFabricCost");
 
                     b.Property<DateTimeOffset>("NegoDate");
 
@@ -7821,6 +9095,38 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingStockOpname.DyeingPrintingStockOpnameModel", "DyeingPrintingStockOpname")
                         .WithMany("DyeingPrintingStockOpnameProductionOrders")
                         .HasForeignKey("DyeingPrintingStockOpnameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingInputItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingInputModel", "DPShippingInput")
+                        .WithMany("DPShippingInputItems")
+                        .HasForeignKey("DPShippingInputId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingOutputItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping.DPShippingOutputModel", "DPShippingOutput")
+                        .WithMany("DPShippingOutputItems")
+                        .HasForeignKey("DPShippingOutputId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseInputItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseInputModel", "DPWarehouseInput")
+                        .WithMany("DPWarehouseInputItems")
+                        .HasForeignKey("DPWarehouseInputId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseOutputItemModel", b =>
+                {
+                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPWarehouseOutputModel", "DPWarehouseOutput")
+                        .WithMany("DPWarehouseOutputItems")
+                        .HasForeignKey("DPWarehouseOutputId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
