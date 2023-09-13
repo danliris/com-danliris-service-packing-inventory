@@ -174,6 +174,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.OUT;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingIN;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingRetur;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentReceiptSubconPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -324,6 +326,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDPWarehouseOutputRepository, DPWarehouseOutputRepository>();
             services.AddTransient<IDPWarehouseOutputRepository, DPWarehouseOutputRepository>();
 
+            services.AddTransient<IGarmentReceiptSubconPackingListRepository, GarmentReceiptSubconPackingListRepository>();
+            services.AddTransient<IGarmentReceiptSubconPackingListItemRepository, GarmentReceiptSubconPackingListItemRepository>();
+            services.AddTransient<IGarmentReceiptSubconPackingListDetailRepository, GarmentReceiptSubconPackingListDetailRepository>();
+            services.AddTransient<IGarmentReceiptSubconPackingListDetailSizeRepository, GarmentReceiptSubconPackingListDetailSizeRepository>();
             #endregion
 
             #region Service
@@ -470,6 +476,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentFinanceDetailLocalSalesJournalService, GarmentFinanceDetailLocalSalesJournalService>();
             services.AddTransient<IGarmentFinanceDetailExportSalesJournalService, GarmentFinanceDetailExportSalesJournalService>();
 
+            services.AddTransient<IGarmentReceiptSubconPackingListService, GarmentReceiptSubconPackingListService>();
             #endregion
 
             // Register Provider
