@@ -42,6 +42,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string Remarks { get; set; }
 
         public string RoType { get; set; }
+        public double TotalQuantityPackingOut { get; set; }
+        public double TotalQuantitySize { get; set; }
+        
 
         public ICollection<GarmentReceiptSubconPackingListDetailViewModel> Details { get; set; }
     }
