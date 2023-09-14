@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public string RONo { get; private set; }
         public string PackingOutNo { get; private set; }
+        public double TotalQuantityPackingOut { get; private set; }
         public string SCNo { get; private set; }
 
         public int BuyerBrandId { get; private set; }
@@ -51,7 +52,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Details = new HashSet<GarmentReceiptSubconPackingListDetailModel>();
         }
 
-        public GarmentReceiptSubconPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, string marketingName, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, string remarks, string packingOutNo, ICollection<GarmentReceiptSubconPackingListDetailModel> details)
+        public GarmentReceiptSubconPackingListItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, int comodityId, string comodityCode, string comodityName, string comodityDescription, string marketingName, double quantity, int uomId, string uomUnit, double priceRO, double price, double priceFob, double priceCmt, double amount, string valas, int unitId, string unitCode, string article, string orderNo, string description, string descriptionMd, string remarks, string packingOutNo, ICollection<GarmentReceiptSubconPackingListDetailModel> details,double totalQtyPackingOut)
         {
             RONo = rONo;
             SCNo = sCNo;
@@ -80,6 +81,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Remarks = remarks;
             PackingOutNo = packingOutNo;
             Details = details;
+            TotalQuantityPackingOut = totalQtyPackingOut;
         }
 
         public void SetRONo(string rONo, string userName, string userAgent)
