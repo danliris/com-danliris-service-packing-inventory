@@ -84,6 +84,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetBankName(model.BankName, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankAccountNo(model.BankAccountNo, _identityProvider.Username, UserAgent);
             modelToUpdate.SetBankCurrencyCode(model.BankCurrencyCode, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBankCharge(model.BankCharge, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetNettNego(model.NettNego, _identityProvider.Username, UserAgent);
 
             foreach (var itemToUpdate in modelToUpdate.Items)
             {
@@ -94,6 +96,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     itemToUpdate.SetCurrencyId(item.CurrencyId, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetCurrencyCode(item.CurrencyCode, _identityProvider.Username, UserAgent);
                     itemToUpdate.SetAmount(item.Amount, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetDebitCreditNoteId(item.DebitCreditNoteId, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetTypeDebitCreditNote(item.TypeDebitCreditNote, _identityProvider.Username, UserAgent);
+                    itemToUpdate.SetItemTypeDebitCreditNote(item.ItemTypeDebitCreditNote, _identityProvider.Username, UserAgent);
                 }
                 else
                 {
