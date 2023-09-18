@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230913035259_add_column_bankCharge_Nettnego_GarmentShippingNote")]
+    partial class add_column_bankCharge_Nettnego_GarmentShippingNote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1989,6 +1991,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("CreditInterest");
 
+                    b.Property<double>("DHLCharges");
+
                     b.Property<DateTimeOffset>("Date");
 
                     b.Property<string>("DeletedAgent")
@@ -2029,6 +2033,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<double>("LessFabricCost");
 
                     b.Property<DateTimeOffset>("NegoDate");
 
@@ -3522,6 +3528,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedUtc");
 
+                    b.Property<decimal>("DHLCharges");
+
                     b.Property<string>("DeletedAgent")
                         .HasMaxLength(128);
 
@@ -3566,6 +3574,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                         .HasMaxLength(128);
 
                     b.Property<DateTime>("LastModifiedUtc");
+
+                    b.Property<decimal>("LessFabricCost");
 
                     b.Property<string>("Memo");
 

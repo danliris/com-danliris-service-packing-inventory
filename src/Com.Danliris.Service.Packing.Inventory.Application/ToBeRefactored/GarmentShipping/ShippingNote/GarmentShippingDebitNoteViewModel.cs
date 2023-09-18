@@ -52,6 +52,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     //    errorItemsCount++;
                     //}
 
+
+                    if (item.debitCreditNote == null || item.debitCreditNote.Id == 0)
+                    {
+                        errorItem["debitCreditNote"] = "Item Debit Note tidak boleh kosong";
+                        errorItemsCount++;
+                    }
+
                     if (item.amount <= 0)
                     {
                         errorItem["amount"] = "Amount harus lebih dari 0";
