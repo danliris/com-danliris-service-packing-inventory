@@ -6,6 +6,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNote;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -121,11 +123,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //queryCA = queryCA.OrderBy(w => w.InvoiceNo);
             List<GarmentDebitNoteMIIMonitoringViewModel> datadn = new List<GarmentDebitNoteMIIMonitoringViewModel>();
 
-            var Query = (from a in query                       
+            var Query = (from a in query
+                         //join b in itemrepository.ReadAll() on a.Id equals b.ShippingNoteId
                          where a.NoteType == GarmentShippingNoteTypeEnum.DN
 
                          select new GarmentDebitNoteMIIMonitoringViewModel
                          {
+                             DNId = a.Id,
                              DNDate = a.Date,
                              DNDate1 = a.Date.AddHours(7).Date,
                              InvoiceNo = a.NoteNo,
@@ -138,10 +142,59 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                              CurrencyCode = a.BankCurrencyCode,
                              Rate = a.BankCurrencyCode == "IDR" ? 1 : 0,
                              AmountIDR = a.BankCurrencyCode == "IDR" ? Convert.ToDecimal(a.TotalAmount) : 0,
+                             Header = 1
                          });
-            ///
 
-            var currencyFilters = Query
+            var QueryBankCharge = (from a in query
+                                   //join b in itemrepository.ReadAll() on a.Id equals b.ShippingNoteId
+                                   where a.NoteType == GarmentShippingNoteTypeEnum.DN
+                                   && a.BankCharge >0
+
+                                   select new GarmentDebitNoteMIIMonitoringViewModel
+                                   {
+                                       DNId = a.Id,
+                                       DNDate = a.Date,
+                                       DNDate1 = a.Date.AddHours(7).Date,
+                                       InvoiceNo = "BANK CHARGE",
+                                       BuyerCode = a.BuyerCode,
+                                       BuyerName = a.BuyerName,
+                                       BankName = a.BankName,
+                                       AccountBankNo = a.BankAccountNo.Replace(".", ""),
+                                       ReceiptNo = a.ReceiptNo == null ? "-" : a.ReceiptNo,
+                                       Amount = Convert.ToDecimal(a.BankCharge),
+                                       CurrencyCode = a.BankCurrencyCode,
+                                       Rate = a.BankCurrencyCode == "IDR" ? 1 : 0,
+                                       AmountIDR = a.BankCurrencyCode == "IDR" ? Convert.ToDecimal(a.BankCharge) : 0,
+                                       Header = 2
+                                   });
+
+            var QueryItem = (from a in query
+                             join b in itemrepository.ReadAll() on a.Id equals b.ShippingNoteId
+                             where a.NoteType == GarmentShippingNoteTypeEnum.DN
+                             //&& a.BankCharge > 0
+
+                             select new GarmentDebitNoteMIIMonitoringViewModel
+                             {
+                                 DNId = a.Id,
+                                 DNDate = a.Date,
+                                 DNDate1 = a.Date.AddHours(7).Date,
+                                 InvoiceNo = b.ItemTypeDebitCreditNote,
+                                 BuyerCode = a.BuyerCode,
+                                 BuyerName = a.BuyerName,
+                                 BankName = a.BankName,
+                                 AccountBankNo = a.BankAccountNo.Replace(".", ""),
+                                 ReceiptNo = a.ReceiptNo == null ? "-" : a.ReceiptNo,
+                                 Amount = Convert.ToDecimal(b.Amount),
+                                 CurrencyCode = a.BankCurrencyCode,
+                                 Rate = a.BankCurrencyCode == "IDR" ? 1 : 0,
+                                 AmountIDR = a.BankCurrencyCode == "IDR" ? Convert.ToDecimal(b.Amount) : 0,
+                                 Header = 3
+                             });
+
+            var result = Query.Union(QueryBankCharge).Union(QueryItem).OrderBy( s => s.DNId).ThenBy( a => a.Header);
+
+
+            var currencyFilters = result
                          .GroupBy(o => new { o.DNDate1, o.CurrencyCode })
                          .Select(o => new CurrencyFilter { date = o.Key.DNDate1.Date, code = o.Key.CurrencyCode })
                          .ToList();
@@ -150,7 +203,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             decimal rate;
 
-            foreach (var data in Query)
+            foreach (var data in result)
             {
                 rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date.Date == data.DNDate1.Date).Select(s => s.rate).FirstOrDefault());
                 //rate = Convert.ToDecimal(currencies.Where(q => q.code == data.CurrencyCode && q.date == data.CADate.ToOffset(new TimeSpan(_identityProvider.TimezoneOffset, 0, 0)).Date).Select(s => s.rate).LastOrDefault());
@@ -159,8 +212,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     data.Rate = rate;
                     data.AmountIDR = rate * data.Amount;
-                    datadn.Add(data);
+                    //datadn.Add(data);
                 }
+
+                datadn.Add(data);
             }
             //
 
@@ -225,7 +280,56 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     result.Rows.Add(DNTgl, d.BuyerCode, d.BuyerName, d.ReceiptNo, d.BankName, d.AccountBankNo, d.InvoiceNo, d.CurrencyCode, d.Rate, d.Amount, d.AmountIDR);
                 }
             }
-            return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
+
+            ExcelPackage package = new ExcelPackage();
+
+            var sheet = package.Workbook.Worksheets.Add("Sheet 1");
+
+            //var row = 1;
+            //var merge = 4;
+            var headers = new string[] { "TANGGAL", "KD BUYER", "NAMA BUYER", "NO KWITANSI", "BANK DEVISA", "NO REK BANK", "NO DEBIT NOTE", "CURRENCY", "RATE", "AMOUNT", "AMOUNT IDR" };
+            var col = (char)('A' + 1);
+            foreach (var i in Enumerable.Range(0, 11))
+            {
+                col = (char)('A' + i);
+                sheet.Cells[$"{col}1"].Value = headers[i];
+                //sheet.Cells[$"{col}8:{col}9"].Merge = true;
+                sheet.Cells[$"{col}1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                sheet.Cells[$"{col}1"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                sheet.Cells[$"{col}1"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            }
+
+            var indexBold = 0;
+
+            foreach (var d in Query)
+            {
+                indexBold++;
+
+                if (d.Header == 1)
+                {
+                    sheet.Cells[$"A{1 + indexBold}:K{1 + indexBold}"].Style.Font.Bold = true;
+                }
+                else
+                {
+                    sheet.Cells[$"A{1 + indexBold}:K{1 + indexBold}"].Style.Font.Bold = false;
+                }
+
+
+            }
+
+            int tableRowStart = 2;
+            int tableColStart = 1;
+
+            sheet.Cells[tableRowStart, tableColStart].LoadFromDataTable(result, false, OfficeOpenXml.Table.TableStyles.Light8);
+
+            MemoryStream stream = new MemoryStream();
+            package.SaveAs(stream);
+
+            return stream;
+
+            //result.Rows.Add(DNTgl, d.BuyerCode, d.BuyerName, d.ReceiptNo, d.BankName, d.AccountBankNo, d.InvoiceNo, d.CurrencyCode, d.Rate, Query.Sum( x => x.Amount), d.AmountIDR);
+
+            //return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Sheet1") }, true);
         }
 
     }
