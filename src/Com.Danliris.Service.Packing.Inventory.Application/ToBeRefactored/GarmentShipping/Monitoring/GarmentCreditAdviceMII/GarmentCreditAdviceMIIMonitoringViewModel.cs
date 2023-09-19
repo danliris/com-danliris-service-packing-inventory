@@ -16,6 +16,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string AccountBankNo { get; set; }
         public string InvoiceNo { get; set; }
         public decimal Amount { get; set; }
+        public decimal DHLCharges { get; set; }
+        public decimal BankComission { get; set; }
+        public decimal CreditInterest { get; set; }
+        public decimal BankCharges { get; set; }
+        public decimal DiscrepancyFee { get; set; }
+        public decimal OtherCharges { get; set; }
         public decimal Rate { get; set; }
         public string CurrencyCode { get; set; }
         public decimal AmountIDR { get; set; }      

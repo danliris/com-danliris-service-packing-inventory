@@ -1,4 +1,5 @@
-﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report.GarmentFinanceLocalSalesJournal;
+﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Report.GarmentFinanceLocalSalesJournal;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
@@ -11,7 +12,7 @@ using Xunit;
 
 namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.Report
 {
-    public class GarmentFinanceLocalSalesJournalServiceTest
+    public class GarmentFinanceDetailLocalSalesJournalServiceTest
     {
         public Mock<IServiceProvider> GetServiceProvider(IGarmentShippingLocalSalesNoteRepository repository, IGarmentShippingLocalSalesNoteItemRepository repositoryItem)
         {
@@ -28,9 +29,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
             return spMock;
         }
 
-        protected GarmentFinanceLocalSalesJournalService GetService(IServiceProvider serviceProvider)
+        protected GarmentFinanceDetailLocalSalesJournalService GetService(IServiceProvider serviceProvider)
         {
-            return new GarmentFinanceLocalSalesJournalService(serviceProvider);
+            return new GarmentFinanceDetailLocalSalesJournalService(serviceProvider);
         }
 
         [Fact]
@@ -53,7 +54,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(model.Date.Date, model.Date.Date, 7);
+            var result = service.GetReportQuery(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -78,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(model.Date.Date, model.Date.Date, 7);
+            var result = service.GetReportQuery(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -103,7 +104,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.R
 
             var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(model.Date.Date, model.Date.Date, 7);
+            var result = service.GetReportQuery(model.Date.Date, model.Date.Date, 7);
 
             Assert.NotEmpty(result.ToList());
         }
