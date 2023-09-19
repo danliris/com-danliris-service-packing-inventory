@@ -48,10 +48,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : (DateTime)dateFrom;
             DateTime DateTo = dateTo == null ? DateTime.Now : (DateTime)dateTo;
 
-            queryInv = queryInv.Where(w => w.SailingDate.AddHours(offset).Date >= DateFrom.Date && w.SailingDate.AddHours(offset).Date <= DateTo.Date);
+            //queryInv = queryInv.Where(w => w.SailingDate.AddHours(offset).Date >= DateFrom.Date && w.SailingDate.AddHours(offset).Date <= DateTo.Date);
             
             queryPL = queryPL.Where(w => w.Omzet == true);
             queryPL = queryPL.Where(w => w.OtherCommodity != "NEGO23");
+
+            queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
             queryInv = queryInv.OrderBy(w => w.BuyerAgentCode).ThenBy(b => b.InvoiceNo);
 
@@ -66,16 +68,21 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             InvoiceNo = a.InvoiceNo,
                             InvoiceDate = a.InvoiceDate,
                             BuyerAgentName = a.BuyerAgentName,                            
-                            ToBePaid = a.AmountToBePaid,
-                            SailingDate = a.SailingDate,
+                            ToBePaid = CA == null ? a.AmountToBePaid : Convert.ToDecimal(CA.AmountToBePaid),
+                            DHLCharges = CA == null ? a.DHLCharges : Convert.ToDecimal(CA.DHLCharges),
+                            SailingDate = c.TruckingDate,
                             PaymentDue = a.PaymentDue,
                             DueDate = a.SailingDate.AddDays(a.PaymentDue),
                             PaymentDate = CA == null ? new DateTime(1970, 1, 1) : CA.PaymentDate,
                             PaymentAmount = CA == null ? 0 : CA.AmountPaid,
                             BankCharges = CA == null ? 0 : CA.BankCharges,
-                            OtherCharges = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? CA.OtherCharge : (CA.BankComission + CA.DiscrepancyFee + CA.CreditInterest),
-                            ReceiptAmount = CA == null ? 0 : CA.AmountPaid - (CA.BankCharges + CA.OtherCharge),
-                            OutStandingAmount = CA == null ? Convert.ToDouble(a.AmountToBePaid) : CA.BalanceAmount,
+                            BankComission = CA == null ? 0 : CA.BankComission,
+                            CreditInterest = CA == null ? 0 : CA.CreditInterest,
+                            OtherCharges = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? CA.OtherCharge : 0,
+                            DiscrepancyFee = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? 0 : CA.DiscrepancyFee,
+                            //OtherCharges = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? (CA.BankComission + CA.CreditInterest + CA.OtherCharge) : (CA.BankComission + CA.DiscrepancyFee + CA.CreditInterest),
+                            ReceiptAmount = CA == null ? 0 : CA.PaymentTerm == "TT/OA" ? CA.AmountPaid - (CA.BankCharges + CA.OtherCharge + CA.BankComission + CA.CreditInterest) : CA.AmountPaid - (CA.BankCharges + CA.DiscrepancyFee + CA.BankComission + CA.CreditInterest), 
+                            OutStandingAmount = CA == null ? Convert.ToDouble(a.AmountToBePaid + a.DHLCharges) : (CA.AmountToBePaid + CA.DHLCharges) - CA.AmountPaid,
                             BankDetail = CA == null ? "-" : CA.BankAccountName,
                             ReceiptNo = CA == null ? "-" : CA.ReceiptNo,
                             OverDue = CA == null ? 0 : (CA.PaymentDate.ToOffset(TimeSpan.FromHours(_identityProvider.TimezoneOffset)).Date - a.SailingDate.AddDays(a.PaymentDue).ToOffset(TimeSpan.FromHours(_identityProvider.TimezoneOffset)).Date).Days,
@@ -100,17 +107,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO INVOICE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TGL INVOICE", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "BUYER AGENT", DataType = typeof(string) });            
-            result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT TO BE PAID (US$)", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "BUYER AGENT", DataType = typeof(string) });       
+            
+            result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT TO BE PAID (US$)", DataType = typeof(decimal) });
+            result.Columns.Add(new DataColumn() { ColumnName = "DHL CHARGES (US$)", DataType = typeof(decimal) });
+
             result.Columns.Add(new DataColumn() { ColumnName = "ETD DATE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TEMPO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "DUE DATE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "PAYMENT DATE", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "PAYMENT AMOUNT (US$)", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "BANK CHARGES", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "OTHER CHARGES", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT RECEIPT (US$)", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "OUTSTANDING AMOUNT (US$)", DataType = typeof(string) });
+
+            result.Columns.Add(new DataColumn() { ColumnName = "PAYMENT AMOUNT (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "BANK COMISSION (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "CREDIT INTEREST (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "DISCREPANCY FEE (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "BANK CHARGES (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "OTHER CHARGES (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT RECEIPT (US$)", DataType = typeof(double) });
+            result.Columns.Add(new DataColumn() { ColumnName = "OUTSTANDING AMOUNT (US$)", DataType = typeof(double) });
+
             result.Columns.Add(new DataColumn() { ColumnName = "BANK DETAILS", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "RECEIPT NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "OVERDUE", DataType = typeof(string) });
@@ -119,7 +134,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Query.ToArray().Count() == 0)
                {
-                     result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                     result.Rows.Add("", "", "", "", 0, 0, "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, "", "", "");
                      bool styling = true;
 
                     foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
@@ -172,7 +187,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string RcptAmt = string.Format("{0:N2}", d.ReceiptAmount);
                     string OutStdg = string.Format("{0:N2}", d.OutStandingAmount);
 
-                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, TBPaid, SailDate, d.PaymentDue, JTDate, PayDate, AmtPaid, BCharges, OCharges, RcptAmt, OutStdg, d.BankDetail, d.ReceiptNo, d.OverDue);
+                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, d.ToBePaid, d.DHLCharges, SailDate, d.PaymentDue, JTDate, PayDate, d.PaymentAmount, d.BankComission, d.CreditInterest, d.DiscrepancyFee, d.BankCharges, d.OtherCharges, d.ReceiptAmount, d.OutStandingAmount, d.BankDetail, d.ReceiptNo, d.OverDue);
                 }
 
                 bool styling = true;
