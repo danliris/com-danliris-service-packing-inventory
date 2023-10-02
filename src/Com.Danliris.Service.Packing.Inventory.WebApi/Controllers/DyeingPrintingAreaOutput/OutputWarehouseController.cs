@@ -163,12 +163,12 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DyeingPrinti
         }
 
         [HttpGet("input-production-orders-v2")]
-        public IActionResult NewGetProductionOrdersv2([FromQuery] long productionOrderId = 0)
+        public IActionResult NewGetProductionOrdersv2([FromQuery] long productionOrderId = 0, [FromQuery] string grade ="")
         {
             try
             {
 
-                var data = _service.GetInputSppWarehouseItemListV2(productionOrderId);
+                var data = _service.GetInputSppWarehouseItemListV2(productionOrderId, grade);
                 return Ok(new
                 {
                     data

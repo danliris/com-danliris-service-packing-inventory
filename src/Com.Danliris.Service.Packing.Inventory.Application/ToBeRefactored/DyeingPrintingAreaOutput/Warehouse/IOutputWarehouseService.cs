@@ -18,7 +18,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<MemoryStream> GenerateExcel(int id,int  offSet);
         List<InputWarehouseProductionOrderCreateViewModel> GetInputWarehouseProductionOrders();
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList();
-        List<InputSppWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId);
+        List<InputSppWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId, string grade);
         InputSppWarehouseItemListViewModel GetInputSppWarehouseItemListV2(string productPackingCode);
         List<InputSppWarehouseViewModel> GetInputSppWarehouseItemList(int bonId);
         Task<List<InputSppWarehouseViewModel>> GetOutputSppWarehouseItemListAsync(int bonId);

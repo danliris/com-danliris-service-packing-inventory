@@ -2482,18 +2482,25 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             return result;
         }
 
-        public List<InputSppWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId)
+        public List<InputSppWarehouseViewModel> GetInputSppWarehouseItemListV2(long productionOrderId, string grade)
         {
             IQueryable<DyeingPrintingAreaInputProductionOrderModel> query;
 
             if (productionOrderId == 0)
             {
 
-                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.PackagingQty != 0 && (s.IsFromStockOpname || s.IsAfterStockOpname)).Take(100);
+                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.PackagingQty != 0 && (s.IsFromStockOpname || s.IsAfterStockOpname)).Take(130);
             }
             else
             {
-                query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId && s.PackagingQty != 0 && (s.IsFromStockOpname || s.IsAfterStockOpname)).Take(100);
+                if (grade == "ALL")
+                {
+                    query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId && s.PackagingQty != 0 && (s.IsFromStockOpname || s.IsAfterStockOpname)).Take(130);
+                }
+                else {
+                    query = _inputProductionOrderRepository.ReadAll().OrderByDescending(s => s.LastModifiedUtc).Where(s => s.Area == DyeingPrintingArea.GUDANGJADI && !s.HasOutputDocument && s.ProductionOrderId == productionOrderId && s.PackagingQty != 0 && (s.IsFromStockOpname || s.IsAfterStockOpname) && s.Grade == grade).Take(130);
+                }
+                
 
             }
 
