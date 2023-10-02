@@ -100,8 +100,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "NO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO INVOICE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TGL INVOICE", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "BUYER AGENT", DataType = typeof(string) });            
-            result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT TO BE PAID (US$)", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "TGL TRUCKING", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "BUYER AGENT", DataType = typeof(string) });       
+            
+            result.Columns.Add(new DataColumn() { ColumnName = "AMOUNT TO BE PAID (US$)", DataType = typeof(decimal) });
+            result.Columns.Add(new DataColumn() { ColumnName = "DHL CHARGES (US$)", DataType = typeof(decimal) });
+
             result.Columns.Add(new DataColumn() { ColumnName = "ETD DATE", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TEMPO", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "DUE DATE", DataType = typeof(string) });
@@ -119,7 +123,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             if (Query.ToArray().Count() == 0)
                {
-                     result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                     result.Rows.Add("", "", "", "", "", 0, 0, "", "", "", "", 0, 0, 0, 0, 0, 0, 0, 0, "", "", "");
                      bool styling = true;
 
                     foreach (KeyValuePair<DataTable, String> item in new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "Territory") })
@@ -172,7 +176,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     string RcptAmt = string.Format("{0:N2}", d.ReceiptAmount);
                     string OutStdg = string.Format("{0:N2}", d.OutStandingAmount);
 
-                    result.Rows.Add(index, d.InvoiceNo, InvDate, d.BuyerAgentName, TBPaid, SailDate, d.PaymentDue, JTDate, PayDate, AmtPaid, BCharges, OCharges, RcptAmt, OutStdg, d.BankDetail, d.ReceiptNo, d.OverDue);
+                    result.Rows.Add(index, d.InvoiceNo, InvDate, SailDate, d.BuyerAgentName, d.ToBePaid, d.DHLCharges, SailDate, d.PaymentDue, JTDate, PayDate, d.PaymentAmount, d.BankComission, d.CreditInterest, d.DiscrepancyFee, d.BankCharges, d.OtherCharges, d.ReceiptAmount, d.OutStandingAmount, d.BankDetail, d.ReceiptNo, d.OverDue);
                 }
 
                 bool styling = true;
