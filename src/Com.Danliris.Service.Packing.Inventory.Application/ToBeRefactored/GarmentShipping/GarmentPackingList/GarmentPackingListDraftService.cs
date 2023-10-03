@@ -1,19 +1,22 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList
 {
     public class GarmentPackingListDraftService : GarmentPackingListService, IGarmentPackingListDraftService
     {
         private const string UserAgent = "GarmentPackingListDraftService";
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentPackingListDraftService(IServiceProvider serviceProvider) : base(serviceProvider)
         {
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         public override async Task<string> Create(GarmentPackingListViewModel viewModel)
@@ -37,6 +40,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             garmentPackingListModel.SetSideMarkImagePath(await UploadImage(viewModel.SideMarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.SideMarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
             garmentPackingListModel.SetRemarkImagePath(await UploadImage(viewModel.RemarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.RemarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
             await _packingListRepository.SaveChanges();
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Draft Packing List - " + garmentPackingListModel.InvoiceNo);
 
             return garmentPackingListModel.InvoiceNo;
         }
@@ -112,8 +118,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             modelToUpdate.SetShippingStaff(model.ShippingStaffId, model.ShippingStaffName, _identityProvider.Username, UserAgent);
 
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
-			
-			return await _packingListRepository.SaveChanges();
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Draft Packing List - " + model.InvoiceNo);
+
+            return await _packingListRepository.SaveChanges();
         }
 
         public override async Task<MemoryStreamResult> ReadPdfById(int id)
