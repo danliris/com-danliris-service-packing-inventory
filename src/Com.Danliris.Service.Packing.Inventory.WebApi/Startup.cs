@@ -176,6 +176,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingRetur;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -330,6 +331,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentReceiptSubconPackingListItemRepository, GarmentReceiptSubconPackingListItemRepository>();
             services.AddTransient<IGarmentReceiptSubconPackingListDetailRepository, GarmentReceiptSubconPackingListDetailRepository>();
             services.AddTransient<IGarmentReceiptSubconPackingListDetailSizeRepository, GarmentReceiptSubconPackingListDetailSizeRepository>();
+
+            services.AddTransient<ILogHistoryRepository, LogHistoryRepository>();
             #endregion
 
             #region Service

@@ -71,6 +71,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse
 using Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWarehouse.DPShipping;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentReceiptSubconPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.LogHistory;
 
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
@@ -237,7 +238,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentReceiptSubconPackingListItemModel> GarmentReceiptSubconPackingListItems { get; set; }
         public DbSet<GarmentReceiptSubconPackingListDetailModel> GarmentReceiptSubconPackingListDetails { get; set; }
         public DbSet<GarmentReceiptSubconPackingListDetailSizeModel> GarmentReceiptSubconPackingListDetailSizes { get; set; }
-
+        public DbSet<LogHistoryModel> LogHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
