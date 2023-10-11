@@ -169,8 +169,9 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.OrderStatusReport;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingReport.QcToWarehouseReport;
-using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentReceiptSubconPackingList;
-using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShipingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNoteCreditAdvice;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -307,7 +308,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentShippingLeftOverExportSalesDORepository, GarmentShippingLeftOverExportSalesDORepository>();
             services.AddTransient<IGarmentShippingExportSalesNoteRepository, GarmentShippingExportSalesNoteRepository>();
             services.AddTransient<IGarmentShippingExportSalesNoteItemRepository, GarmentShippingExportSalesNoteItemRepository>();
-
+            services.AddTransient<IGarmentShippingNoteCreditAdviceRepository, GarmentShippingNoteCreditAdviceRepository>();
 
             //services.AddTransient<IDyeingPrintingStockOpnameSummaryRepository, DyeingPrintingStockOpnameSummaryRepository>();
 
@@ -461,6 +462,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentCreditAdviceMIIMonitoringService, GarmentCreditAdviceMIIMonitoringService>();
             services.AddTransient<IGarmentFinanceDetailLocalSalesJournalService, GarmentFinanceDetailLocalSalesJournalService>();
             services.AddTransient<IGarmentFinanceDetailExportSalesJournalService, GarmentFinanceDetailExportSalesJournalService>();
+            services.AddTransient<IGarmentShippingNoteCreditAdviceService, GarmentShippingNoteCreditAdviceService>();
+
 
             services.AddTransient<IGarmentReceiptSubconPackingListService, GarmentReceiptSubconPackingListService>();
             #endregion
