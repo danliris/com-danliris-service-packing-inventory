@@ -15,7 +15,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string description { get; set; }
         public string receiptNo { get; set; }
         public DateTimeOffset? receiptDate { get; set; }
-
+        public double bankCharge { get; set; }
+        public double nettNego { get; set; }
         public ICollection<GarmentShippingNoteItemViewModel> items { get; set; }
     }
 }

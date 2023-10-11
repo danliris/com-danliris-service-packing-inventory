@@ -23,6 +23,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public string BankAccountNo { get; private set; }
 
         public double TotalAmount { get; private set; }
+        public double BankCharge { get; set; }
+        public double NettNego { get; set;  }
 
         public double AmountCA { get; set; }
 
@@ -71,6 +73,27 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             BankCharge = bankCharge;
             NettNego = nettNego;
             AmountCA = amountCA;
+            Items = items;
+        }
+        
+        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string description, string receiptNo, DateTimeOffset receiptDate, int bankId, string bankName, string bankCurrencyCode, string bankAccountNo, double totalAmount, double bankCharge, double nettNego, ICollection<GarmentShippingNoteItemModel> items)
+        {
+            NoteType = noteType;
+            NoteNo = noteNo;
+            Date = date;
+            BuyerId = buyerId;
+            BuyerCode = buyerCode;
+            BuyerName = buyerName;
+            Description = description;
+            ReceiptNo = receiptNo;
+            ReceiptDate = receiptDate;
+            BankId = bankId;
+            BankName = bankName;
+            BankCurrencyCode = bankCurrencyCode;
+            BankAccountNo = bankAccountNo;
+            TotalAmount = totalAmount;
+            BankCharge = bankCharge;
+            NettNego = nettNego;
             Items = items;
         }
 

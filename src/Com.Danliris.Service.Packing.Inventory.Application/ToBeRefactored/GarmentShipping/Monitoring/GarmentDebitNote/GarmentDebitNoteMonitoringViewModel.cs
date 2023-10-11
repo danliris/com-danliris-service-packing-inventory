@@ -29,6 +29,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal Rate { get; set; }
         public string CurrencyCode { get; set; }
         public decimal AmountIDR { get; set; }
+        public string ItemDebitNote { get; set; }
+        public double BankCharge { get; set; }
+        public double NettNego { get; set; }
+        public int DNId { get; set; }
+        public int Header { get; set; }
+
     }
 
     class CurrencyFilter
