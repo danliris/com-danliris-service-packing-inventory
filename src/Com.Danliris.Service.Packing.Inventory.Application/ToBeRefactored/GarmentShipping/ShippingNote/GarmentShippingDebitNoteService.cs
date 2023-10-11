@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNote;
@@ -63,6 +64,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                 },
                 totalAmount = model.TotalAmount,
+                bankCharge = model.BankCharge,
+                nettNego = model.NettNego,
 
                 items = (model.Items ?? new List<GarmentShippingNoteItemModel>()).Select(i => new GarmentShippingNoteItemViewModel
                 {
@@ -85,6 +88,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         Id = i.CurrencyId,
                         Code = i.CurrencyCode
                     },
+                    debitCreditNote = new DebitCreditNote
+                    { 
+                        Id = i.DebitCreditNoteId,
+                        TypeDCN = i.TypeDebitCreditNote,
+                        ItemTypeDCN = i.ItemTypeDebitCreditNote
+                    },
                     amount = i.Amount
                 }).ToList()
             };
@@ -97,13 +106,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var items = (viewModel.items ?? new List<GarmentShippingNoteItemViewModel>()).Select(i =>
             {
                 i.currency = i.currency ?? new Currency();
-                return new GarmentShippingNoteItemModel(i.description, i.currency.Id.GetValueOrDefault(), i.currency.Code, i.amount) { Id = i.Id };
+                return new GarmentShippingNoteItemModel(i.description, i.currency.Id.GetValueOrDefault(), i.currency.Code, i.amount, i.debitCreditNote.Id.GetValueOrDefault(), i.debitCreditNote.TypeDCN, i.debitCreditNote.ItemTypeDCN) { Id = i.Id };
             }).ToList();
 
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount { Currency = new Currency() };
             viewModel.bank.Currency = viewModel.bank.Currency ?? new Currency();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.bank.AccountNumber, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.bank.AccountNumber, viewModel.totalAmount, viewModel.bankCharge, viewModel.nettNego, items);
 
             return model;
         }
