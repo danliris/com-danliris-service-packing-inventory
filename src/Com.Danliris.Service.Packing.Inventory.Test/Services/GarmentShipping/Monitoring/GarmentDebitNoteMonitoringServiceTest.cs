@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GetReportData_Success()
         {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, null);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, 1, null);
 
             var model1 = new GarmentShippingNoteItemModel("", 1, "", 1);
 
@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_Success()
         {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, null);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "", "", 1, 1, null);
 
             var model1 = new GarmentShippingNoteItemModel("", 1, "", 1);
 
@@ -105,7 +105,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GetReportData_MII_Success()
         {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "USD", "", 1, null);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "USD", "", 1, 1, null);
 
             var model1 = new GarmentShippingNoteItemModel("", 1, "USD", 1);
 
@@ -137,7 +137,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
         [Fact]
         public void GenerateExcel_MII_Success()
         {
-            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "USD", "", 1, null);
+            var model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, "", DateTimeOffset.Now, 1, "A99", "", "", "", DateTimeOffset.Now, 1, "", "USD", "", 1, 1, null);
 
             var model1 = new GarmentShippingNoteItemModel("", 1, "USD", 1);
 
