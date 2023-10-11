@@ -63,6 +63,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     }
                 },
                 totalAmount = model.TotalAmount,
+                bankCharge = model.BankCharge,
+                nettNego = model.NettNego,
+                amountCA = model.AmountCA,
 
                 items = (model.Items ?? new List<GarmentShippingNoteItemModel>()).Select(i => new GarmentShippingNoteItemViewModel
                 {
@@ -103,7 +106,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount { Currency = new Currency() };
             viewModel.bank.Currency = viewModel.bank.Currency ?? new Currency();
-            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.bank.AccountNumber, viewModel.totalAmount, items);
+            GarmentShippingNoteModel model = new GarmentShippingNoteModel(GarmentShippingNoteTypeEnum.DN, GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.description, viewModel.receiptNo, viewModel.receiptDate.GetValueOrDefault(), viewModel.bank.id, viewModel.bank.bankName, viewModel.bank.Currency.Code, viewModel.bank.AccountNumber, viewModel.totalAmount, viewModel.bankCharge, viewModel.nettNego, viewModel.amountCA, items);
 
             return model;
         }

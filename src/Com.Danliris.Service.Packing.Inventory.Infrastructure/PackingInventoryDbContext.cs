@@ -73,6 +73,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.LogHistory;
 
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNoteCreditAdvice;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -240,6 +242,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentReceiptSubconPackingListDetailSizeModel> GarmentReceiptSubconPackingListDetailSizes { get; set; }
         public DbSet<LogHistoryModel> LogHistories { get; set; }
 
+        public DbSet<GarmentShippingNoteCreditAdviceModel> GarmentShippingNoteCreditAdvices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -342,6 +346,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListDetailEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListDetailSizeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingNoteCreditAdviceEntityTypeConfiguration());
+
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureDetailEntityTypeConfiguration());
