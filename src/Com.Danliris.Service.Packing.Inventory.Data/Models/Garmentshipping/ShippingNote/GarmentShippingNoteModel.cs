@@ -26,13 +26,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public double BankCharge { get; set; }
         public double NettNego { get; set;  }
 
+        public double AmountCA { get; set; }
+
         public ICollection<GarmentShippingNoteItemModel> Items { get; private set; }
 
         public GarmentShippingNoteModel()
         {
         }
 
-        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string description, string receiptNo, DateTimeOffset receiptDate, int bankId, string bankName, string bankCurrencyCode, string bankAccountNo, double totalAmount, ICollection<GarmentShippingNoteItemModel> items)
+        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string description, string receiptNo, DateTimeOffset receiptDate, int bankId, string bankName, string bankCurrencyCode, string bankAccountNo, double totalAmount, double amountCA, ICollection<GarmentShippingNoteItemModel> items)
         {
             NoteType = noteType;
             NoteNo = noteNo;
@@ -48,10 +50,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             BankCurrencyCode = bankCurrencyCode;
             BankAccountNo = bankAccountNo;
             TotalAmount = totalAmount;
+            AmountCA = amountCA;
             Items = items;
         }
         
-        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string description, string receiptNo, DateTimeOffset receiptDate, int bankId, string bankName, string bankCurrencyCode, string bankAccountNo, double totalAmount, double bankCharge, double nettNego, ICollection<GarmentShippingNoteItemModel> items)
+        public GarmentShippingNoteModel(GarmentShippingNoteTypeEnum noteType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName, string description, string receiptNo, DateTimeOffset receiptDate, int bankId, string bankName, string bankCurrencyCode, string bankAccountNo, double totalAmount, double bankCharge, double nettNego, double amountCA, ICollection<GarmentShippingNoteItemModel> items)
         {
             NoteType = noteType;
             NoteNo = noteNo;
@@ -69,6 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             TotalAmount = totalAmount;
             BankCharge = bankCharge;
             NettNego = nettNego;
+            AmountCA = amountCA;
             Items = items;
         }
 
@@ -158,6 +162,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (NettNego != nettNego)
             {
                 NettNego = nettNego;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetAmountCA(double amountCA, string userName, string userAgent)
+        {
+            if (AmountCA != amountCA)
+            {
+                AmountCA = amountCA;
                 this.FlagForUpdate(userName, userAgent);
             }
         }

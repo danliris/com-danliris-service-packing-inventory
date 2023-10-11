@@ -65,6 +65,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesEx
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.DetailShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.DetailLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNoteCreditAdvice;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -213,7 +215,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingDetailLocalSalesNoteModel> GarmentShippingDetailLocalSalesNotes { get; set; }
         public DbSet<GarmentShippingDetailLocalSalesNoteItemModel> GarmentShippingDetailLocalSalesNoteItems { get; set; }
 
-
+        public DbSet<GarmentShippingNoteCreditAdviceModel> GarmentShippingNoteCreditAdvices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -312,6 +314,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingDetailLocalSalesNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingDetailLocalSalesNoteItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingNoteCreditAdviceEntityTypeConfiguration());
 
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
