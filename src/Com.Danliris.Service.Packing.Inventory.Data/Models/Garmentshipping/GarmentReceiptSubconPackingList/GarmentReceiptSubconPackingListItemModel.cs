@@ -5,7 +5,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 {
     public class GarmentReceiptSubconPackingListItemModel : StandardEntity
     {
-        public int PackingListId { get; private set; }
+        public int PackingListId { get; set; }
 
         public string RONo { get; private set; }
         public string PackingOutNo { get; private set; }

@@ -174,6 +174,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingNoteCreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShipingNoteCreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingNoteCreditAdviceMII;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingNoteCreditAdvice4MII;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentReceiptSubconOmzetByUnitReport;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -465,9 +469,11 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentFinanceDetailLocalSalesJournalService, GarmentFinanceDetailLocalSalesJournalService>();
             services.AddTransient<IGarmentFinanceDetailExportSalesJournalService, GarmentFinanceDetailExportSalesJournalService>();
             services.AddTransient<IGarmentShippingNoteCreditAdviceService, GarmentShippingNoteCreditAdviceService>();
-
+            services.AddTransient<IGarmentShippingNoteCreditAdviceMonitoringService, GarmentShippingNoteCreditAdviceMonitoringService>();
+            services.AddTransient<IGarmentShippingNoteCreditAdviceMIIMonitoringService, GarmentShippingNoteCreditAdviceMIIMonitoringService>();
 
             services.AddTransient<IGarmentReceiptSubconPackingListService, GarmentReceiptSubconPackingListService>();
+            services.AddTransient<IGarmentReceiptSubconOmzetByUnitReportService, GarmentReceiptSubconOmzetByUnitReportService>();
             #endregion
 
             // Register Provider
