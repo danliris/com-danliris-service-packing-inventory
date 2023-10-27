@@ -863,6 +863,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 //Add Log History
                 await logHistoryRepository.InsertAsync("SHIPPING", "Unpost Booking Packing List - " + model.InvoiceNo);
+            }else if(status == GarmentPackingListStatusEnum.POSTED)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Post Packing List - " + model.InvoiceNo);
+            }
+            else if (status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "UnPost Packing List - " + model.InvoiceNo);
             }
 
 
