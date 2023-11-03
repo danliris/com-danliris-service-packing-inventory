@@ -6,6 +6,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,13 +26,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentPackingListRepository _packingListrepository;
 
         private readonly IIdentityProvider _identityProvider;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentCoverLetterService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentCoverLetterRepository>();
             _packingListrepository = serviceProvider.GetService<IGarmentPackingListRepository>();
 
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentCoverLetterViewModel MapToViewModel(GarmentShippingCoverLetterModel model)
@@ -122,6 +124,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 packingList.SetStatus(status, _identityProvider.Username, UserAgent);
                 packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
+
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Create Surat Pengantar - " + model.InvoiceNo);
             }
             else
             {
@@ -146,6 +151,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     packingList.SetStatus(status, _identityProvider.Username, UserAgent);
                     packingList.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
                 }
+
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Delete Surat Pengantar - " + data.InvoiceNo);
             }
             else
             {
@@ -218,6 +226,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             viewModel.emkl = viewModel.emkl ?? new EMKL();
             GarmentShippingCoverLetterModel model = new GarmentShippingCoverLetterModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.emkl.Id, viewModel.emkl.Code, viewModel.emkl.Name, viewModel.destination, viewModel.address, viewModel.pic, viewModel.attn, viewModel.phone, viewModel.bookingDate.GetValueOrDefault(), viewModel.order.Id, viewModel.order.Code, viewModel.order.Name, viewModel.pcsQuantity, viewModel.setsQuantity, viewModel.packQuantity, viewModel.cartoonQuantity, viewModel.forwarder.id, viewModel.forwarder.code, viewModel.forwarder.name, viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.containerNo, viewModel.freight, viewModel.shippingSeal, viewModel.dlSeal, viewModel.emklSeal, viewModel.exportEstimationDate.GetValueOrDefault(), viewModel.unit, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Surat Pengantar - " + model.InvoiceNo);
 
             return await _repository.UpdateAsync(id, model);
         }

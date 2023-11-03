@@ -7,6 +7,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectPr
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.SalesExport;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -16,11 +17,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentShippingExportSalesDOService : IGarmentShippingExportSalesDOService
     {
         private readonly IGarmentShippingLeftOverExportSalesDORepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentShippingExportSalesDOService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingLeftOverExportSalesDORepository>();
-
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentShippingExportSalesDOViewModel MapToViewModel(GarmentShippingLeftOverExportSalesDOModel model)
@@ -136,6 +137,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             GarmentShippingLeftOverExportSalesDOModel garmentShippingExportSalesDOModel = MapToModel(viewModel);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create DO Penjualan Export - " + garmentShippingExportSalesDOModel.ExportSalesDONo);
+
             int Created = await _repository.InsertAsync(garmentShippingExportSalesDOModel);
 
             return Created;
@@ -143,6 +147,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete DO Penjualan Export - " + data.ExportSalesDONo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -181,6 +189,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, GarmentShippingExportSalesDOViewModel viewModel)
         {
             GarmentShippingLeftOverExportSalesDOModel garmentShippingExportSalesDOModel = MapToModel(viewModel);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update DO Penjualan Export - " + garmentShippingExportSalesDOModel.ExportSalesDONo);
 
             return await _repository.UpdateAsync(id, garmentShippingExportSalesDOModel);
         }
