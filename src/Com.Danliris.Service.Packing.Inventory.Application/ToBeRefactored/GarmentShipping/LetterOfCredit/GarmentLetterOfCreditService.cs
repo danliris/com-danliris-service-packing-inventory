@@ -10,16 +10,18 @@ using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
 using System.Linq;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LetterOfCredit
 {
     public class GarmentLetterOfCreditService : IGarmentLetterOfCreditService
     {
         private readonly IGarmentLetterOfCreditRepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentLetterOfCreditService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentLetterOfCreditRepository>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentLetterOfCreditViewModel MapToViewModel(GarmentShippingLetterOfCreditModel model)
@@ -71,11 +73,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Uom = viewModel.Uom ?? new UnitOfMeasurement();
             GarmentShippingLetterOfCreditModel model = new GarmentShippingLetterOfCreditModel(viewModel.DocumentCreditNo, viewModel.Date.GetValueOrDefault(), viewModel.IssuedBank, viewModel.Applicant.Id, viewModel.Applicant.Code, viewModel.Applicant.Name, viewModel.ExpireDate.GetValueOrDefault(), viewModel.ExpirePlace, viewModel.LatestShipment.GetValueOrDefault(), viewModel.LCCondition, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.TotalAmount);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Letter Of Credit - " + model.DocumentCreditNo);
+
             return await _repository.InsertAsync(model);
         }
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Letter Of Credit - " + data.DocumentCreditNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -114,6 +124,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.Applicant = viewModel.Applicant ?? new Buyer();
             viewModel.Uom = viewModel.Uom ?? new UnitOfMeasurement();
             GarmentShippingLetterOfCreditModel model = new GarmentShippingLetterOfCreditModel(viewModel.DocumentCreditNo, viewModel.Date.GetValueOrDefault(), viewModel.IssuedBank, viewModel.Applicant.Id, viewModel.Applicant.Code, viewModel.Applicant.Name, viewModel.ExpireDate.GetValueOrDefault(), viewModel.ExpirePlace, viewModel.LatestShipment.GetValueOrDefault(), viewModel.LCCondition, viewModel.Quantity, viewModel.Uom.Id.GetValueOrDefault(), viewModel.Uom.Unit, viewModel.TotalAmount);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Letter Of Credit - " + model.DocumentCreditNo);
 
             return await _repository.UpdateAsync(id, model);
         }

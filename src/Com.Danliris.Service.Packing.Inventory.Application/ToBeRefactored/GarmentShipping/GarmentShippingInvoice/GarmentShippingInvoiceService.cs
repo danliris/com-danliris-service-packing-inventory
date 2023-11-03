@@ -7,6 +7,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -25,7 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		protected readonly IAzureImageService _azureImageService;
 		private readonly IGarmentPackingListService _packingListService;
 		protected readonly IIdentityProvider _identityProvider;
-
+		protected readonly ILogHistoryRepository logHistoryRepository;
 		public GarmentShippingInvoiceService(IServiceProvider serviceProvider)
 		{
 			_repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
@@ -34,7 +35,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			_identityProvider = serviceProvider.GetService<IIdentityProvider>();
 			_packingListService = serviceProvider.GetService<IGarmentPackingListService>();
 			this.serviceProvider = serviceProvider;
-        }
+			logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
+		}
 		private GarmentShippingInvoiceViewModel MapToViewModel(GarmentShippingInvoiceModel model)
 		{
 			var vm = new GarmentShippingInvoiceViewModel()
@@ -213,6 +215,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		{
 			GarmentShippingInvoiceModel model = MapToModel(viewModel);
 
+			//Add Log History
+			await logHistoryRepository.InsertAsync("SHIPPING", "Create Invoice Export Garment - " + model.InvoiceNo);
+
 			int Created = await _repository.InsertAsync(model);
 
 			return Created;
@@ -271,11 +276,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 		{
 			GarmentShippingInvoiceModel garmentPackingListModel = MapToModel(viewModel);
 
+			//Add Log History
+			await logHistoryRepository.InsertAsync("SHIPPING", "Update Invoice Export Garment - " + garmentPackingListModel.InvoiceNo);
+
 			return await _repository.UpdateAsync(id, garmentPackingListModel);
 		}
 
 		public async Task<int> Delete(int id)
 		{
+			var data = await _repository.ReadByIdAsync(id);
+
+			//Add Log History
+			await logHistoryRepository.InsertAsync("SHIPPING", "Delete Invoice Export Garment - " + data.InvoiceNo);
+
 			return await _repository.DeleteAsync(id);
 		}
 
