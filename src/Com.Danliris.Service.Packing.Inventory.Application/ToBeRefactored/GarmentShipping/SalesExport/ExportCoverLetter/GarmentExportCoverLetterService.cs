@@ -10,16 +10,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.SalesExport
 {
     public class GarmentExportCoverLetterService : IGarmentExportCoverLetterService
     {
         private readonly IGarmentExportCoverLetterRepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentExportCoverLetterService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentExportCoverLetterRepository>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentExportCoverLetterViewModel MapToViewModel(GarmentShippingExportCoverLetterModel model)
@@ -72,6 +74,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             GarmentShippingExportCoverLetterModel model = new GarmentShippingExportCoverLetterModel(viewModel.exportSalesNoteId, viewModel.noteNo,GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.bcNo, viewModel.bcdate.GetValueOrDefault(), viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Surat Pengantar Export - " + model.ExportCoverLetterNo);
+
             return await _repository.InsertAsync(model);
         }
 
@@ -92,6 +97,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Surat Pengantar Export - " + data.ExportCoverLetterNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -151,6 +161,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             GarmentShippingExportCoverLetterModel model = new GarmentShippingExportCoverLetterModel(viewModel.exportSalesNoteId, viewModel.noteNo, viewModel.exportCoverLetterNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.bcNo, viewModel.bcdate.GetValueOrDefault(), viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Surat Pengantar Export - " + model.ExportCoverLetterNo);
 
             return await _repository.UpdateAsync(id, model);
         }

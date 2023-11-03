@@ -5,6 +5,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.DetailS
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.DetailLocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -19,11 +20,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         private readonly IGarmentShippingDetailLocalSalesNoteRepository _repository;
         private readonly IServiceProvider serviceProvider;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentShippingDetailLocalSalesNoteService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingDetailLocalSalesNoteRepository>();
-
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
             this.serviceProvider = serviceProvider;
         }
 
@@ -115,6 +116,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var model = MapToModel(viewModel);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Detail Nota Penjualan Lokal - " + model.NoteNo);
+
             int Created = await _repository.InsertAsync(model);
 
             return Created;
@@ -122,6 +126,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Detail Nota Penjualan Lokal - " + data.NoteNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -161,6 +170,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, GarmentShippingDetailLocalSalesNoteViewModel viewModel)
         {
             var model = MapToModel(viewModel);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Detail Nota Penjualan Lokal - " + model.NoteNo);
 
             return await _repository.UpdateAsync(id, model);
         }

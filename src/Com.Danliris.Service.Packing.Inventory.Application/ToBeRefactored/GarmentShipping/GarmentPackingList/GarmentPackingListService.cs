@@ -805,7 +805,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			model.SetIsSampleDelivered(false, _identityProvider.Username, UserAgent);
 			model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED.ToString()));
 
-			await _packingListRepository.SaveChanges();
+            await logHistoryRepository.InsertAsync("SHIPPING", "UnPost Packing List - " + model.InvoiceNo);
+
+            await _packingListRepository.SaveChanges();
 		}
 
 
@@ -824,8 +826,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 await _packingListRepository.SaveChanges();
 
-                //Add Log History
-                await logHistoryRepository.InsertAsync("SHIPPING", "ApprovedMD Packing List - " + oldModel.InvoiceNo);
+                ////Add Log History
+                //await logHistoryRepository.InsertAsync("SHIPPING", "ApprovedMD Packing List - " + oldModel.InvoiceNo);
             }
         }
 
@@ -844,19 +846,48 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 await _packingListRepository.SaveChanges();
 
-                //Add Log History
-                await logHistoryRepository.InsertAsync("SHIPPING", "Approved Shipping Packing List - " + oldModel.InvoiceNo);
+                ////Add Log History
+                //await logHistoryRepository.InsertAsync("SHIPPING", "Approved Shipping Packing List - " + oldModel.InvoiceNo);
             }
         }
 
-        public Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null)
+        public async Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null)
         {
             var model = _packingListRepository.Query.Single(m => m.Id == id);
+
+            if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_MD && status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Approval Draft Packing List - " + model.InvoiceNo);
+            }
+
             model.SetStatus(status, _identityProvider.Username, UserAgent);
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString(), remark));
 
-            return _packingListRepository.SaveChanges();
-        }
+            if(status == GarmentPackingListStatusEnum.DRAFT_POSTED)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Post Booking Packing List - " + model.InvoiceNo);
+            }else if (status == GarmentPackingListStatusEnum.DRAFT)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Unpost Booking Packing List - " + model.InvoiceNo);
+            }else if(status == GarmentPackingListStatusEnum.POSTED)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Post Packing List - " + model.InvoiceNo);
+            }
+
+            
+            //else if (status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            //{
+            //    //Add Log History
+            //    await logHistoryRepository.InsertAsync("SHIPPING", "UnPost Packing List - " + model.InvoiceNo);
+            //}
+
+
+            await _packingListRepository.SaveChanges();
+        }               
 
         public async Task SetSampleDelivered(List<int> ids)
         {
