@@ -8,6 +8,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Garment
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -29,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         protected readonly IGarmentShippingInvoiceRepository _invoiceRepository;
         protected readonly IIdentityProvider _identityProvider;
         protected readonly IAzureImageService _azureImageService;
+        protected readonly ILogHistoryRepository logHistoryRepository;
 
         public GarmentPackingListService(IServiceProvider serviceProvider)
         {
@@ -36,6 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _invoiceRepository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
             _azureImageService = serviceProvider.GetService<IAzureImageService>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         public GarmentPackingListViewModel MapToViewModel(GarmentPackingListModel model)
@@ -366,7 +369,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             garmentPackingListModel.SetShippingMarkImagePath(await UploadImage(viewModel.ShippingMarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.ShippingMarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
             garmentPackingListModel.SetSideMarkImagePath(await UploadImage(viewModel.SideMarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.SideMarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
             garmentPackingListModel.SetRemarkImagePath(await UploadImage(viewModel.RemarkImageFile, garmentPackingListModel.Id, garmentPackingListModel.RemarkImagePath, garmentPackingListModel.CreatedUtc), _identityProvider.Username, UserAgent);
+
             await _packingListRepository.SaveChanges();
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Packing List Item- " + garmentPackingListModel.InvoiceNo);
 
             return garmentPackingListModel.InvoiceNo;
         }
@@ -564,15 +571,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			garmentPackingListModel.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
 
-			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Packing List Item- " + garmentPackingListModel.InvoiceNo);
+
+            return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
 		}
 
 		public virtual async Task<int> Unpost(int id, GarmentPackingListViewModel viewModel)
 		{
 			GarmentPackingListModel garmentPackingListModel = MapToModel(viewModel);
 			garmentPackingListModel.SetIsSampleDelivered(false, _identityProvider.Username, UserAgent);
-			
-			return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
+
+
+            return await _packingListRepository.UpdateAsync(id, garmentPackingListModel);
 		}
 
 		public virtual async Task<MemoryStreamResult> ReadPdfFilterCartonMD(int id)
@@ -593,6 +604,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Packing List - " + data.InvoiceNo);
+
             return await _packingListRepository.DeleteAsync(id);
         }
 
@@ -764,6 +780,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 model.SetIsPosted(true, _identityProvider.Username, UserAgent);
                 model.SetStatus(GarmentPackingListStatusEnum.POSTED, _identityProvider.Username, UserAgent);
                 model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.POSTED.ToString()));
+
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Post Packing List - " + model.InvoiceNo);
             }
 
             await _packingListRepository.SaveChanges();
@@ -776,6 +795,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             model.SetStatus(GarmentPackingListStatusEnum.CREATED, _identityProvider.Username, UserAgent);
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED.ToString()));
 
+            await logHistoryRepository.InsertAsync("SHIPPING", "UnPost Packing List - " + model.InvoiceNo);
+
             await _packingListRepository.SaveChanges();
         }
 		public async Task SetUnpostDelivered(int id)
@@ -784,7 +805,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			model.SetIsSampleDelivered(false, _identityProvider.Username, UserAgent);
 			model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, GarmentPackingListStatusEnum.CREATED.ToString()));
 
-			await _packingListRepository.SaveChanges();
+            await logHistoryRepository.InsertAsync("SHIPPING", "UnPost Packing List - " + model.InvoiceNo);
+
+            await _packingListRepository.SaveChanges();
 		}
 
 
@@ -802,6 +825,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
 
                 await _packingListRepository.SaveChanges();
+
+                ////Add Log History
+                //await logHistoryRepository.InsertAsync("SHIPPING", "ApprovedMD Packing List - " + oldModel.InvoiceNo);
             }
         }
 
@@ -819,17 +845,49 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 oldModel.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString()));
 
                 await _packingListRepository.SaveChanges();
+
+                ////Add Log History
+                //await logHistoryRepository.InsertAsync("SHIPPING", "Approved Shipping Packing List - " + oldModel.InvoiceNo);
             }
         }
 
-        public Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null)
+        public async Task SetStatus(int id, GarmentPackingListStatusEnum status, string remark = null)
         {
             var model = _packingListRepository.Query.Single(m => m.Id == id);
+
+            if (model.Status == GarmentPackingListStatusEnum.DRAFT_APPROVED_MD && status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Approval Draft Packing List - " + model.InvoiceNo);
+            }
+
             model.SetStatus(status, _identityProvider.Username, UserAgent);
             model.StatusActivities.Add(new GarmentPackingListStatusActivityModel(_identityProvider.Username, UserAgent, status.ToString(), remark));
 
-            return _packingListRepository.SaveChanges();
-        }
+            if(status == GarmentPackingListStatusEnum.DRAFT_POSTED)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Post Booking Packing List - " + model.InvoiceNo);
+            }else if (status == GarmentPackingListStatusEnum.DRAFT)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Unpost Booking Packing List - " + model.InvoiceNo);
+            }else if(status == GarmentPackingListStatusEnum.POSTED)
+            {
+                //Add Log History
+                await logHistoryRepository.InsertAsync("SHIPPING", "Post Packing List - " + model.InvoiceNo);
+            }
+
+            
+            //else if (status == GarmentPackingListStatusEnum.DRAFT_APPROVED_SHIPPING)
+            //{
+            //    //Add Log History
+            //    await logHistoryRepository.InsertAsync("SHIPPING", "UnPost Packing List - " + model.InvoiceNo);
+            //}
+
+
+            await _packingListRepository.SaveChanges();
+        }               
 
         public async Task SetSampleDelivered(List<int> ids)
         {

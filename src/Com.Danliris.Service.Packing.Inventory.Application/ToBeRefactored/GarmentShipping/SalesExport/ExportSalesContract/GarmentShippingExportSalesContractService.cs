@@ -7,6 +7,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectPr
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.SalesExport;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.SalesExport;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -17,11 +18,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         private readonly IGarmentShippingExportSalesContractRepository _repository;
         private readonly IServiceProvider serviceProvider;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentShippingExportSalesContractService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingExportSalesContractRepository>();
-
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
             this.serviceProvider = serviceProvider;
         }
 
@@ -147,6 +148,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             var model = MapToModel(viewModel);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Sales Contract Export - " + model.SalesContractNo);
+
             int Created = await _repository.InsertAsync(model);
 
             return Created;
@@ -154,6 +158,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Sales Contract Export - " + data.SalesContractNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -193,6 +202,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, GarmentShippingExportSalesContractViewModel viewModel)
         {
             var model = MapToModel(viewModel);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Sales Contract Export - " + model.SalesContractNo);
 
             return await _repository.UpdateAsync(id, model);
         }
