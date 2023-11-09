@@ -8,7 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
     public interface IGarmentPaymentDispositionReportService
     {
-        List<GarmentPaymentDispositionReportViewModel> GetReportData(string paymentType, DateTime? dateFrom, DateTime? dateTo, int offset);
-        MemoryStream GenerateExcel(string paymentType, DateTime? dateFrom, DateTime? dateTo, int offset);
+        List<GarmentPaymentDispositionReportViewModel> GetReportData(string paymentType, string unit, DateTime? dateFrom, DateTime? dateTo, int offset);
+        MemoryStream GenerateExcel(string paymentType, string unit, DateTime? dateFrom, DateTime? dateTo, int offset);
     }
 }

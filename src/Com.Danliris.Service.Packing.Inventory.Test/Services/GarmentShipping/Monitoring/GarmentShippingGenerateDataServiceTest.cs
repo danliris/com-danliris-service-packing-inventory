@@ -51,15 +51,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
+                    new GarmentShippingInvoiceItemModel("", "", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
+                    new GarmentShippingInvoiceItemModel("", "", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
+                    new GarmentShippingInvoiceItemModel("", "", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -78,7 +78,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                  },
             };
 
-            var model2 = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", items, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "", "", units, 1, 1)
+            var model2 = new GarmentShippingInvoiceModel(1, "plType", "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", items, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "", "", units, 1, 1)
             {
                 Id = 1
             };
@@ -112,15 +112,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var items = new List<GarmentShippingInvoiceItemModel>
                 {
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
+                    new GarmentShippingInvoiceItemModel("", "", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C1A", 1, 1)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
+                    new GarmentShippingInvoiceItemModel("", "", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2A", 1, 2)
                          {
                            GarmentShippingInvoiceId = 1
                          },
-                    new GarmentShippingInvoiceItemModel("", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
+                    new GarmentShippingInvoiceItemModel("", "", "", 1, "", 1, 1, "", "", "", "", "", "", "", 1, "", 1, 1, 1, "", 1, "C2B", 1, 3)
                          {
                            GarmentShippingInvoiceId = 1
                          },
@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                  },
             };
 
-            var model2 = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", items, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "", "", units, 1, 1)
+            var model2 = new GarmentShippingInvoiceModel(1, "plType", "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", items, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "", "", units, 1, 1)
             {
                 Id = 1
             };

@@ -11,6 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 	public class GarmentShippingInvoiceViewModel :BaseViewModel, IValidatableObject
 	{
 		public int PackingListId { get; set; }
+		public string PLType { get; set; }
 		public string InvoiceNo { get; set; }
 		public DateTimeOffset InvoiceDate { get; set; }
 		public string From { get; set; }

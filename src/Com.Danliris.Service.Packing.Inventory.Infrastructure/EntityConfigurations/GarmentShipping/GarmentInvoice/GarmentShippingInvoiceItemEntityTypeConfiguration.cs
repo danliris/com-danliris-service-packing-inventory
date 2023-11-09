@@ -39,6 +39,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
 				.HasMaxLength(128);
 
 			configuration
+   			    .Property(inventoryDocument => inventoryDocument.ExpenditureGoodNo)
+				.HasMaxLength(10);
+
+			configuration
 				.Property(inventoryDocument => inventoryDocument.RONo)
 				.HasMaxLength(10);
 
