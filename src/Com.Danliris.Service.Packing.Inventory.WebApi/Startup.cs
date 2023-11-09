@@ -188,6 +188,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.LogHisto
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingPackingList;
 
+
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
     public class Startup
