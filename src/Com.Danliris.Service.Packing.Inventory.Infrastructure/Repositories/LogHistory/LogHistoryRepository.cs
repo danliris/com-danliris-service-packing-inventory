@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory
 {
@@ -37,6 +38,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Log
             _dbSet.Add(model);
 
             return _dbContext.SaveChangesAsync();
+        }
+
+
+        public IQueryable<LogHistoryModel> ReadAll()
+        {
+            return _dbSet.AsNoTracking();
         }
     }
 }

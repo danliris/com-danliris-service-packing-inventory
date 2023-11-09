@@ -183,7 +183,11 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingNoteCreditAdviceMII;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingNoteCreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentShippingNoteCreditAdvice4MII;
+
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentReceiptSubconOmzetByUnitReport;
+
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.LogHistory;
+
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -498,7 +502,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddScoped<IValidateService, ValidateService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
             services.AddScoped<IAzureImageService, AzureImageService>();
-
+            services.AddScoped<ILogHistoryService, LogHistoryService>();
 
 
             var secret = Configuration.GetValue<string>("Secret") ?? Configuration["Secret"];
