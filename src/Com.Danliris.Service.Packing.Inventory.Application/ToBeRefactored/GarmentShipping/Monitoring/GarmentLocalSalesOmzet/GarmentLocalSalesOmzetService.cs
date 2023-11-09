@@ -60,10 +60,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             LSDate = a.Date,
                             BuyerCode = a.BuyerCode,
                             BuyerName = a.BuyerName,
-                            KaberType = a.KaberType,
+                            KaberType = a.KaberType == null ? "NON KABER" : "KABER",
                             TransactionName = a.TransactionTypeName,
                             BCNo = CL == null ? "-" : CL.BCNo,
-                            DispoNo = a.DispositionNo,
+                            DispoNo = a.DispositionNo == null ? "-" : a.DispositionNo,
                             Tempo = a.Tempo,
                             ProductCode = b.ProductCode,
                             ProductName = b.ProductName,
@@ -73,7 +73,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             UseVat = a.UseVat == true ? "YA" : "TIDAK",
                             PPN = ((a.UseVat == true && a.KaberType == "KABER") || a.UseVat) == false ? 0 : (Convert.ToDecimal(a.VatRate) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)) / 100,
                             Total = ((a.UseVat == true && a.KaberType == "KABER") || a.UseVat) == false ? Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price) : ((100 + Convert.ToDecimal(a.VatRate)) * Convert.ToDecimal(b.Quantity) * Convert.ToDecimal(b.Price)) / 100,
-                            LCLDate = CL.Date
+                            LCLDate = CL == null ? new DateTime(1970, 1, 1) : CL.Date
                         });
             return newQ;
         }

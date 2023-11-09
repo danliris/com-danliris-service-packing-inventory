@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
     [Produces("application/json")]
     [Route("v1/garment-shipping/monitoring/garment-local-sales-omzet")]
     [Authorize]
+
     public class GarmenLocalSalesOmzetController : ControllerBase
     {
         private string ApiVersion = "1.0.0";

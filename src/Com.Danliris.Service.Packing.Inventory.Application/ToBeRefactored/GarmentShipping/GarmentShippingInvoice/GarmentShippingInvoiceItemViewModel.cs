@@ -9,6 +9,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 {
 	public class GarmentShippingInvoiceItemViewModel : BaseViewModel
 	{
+		public string ExpenditureGoodNo { get;  set; }
 		public string RONo { get;  set; }
 		public string SCNo { get;  set; }
 		public BuyerBrand BuyerBrand { get;  set; }

@@ -55,19 +55,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var invoiceItemModels = new List<GarmentShippingInvoiceItemModel>
                 {
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 10, 1, "comocode", "comoname", "comodesc", "marketing", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 1)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 1, "buyerbrandname", 10, 1, "comocode", "comoname", "comodesc", "marketing", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 1)
                 {
                     GarmentShippingInvoiceId = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 3, 2)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 1, "buyerbrandname", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 3, 2)
                 {
                     GarmentShippingInvoiceId = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 2, "buyerbrandname2", 10, 1, "comocode", "comoname", "comodesc", "marketing1", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 3)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 2, "buyerbrandname2", 10, 1, "comocode", "comoname", "comodesc", "marketing1", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 3)
                 {
                     GarmentShippingInvoiceId = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 2, "buyerbrandname2", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing1", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 0, 4)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 2, "buyerbrandname2", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing1", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 0, 4)
                 {
                     GarmentShippingInvoiceId = 1
                 }
@@ -79,7 +79,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     Id = 1
                 }
             };
-            var invoiceModel = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", invoiceItemModels, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "aa", "aa", invoiceUnitModels, 1, 1)
+            var invoiceModel = new GarmentShippingInvoiceModel(1, "plType", "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", invoiceItemModels, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "aa", "aa", invoiceUnitModels, 1, 1)
             {
                 Id = 1,
             };
@@ -115,19 +115,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var invoiceItemModels = new HashSet<GarmentShippingInvoiceItemModel>
             {
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 10, 1, "comocode", "comoname", "comodesc", "marketing", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 1)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 1, "buyerbrandname", 10, 1, "comocode", "comoname", "comodesc", "marketing", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 1)
                 {
                     GarmentShippingInvoiceId = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 1, "buyerbrandname", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 3, 2)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 1, "buyerbrandname", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 3, 2)
                 {
                     GarmentShippingInvoiceId = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 2, "buyerbrandname2", 10, 1, "comocode", "comoname", "comodesc", "marketing1", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 3)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 2, "buyerbrandname2", 10, 1, "comocode", "comoname", "comodesc", "marketing1", "comodesc", "comodesc", "comodesc", 1, "PCS", 10, 10, 100, "usd", 1, "unitcode", 3, 3)
                 {
                     GarmentShippingInvoiceId = 1
                 },
-                new GarmentShippingInvoiceItemModel("ro", "scno", 2, "buyerbrandname2", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing1", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 0, 4)
+                new GarmentShippingInvoiceItemModel("expendituregoodno", "ro", "scno", 2, "buyerbrandname2", 15, 2, "comocode2", "comoname2", "comodesc2", "marketing1", "comodesc", "comodesc", "comodesc", 2, "SETS", 20, 20, 300, "usd", 1, "unitcode", 0, 4)
                 {
                     GarmentShippingInvoiceId = 1
                 }
@@ -138,7 +138,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                     Id = 1
                 }
             };
-            var invoiceModel = new GarmentShippingInvoiceModel(1, "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", invoiceItemModels, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "aa", "aa", invoiceUnitModels, 1, 1)
+            var invoiceModel = new GarmentShippingInvoiceModel(1, "plType", "invoiceno", DateTimeOffset.Now, "from", "to", 1, "buyercode", "buyername", "consignee", "lcno", "issuedby", 1, "sectioncode", "shippingper", DateTimeOffset.Now, "confNo", 1, "staff", 1, "cottn", 1, "mandiri", 10, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", "", invoiceItemModels, 1000, 1000, "23", "dsdsds", "memo", false, "", DateTimeOffset.Now, "", DateTimeOffset.Now, "", DateTimeOffset.Now, null, 100000, "aa", "aa", invoiceUnitModels, 1, 1)
             {
                 Id = 1,
             };

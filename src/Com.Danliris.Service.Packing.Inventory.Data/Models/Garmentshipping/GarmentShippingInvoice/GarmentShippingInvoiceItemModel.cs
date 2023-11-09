@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 	public class GarmentShippingInvoiceItemModel : StandardEntity
 	{
         public int GarmentShippingInvoiceId { get; set; }
+        public string ExpenditureGoodNo { get; set; }
         public string RONo { get; set; }
 		public string SCNo { get; set; }
 		public int BuyerBrandId { get; set; }
@@ -32,9 +33,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 		public decimal CMTPrice { get; set; }
         public int PackingListItemId { get; set; }
 
-        public GarmentShippingInvoiceItemModel(string rONo, string sCNo, int buyerBrandId, string buyerBrandName, double quantity, int comodityId, string comodityCode, string comodityName, string comodityDesc, string marketingName, string desc2, string desc3, string desc4, int uomId, string uomUnit, decimal price, decimal priceRO, decimal amount, string currencyCode, int unitId, string unitCode, decimal cMTPrice, int packingListItemId)
+        public GarmentShippingInvoiceItemModel(string expenditureGoodNo, string rONo, string sCNo, int buyerBrandId, string buyerBrandName, double quantity, int comodityId, string comodityCode, string comodityName, string comodityDesc, string marketingName, string desc2, string desc3, string desc4, int uomId, string uomUnit, decimal price, decimal priceRO, decimal amount, string currencyCode, int unitId, string unitCode, decimal cMTPrice, int packingListItemId)
         {
             this.Id = Id;
+            ExpenditureGoodNo = expenditureGoodNo;
             RONo = rONo;
             SCNo = sCNo;
             BuyerBrandId = buyerBrandId;

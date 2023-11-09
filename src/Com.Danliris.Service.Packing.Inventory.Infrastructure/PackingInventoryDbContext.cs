@@ -75,6 +75,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.LogHistory;
 
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNoteCreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentShippingPackingList;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingPackingList;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -244,6 +246,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingNoteCreditAdviceModel> GarmentShippingNoteCreditAdvices { get; set; }
 
+
+        public DbSet<GarmentShippingPackingListModel> GarmentShippingPackingLists { get; set; }
+        public DbSet<GarmentShippingPackingListItemModel> GarmentShippingPackingListItems { get; set; }
+        public DbSet<GarmentShippingPackingListDetailModel> GarmentShippingPackingListDetails { get; set; }
+        public DbSet<GarmentShippingPackingListDetailSizeModel> GarmentShippingPackingListDetailSizes { get; set; }
+        public DbSet<GarmentShippingPackingListMeasurementModel> GarmentShippingPackingListMeasurements { get; set; }
+        public DbSet<GarmentShippingPackingListStatusActivityModel> GarmentShippingPackingListStatusActivities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -347,6 +357,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListDetailEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListDetailSizeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteCreditAdviceEntityTypeConfiguration());
+
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingPackingListEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPackingListItemEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPackingListDetailEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPackingListDetailSizeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GarmentShippingPackingListMeasurementEntityTypeConfiguration());
+            //modelBuilder.ApplyConfiguration(new GarmentShippingPackingListStatusActivityEntityTypeConfiguration());
 
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
