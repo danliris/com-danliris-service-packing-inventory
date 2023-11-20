@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.CreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.CreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -15,10 +16,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentShippingCreditAdviceService : IGarmentShippingCreditAdviceService
     {
         private readonly IGarmentShippingCreditAdviceRepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentShippingCreditAdviceService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentShippingCreditAdviceRepository>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentShippingCreditAdviceViewModel MapToViewModel(GarmentShippingCreditAdviceModel model)
@@ -110,11 +112,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.bank = viewModel.bank ?? new BankAccount();
             GarmentShippingCreditAdviceModel model = new GarmentShippingCreditAdviceModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.amount, viewModel.amountToBePaid, viewModel.amountPaid, viewModel.balanceamount, viewModel.paymentTerm, viewModel.receiptNo, viewModel.lcNo, viewModel.valas, viewModel.lcType, viewModel.inkaso, viewModel.disconto, viewModel.srNo, viewModel.negoDate.GetValueOrDefault(), viewModel.paymentDate.GetValueOrDefault(), viewModel.condition, viewModel.bankComission, viewModel.discrepancyFee, viewModel.nettNego, viewModel.btbCADate.GetValueOrDefault(), viewModel.btbAmount, viewModel.btbRatio, viewModel.btbRate, viewModel.btbTransfer, viewModel.btbMaterial, viewModel.billDays, viewModel.billAmount, viewModel.billCA, viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.bank.id, viewModel.bank.accountName, viewModel.bank.AccountNumber, viewModel.bank.bankAddress, viewModel.creditInterest, viewModel.bankCharges, viewModel.otherCharge, viewModel.documentPresente.GetValueOrDefault(), viewModel.cargoPolicyNo, viewModel.cargoPolicyDate.GetValueOrDefault(), viewModel.cargoPolicyValue, viewModel.accountsReceivablePolicyNo, viewModel.accountsReceivablePolicyDate.GetValueOrDefault(), viewModel.accountsReceivablePolicyValue, viewModel.documentSendDate.GetValueOrDefault(), viewModel.remark, viewModel.lessFabricCost, viewModel.dhlCharges);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Credit Advice - " + model.InvoiceNo);
+
             return await _repository.InsertAsync(model);
         }
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Credit Advice - " + data.InvoiceNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -186,6 +196,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.bank = viewModel.bank ?? new BankAccount();
             GarmentShippingCreditAdviceModel model = new GarmentShippingCreditAdviceModel(viewModel.packingListId, viewModel.invoiceId, viewModel.invoiceNo, viewModel.date.GetValueOrDefault(), viewModel.amount, viewModel.amountToBePaid, viewModel.amountPaid, viewModel.balanceamount, viewModel.paymentTerm, viewModel.receiptNo, viewModel.lcNo, viewModel.valas, viewModel.lcType, viewModel.inkaso, viewModel.disconto, viewModel.srNo, viewModel.negoDate.GetValueOrDefault(), viewModel.paymentDate.GetValueOrDefault(), viewModel.condition, viewModel.bankComission, viewModel.discrepancyFee, viewModel.nettNego, viewModel.btbCADate.GetValueOrDefault(), viewModel.btbAmount, viewModel.btbRatio, viewModel.btbRate, viewModel.btbTransfer, viewModel.btbMaterial, viewModel.billDays, viewModel.billAmount, viewModel.billCA, viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.bank.id, viewModel.bank.accountName, viewModel.bank.AccountNumber, viewModel.bank.bankAddress, viewModel.creditInterest, viewModel.bankCharges, viewModel.otherCharge, viewModel.documentPresente.GetValueOrDefault(), viewModel.cargoPolicyNo, viewModel.cargoPolicyDate.GetValueOrDefault(), viewModel.cargoPolicyValue, viewModel.accountsReceivablePolicyNo, viewModel.accountsReceivablePolicyDate.GetValueOrDefault(), viewModel.accountsReceivablePolicyValue, viewModel.documentSendDate.GetValueOrDefault(), viewModel.remark, viewModel.lessFabricCost, viewModel.dhlCharges);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Credit Advice - " + model.InvoiceNo);
 
             return await _repository.UpdateAsync(id, model);
         }

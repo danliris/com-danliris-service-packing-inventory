@@ -10,17 +10,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ExportSalesDO
 {
     public class GarmentShippingExportSalesDOService : IGarmentShippingExportSalesDOService
     {
         private readonly IGarmentShippingExportSalesDORepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentShippingExportSalesDOService(IServiceProvider serviceProvider)
         {
-            _repository = serviceProvider.GetService<IGarmentShippingExportSalesDORepository>(); 
-
+            _repository = serviceProvider.GetService<IGarmentShippingExportSalesDORepository>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentShippingExportSalesDOViewModel MapToViewModel(GarmentShippingExportSalesDOModel model)
@@ -138,6 +139,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             GarmentShippingExportSalesDOModel garmentShippingExportSalesDOModel = MapToModel(viewModel);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create DO Penjualan Export - " + garmentShippingExportSalesDOModel.ExportSalesDONo);
+
             int Created = await _repository.InsertAsync(garmentShippingExportSalesDOModel);
 
             return Created;
@@ -145,6 +149,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete DO Penjualan Export - " + data.ExportSalesDONo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -202,6 +211,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, GarmentShippingExportSalesDOViewModel viewModel)
         {
             GarmentShippingExportSalesDOModel garmentShippingExportSalesDOModel = MapToModel(viewModel);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update DO Penjualan Export - " + garmentShippingExportSalesDOModel.ExportSalesDONo);
 
             return await _repository.UpdateAsync(id, garmentShippingExportSalesDOModel);
         }

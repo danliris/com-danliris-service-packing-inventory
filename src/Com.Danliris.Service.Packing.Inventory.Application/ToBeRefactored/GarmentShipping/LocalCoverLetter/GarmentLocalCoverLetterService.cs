@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -15,10 +16,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public class GarmentLocalCoverLetterService : IGarmentLocalCoverLetterService
     {
         private readonly IGarmentLocalCoverLetterRepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentLocalCoverLetterService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentLocalCoverLetterRepository>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentLocalCoverLetterViewModel MapToViewModel(GarmentShippingLocalCoverLetterModel model)
@@ -71,6 +73,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo,GenerateNo(), viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.bcNo, viewModel.bcdate.GetValueOrDefault(), viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
 
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Surat Pengantar Lokal - " + model.LocalCoverLetterNo);
+
             return await _repository.InsertAsync(model);
         }
 
@@ -91,6 +96,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Surat Pengantar Lokal - " + data.LocalCoverLetterNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -150,6 +159,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             viewModel.buyer = viewModel.buyer ?? new Buyer();
             viewModel.shippingStaff = viewModel.shippingStaff ?? new ShippingStaff();
             GarmentShippingLocalCoverLetterModel model = new GarmentShippingLocalCoverLetterModel(viewModel.localSalesNoteId, viewModel.noteNo, viewModel.localCoverLetterNo, viewModel.date.GetValueOrDefault(), viewModel.buyer.Id, viewModel.buyer.Code, viewModel.buyer.Name, viewModel.buyer.Address, viewModel.remark, viewModel.bcNo, viewModel.bcdate.GetValueOrDefault(), viewModel.truck, viewModel.plateNumber, viewModel.driver, viewModel.shippingStaff.id, viewModel.shippingStaff.name);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Surat Pengantar Lokal - " + model.LocalCoverLetterNo);
 
             return await _repository.UpdateAsync(id, model);
         }
