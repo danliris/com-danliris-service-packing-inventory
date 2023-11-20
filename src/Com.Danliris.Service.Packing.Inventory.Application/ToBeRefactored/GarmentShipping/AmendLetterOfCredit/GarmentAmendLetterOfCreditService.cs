@@ -9,16 +9,18 @@ using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Newtonsoft.Json;
 using System.Linq;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.AmendLetterOfCredit
 {
     public class GarmentAmendLetterOfCreditService : IGarmentAmendLetterOfCreditService
     {
         private readonly IGarmentAmendLetterOfCreditRepository _repository;
-
+        protected readonly ILogHistoryRepository logHistoryRepository;
         public GarmentAmendLetterOfCreditService(IServiceProvider serviceProvider)
         {
             _repository = serviceProvider.GetService<IGarmentAmendLetterOfCreditRepository>();
+            logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
         }
 
         private GarmentAmendLetterOfCreditViewModel MapToViewModel(GarmentShippingAmendLetterOfCreditModel model)
@@ -54,11 +56,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         {
             GarmentShippingAmendLetterOfCreditModel model = new GarmentShippingAmendLetterOfCreditModel(viewModel.documentCreditNo, viewModel.letterOfCreditId, viewModel.amendNumber, viewModel.date, viewModel.description, viewModel.amount);
 
+            // Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Create Amend Letter Of Credit - " + model.DocumentCreditNo);
+
             return await _repository.InsertAsync(model);
         }
 
         public async Task<int> Delete(int id)
         {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Amend Letter Of Credit - " + data.DocumentCreditNo);
+
             return await _repository.DeleteAsync(id);
         }
 
@@ -95,6 +105,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public async Task<int> Update(int id, GarmentAmendLetterOfCreditViewModel viewModel)
         {
             GarmentShippingAmendLetterOfCreditModel model = new GarmentShippingAmendLetterOfCreditModel(viewModel.documentCreditNo,viewModel.letterOfCreditId,viewModel.amendNumber,viewModel.date,viewModel.description,viewModel.amount);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("SHIPPING", "Update Amend Letter Of Credit - " + model.DocumentCreditNo);
 
             return await _repository.UpdateAsync(id, model);
         }
