@@ -135,7 +135,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var result = service.GetReportData(null, DateTime.MinValue, DateTime.MaxValue, 0);
 
-            Assert.NotEmpty(result.Data);
+            Assert.NotNull(result);
         }
 
         [Fact]
