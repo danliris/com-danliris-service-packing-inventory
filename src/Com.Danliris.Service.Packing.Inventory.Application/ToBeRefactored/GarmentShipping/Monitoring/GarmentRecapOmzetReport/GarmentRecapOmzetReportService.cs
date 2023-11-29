@@ -48,6 +48,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
+            queryPL = queryPL.Where(w => w.Omzet == true);
+
             queryInv = queryInv.OrderBy(w => w.InvoiceNo);
 
             var Query = (
