@@ -35,7 +35,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpGet]
-        public IActionResult GetReport(string unit, DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
+        public async Task<IActionResult> GetReport(string unit, DateTime? dateFrom, DateTime? dateTo, int page, int size, string Order = "{}")
         {
             int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
             string accept = Request.Headers["Accept"];
@@ -43,7 +43,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
 
                 VerifyUser();
-                var data = _service.GetReportData(unit, dateFrom, dateTo, offset);
+                var data = await _service.GetReportData(unit, dateFrom, dateTo, offset);
 
                 var info = new Dictionary<string, object>
                     {
@@ -65,7 +65,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         }
 
         [HttpGet("download")]
-        public IActionResult GetXls(string unit, DateTime? dateFrom, DateTime? dateTo)
+        public async Task<IActionResult> GetXls(string unit, DateTime? dateFrom, DateTime? dateTo)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : Convert.ToDateTime(dateFrom);
                 DateTime DateTo = dateTo == null ? DateTime.Now : Convert.ToDateTime(dateTo);
 
-                var xls = _service.GenerateExcel(unit, dateFrom, dateTo, offset);
+                var xls =  await _service.GenerateExcel(unit, dateFrom, dateTo, offset);
 
                 string filename = String.Format("Report Rincian Omzet Konfeksi - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 
