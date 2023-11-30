@@ -13,7 +13,17 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObje
         public GarmentComodity Comodity { get; set; }
         public UnitDepartment Unit { get; set; }
         public Buyer2 Buyer { get; set; }
-        public double TotalQuantity { get; set; }     
+        public double TotalQuantity { get; set; }
+        public double Quantity { get; set; }
+        public double Price { get; set; }
+        public int PackingListId { get; set; }
+
+        public string InvoiceNo { get; set; }
+        public string RONumber { get; set; }
+        public string UnitCode { get; set; }
+        public string BuyerName { get; set; }
+        public string ComodityName { get; set; }
+
     }
 
     public class GarmentComodity

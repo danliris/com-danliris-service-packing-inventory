@@ -114,7 +114,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GetReportData(null, DateTime.MinValue, DateTime.Now, 0);
+            var result = service.GetReportData(null, null, DateTime.MinValue, DateTime.Now, 0);
 
             Assert.NotEmpty(result.ToList());
         }
@@ -199,7 +199,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GenerateExcel(null, DateTime.MinValue, DateTime.Now, 7);
+            var result = service.GenerateExcel(null, null, DateTime.MinValue, DateTime.Now, 7);
 
             Assert.NotNull(result);
         }
@@ -219,7 +219,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
 
             var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = service.GenerateExcel(null, DateTime.MinValue, DateTime.Now, 7);
+            var result = service.GenerateExcel(null, null, DateTime.MinValue, DateTime.Now, 7);
 
             Assert.NotNull(result);
         }
