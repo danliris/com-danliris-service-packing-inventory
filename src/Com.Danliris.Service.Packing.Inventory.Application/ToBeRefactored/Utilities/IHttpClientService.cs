@@ -10,5 +10,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
     {
         Task<HttpResponseMessage> GetAsync(string url);
         Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, HttpContent content);
+        Task<HttpResponseMessage> PutAsync(string url, string token, HttpContent content);
+        Task<HttpResponseMessage> PutAsync(string url, HttpContent content);
     }
 }
