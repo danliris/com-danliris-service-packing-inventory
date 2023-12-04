@@ -22,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
         }
 
-        public IQueryable<GarmentPaymentDispositionReportViewModel> GetDataQuery(string paymentType, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public IQueryable<GarmentPaymentDispositionReportViewModel> GetDataQuery(string paymentType, string unit, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
            var query = repository.ReadAll();
            var queryUnit = repository.ReadUnitAll();
@@ -37,8 +37,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var newQ = (from a in query
                         join b in queryUnit on a.Id equals b.PaymentDispositionId
-                        where a.PaymentType == (string.IsNullOrWhiteSpace(paymentType) ? a.PaymentType : paymentType)
-
+                        where a.PaymentType == (string.IsNullOrWhiteSpace(paymentType) ? a.PaymentType : paymentType) &&  b.UnitCode == (string.IsNullOrWhiteSpace(unit) ? b.UnitCode : unit)
+                              
                         select new GarmentPaymentDispositionReportViewModel
                         {
                             DispositionNo = a.DispositionNo,
@@ -58,8 +58,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             IncomeTaxRate = a.IncomeTaxRate,
                             IncomeTaxValue = a.IncomeTaxValue,
                             TotalBill = a.TotalBill,
-                            XpdcCode = a.PaymentType == "EMKL" ? a.EMKLCode : (a.PaymentType == "FORWARDER" ? a.ForwarderCode : a.CourierCode),
-                            XpdcName = a.PaymentType == "EMKL" ? a.EMKLCode : (a.PaymentType == "FORWARDER" ? a.ForwarderCode : a.CourierCode),
+                            XpdcCode = a.PaymentType == "EMKL" ? a.EMKLCode : (a.PaymentType == "FORWARDER" ? a.ForwarderCode : (a.PaymentType == "COURIER" ? a.CourierCode : a.WareHouseCode)),
+                            XpdcName = a.PaymentType == "EMKL" ? a.EMKLName : (a.PaymentType == "FORWARDER" ? a.ForwarderName : (a.PaymentType == "COURIER" ? a.CourierName : a.WareHouseName)),
                             UnitCode = b.UnitCode,
                             UnitPercentage = b.AmountPercentage,
                             UnitAmount = b.BillAmount,
@@ -67,16 +67,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return newQ;
         }
 
-        public List<GarmentPaymentDispositionReportViewModel> GetReportData(string paymentType, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public List<GarmentPaymentDispositionReportViewModel> GetReportData(string paymentType, string unit, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var Query = GetDataQuery(paymentType, dateFrom, dateTo, offset);
+            var Query = GetDataQuery(paymentType, unit, dateFrom, dateTo, offset);
             Query = Query.OrderBy(b => b.PaymentType).ThenBy(b => b.DispositionNo);
             return Query.ToList();
         }
 
-        public MemoryStream GenerateExcel(string paymentType, DateTime? dateFrom, DateTime? dateTo, int offset)
+        public MemoryStream GenerateExcel(string paymentType, string unit, DateTime? dateFrom, DateTime? dateTo, int offset)
         {
-            var Query = GetDataQuery(paymentType, dateFrom, dateTo, offset);
+            var Query = GetDataQuery(paymentType, unit, dateFrom, dateTo, offset);
             DataTable result = new DataTable();
 
             result.Columns.Add(new DataColumn() { ColumnName = "No", DataType = typeof(string) });
