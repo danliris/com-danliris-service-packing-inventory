@@ -59,6 +59,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false
                               && a.Accounting == true && a.Omzet == true && b.PEBNo != null && b.PEBNo != "-" && b.PEBNo != " "
                               && b.PEBDate != DateTimeOffset.MinValue
+                              && (a.InvoiceNo.Substring(0, 2) == "DS" || a.InvoiceNo.Substring(0, 2) == "DL")
+
                         select new GarmentRecapOmzetReportViewModel
                         {
                             TruckingDate = a.TruckingDate,

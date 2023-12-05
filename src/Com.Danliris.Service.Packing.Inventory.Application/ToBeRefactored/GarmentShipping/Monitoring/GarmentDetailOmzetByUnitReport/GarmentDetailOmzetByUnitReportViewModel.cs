@@ -23,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public decimal Amount { get; set; }
         public string CurrencyCode { get; set; }
         public decimal Rate { get; set; }
-        public double AmountIDR { get; set; }
+        public decimal AmountIDR { get; set; }
     }
 
     public class GarmentDetailOmzetByUnitReportTempViewModel
