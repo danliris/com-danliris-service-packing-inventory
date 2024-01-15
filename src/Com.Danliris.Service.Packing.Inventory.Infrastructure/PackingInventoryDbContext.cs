@@ -73,6 +73,8 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.LogHistory;
 
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingNoteCreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNoteCreditAdvice;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalSalesNoteTS;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -227,6 +229,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<LogHistoryModel> LogHistories { get; set; }
 
         public DbSet<GarmentShippingNoteCreditAdviceModel> GarmentShippingNoteCreditAdvices { get; set; }
+        public DbSet<GarmentShippingLocalSalesNoteTSModel> GarmentReceiptSubconLocalSalesNotes { get; set; }
+        public DbSet<GarmentShippingLocalSalesNoteTSItemModel> GarmentReceiptSubconLocalSalesNoteItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -331,6 +335,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListDetailEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentReceiptSubconPackingListDetailSizeEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new GarmentShippingNoteCreditAdviceEntityTypeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteTSConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteTSItemConfig());
+
 
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());

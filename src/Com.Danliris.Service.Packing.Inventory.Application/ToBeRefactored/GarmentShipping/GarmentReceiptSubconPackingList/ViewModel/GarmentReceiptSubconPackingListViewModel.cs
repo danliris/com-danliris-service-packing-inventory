@@ -33,18 +33,23 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public bool IsApproved { get;  set; }
         public bool IsUsed { get;  set; }
-
+        public string InvoiceNo { get; set; }
+        public DateTimeOffset InvoiceDate { get; set; }
         public ICollection<GarmentReceiptSubconPackingListItemViewModel> Items { get; set; }
 
 
         public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
 
-            if (string.IsNullOrEmpty(LocalSalesNoteNo))
-            {
-                yield return new ValidationResult("Nomer Nota Penjualan Lokal tidak boleh kosong", new List<string> { "LocalSalesNoteNo" });
-            }
+            //if (string.IsNullOrEmpty(LocalSalesNoteNo))
+            //{
+            //    yield return new ValidationResult("Nomer Nota Penjualan Lokal tidak boleh kosong", new List<string> { "LocalSalesNoteNo" });
+            //}
 
+            if (InvoiceDate == null || InvoiceDate == DateTimeOffset.MinValue)
+            {
+                yield return new ValidationResult("Tgl Invoice tidak boleh kosong", new List<string> { "InvoiceDate" });
+            }
             //else if (Date > DateTimeOffset.Now)
             //{
             //    yield return new ValidationResult("Tanggal tidak boleh lebih dari hari ini", new List<string> { "Date" });
