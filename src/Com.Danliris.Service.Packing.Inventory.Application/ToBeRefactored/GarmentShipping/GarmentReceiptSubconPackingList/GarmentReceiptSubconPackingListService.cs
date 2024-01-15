@@ -91,6 +91,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 TotalCartons = model.TotalCartons,
                 IsUsed = model.IsUsed,
                 IsApproved = model.IsApproved,
+                InvoiceNo = model.InvoiceNo,
+                InvoiceDate = model.InvoiceDate,
                 Items = (model.Items ?? new List<GarmentReceiptSubconPackingListItemModel>()).Select(i => new GarmentReceiptSubconPackingListItemViewModel
                 {
                     Active = i.Active,
@@ -259,12 +261,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 viewModel.NetNetWeight,
                 viewModel.TotalCartons,
                 viewModel.IsApproved,
-                viewModel.IsUsed
+                viewModel.IsUsed,
+                viewModel.InvoiceNo ?? GenerateInvoiceNo(viewModel),
+                viewModel.InvoiceDate
                 );
 
             return garmentPackingListModel;
         }
 
+        private string GenerateInvoiceNo(GarmentReceiptSubconPackingListViewModel viewModel)
+        {
+            var year = DateTime.Now.ToString("yy");
+
+            var prefix = $"LJS/{year}";
+
+            var lastInvoiceNo = _packingListRepository.ReadAll().Where(w => w.InvoiceNo.StartsWith(prefix))
+                .OrderByDescending(o => o.InvoiceNo)
+                .Select(s => int.Parse(s.InvoiceNo.Replace(prefix, "")))
+                .FirstOrDefault();
+            var invoiceNo = $"{prefix}{(lastInvoiceNo + 1).ToString("D4")}";
+
+            return invoiceNo;
+        }
 
         public virtual async Task<string> Create(GarmentReceiptSubconPackingListViewModel viewModel)
         {
@@ -274,9 +292,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 try
                 {
-                    var localSalesNote = await _localSalesNoteRepository.ReadByIdAsync(garmentPackingListModel.LocalSalesNoteId);
+                    //var localSalesNote = await _localSalesNoteRepository.ReadByIdAsync(garmentPackingListModel.LocalSalesNoteId);
 
-                    localSalesNote.SetIsSubconPackingList(true, _identityProvider.Username, UserAgent);
+                    //localSalesNote.SetIsSubconPackingList(true, _identityProvider.Username, UserAgent);
 
                     List<string> packingOutNos = new List<string>();
                     foreach (var item in garmentPackingListModel.Items)
@@ -301,7 +319,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     //Update IsPL GarmentPackingOut
                     if (packingOutNos.Count() > 0)
                     {
-                        await PutIsPackingListGarmentPackingOut(packingOutNos, true, garmentPackingListModel.LocalSalesNoteNo, garmentPackingListModel.Id);
+                        await PutIsPackingListGarmentPackingOut(packingOutNos, true, garmentPackingListModel.InvoiceNo, garmentPackingListModel.Id);
                     }
 
                     await _packingListRepository.SaveChanges();
@@ -389,9 +407,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     {
                         await PutIsPackingListGarmentPackingOut(packingOutNos, false,null,0);
                     }
-                    var localSalesNote = await _localSalesNoteRepository.ReadByIdAsync(data.LocalSalesNoteId);
+                    //var localSalesNote = await _localSalesNoteRepository.ReadByIdAsync(data.LocalSalesNoteId);
 
-                    localSalesNote.SetIsSubconPackingList(false, _identityProvider.Username, UserAgent);
+                    //localSalesNote.SetIsSubconPackingList(false, _identityProvider.Username, UserAgent);
 
                     await _packingListRepository.SaveChanges();
 
@@ -544,11 +562,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         .GroupBy(g => new { g.Index, g.Carton1, g.Carton2 }, (key, value) => value.First().totalNetNetWeight).Sum();
 
                     modelToUpdate.SetNetNetWeight(totalNnw, _identityProvider.Username, UserAgent);
-
+                    modelToUpdate.SetInvoiceDate(newModel.InvoiceDate, _identityProvider.Username, UserAgent);
                     if (SetTruePackingOutNos.Count() > 0)
                     {
                         var distictNos = SetTruePackingOutNos.Distinct().ToList();
-                        await PutIsPackingListGarmentPackingOut(distictNos, true, modelToUpdate.LocalSalesNoteNo, modelToUpdate.Id);
+                        await PutIsPackingListGarmentPackingOut(distictNos, true, modelToUpdate.InvoiceNo, modelToUpdate.Id);
                     }
 
                     if (SetFalsePackingOutNos.Count() > 0)
