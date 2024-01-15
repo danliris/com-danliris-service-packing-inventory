@@ -181,6 +181,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentS
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.LogHistory;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInsuranceDispositionReport;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNoteTS;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -335,6 +337,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentReceiptSubconPackingListDetailSizeRepository, GarmentReceiptSubconPackingListDetailSizeRepository>();
 
             services.AddTransient<ILogHistoryRepository, LogHistoryRepository>();
+
+            services.AddTransient<IGarmentShippingLocalSalesNoteTSRepository, GarmentShippingLocalSalesNoteTSRepository>();
+            //services.AddTransient<IGarmentShippingLocalSalesNoteTSItemRepository, GarmentShippingLocalSalesNoteTSItemRepository>();
             #endregion
 
             #region Service
@@ -479,6 +484,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentReceiptSubconPackingListService, GarmentReceiptSubconPackingListService>();
             services.AddTransient<IGarmentReceiptSubconOmzetByUnitReportService, GarmentReceiptSubconOmzetByUnitReportService>();
+
+            services.AddTransient<IGarmentShippingLocalSalesNoteTSService, GarmentShippingLocalSalesNoteTSService>();
             #endregion
 
             // Register Provider
