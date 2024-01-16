@@ -121,6 +121,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         errorItemsCount++;
                     }
 
+                    if (item.TotalQuantityPackingOut != item.TotalQuantityCarton)
+                    {
+                        errorItem["TotalQuantityPackingOut"] = "Jumlah Packing Out dengan Jumlah Total Qty Carton Harus Sama";
+                        errorItemsCount++;
+                    }
+
                     if (item.Details == null || item.Details.Count < 1)
                     {
                         errorItem["DetailsCount"] = "Details tidak boleh kosong";
