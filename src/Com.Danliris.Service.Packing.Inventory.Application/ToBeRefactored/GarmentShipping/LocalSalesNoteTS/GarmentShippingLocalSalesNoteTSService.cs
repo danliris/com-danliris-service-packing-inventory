@@ -234,6 +234,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return await _repository.UpdateAsync(id, model);
         }
 
+        public async Task<int> SetIsUsed(List<long> ids, bool isUsed)
+        {
+            return await _repository.SetIsUsed(ids, isUsed);
+        }
+
         //public async Task<int> ApproveFinance(int id)
         //{
         //    var data = await _repository.ReadByIdAsync(id);
