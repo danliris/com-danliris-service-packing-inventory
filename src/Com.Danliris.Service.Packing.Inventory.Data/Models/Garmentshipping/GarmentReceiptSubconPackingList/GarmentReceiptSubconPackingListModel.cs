@@ -34,6 +34,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
 
         public bool IsApproved { get; private set; }
         public bool IsUsed { get; private set; }
+        public string InvoiceNo { get; private set; }
+        public DateTimeOffset InvoiceDate { get; private set; }
         public ICollection<GarmentReceiptSubconPackingListItemModel> Items { get; private set; }
 
 
@@ -42,7 +44,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             Items = new HashSet<GarmentReceiptSubconPackingListItemModel>();
         }
 
-        public GarmentReceiptSubconPackingListModel(int localSalesNoteId, string localSalesNoteNo,DateTimeOffset localSalesNoteDate, int localSalesContractId, string localSalesContractNo, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP,string paymentTerm, bool omzet, bool accounting, ICollection<GarmentReceiptSubconPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons,bool isApproved,bool isUsed)
+        public GarmentReceiptSubconPackingListModel(int localSalesNoteId, string localSalesNoteNo,DateTimeOffset localSalesNoteDate, int localSalesContractId, string localSalesContractNo, int transactionTypeId, string transactionTypeCode, string transactionTypeName, int buyerId, string buyerCode, string buyerName, string buyerNPWP,string paymentTerm, bool omzet, bool accounting, ICollection<GarmentReceiptSubconPackingListItemModel> items, double grossWeight, double nettWeight, double netNetWeight, double totalCartons,bool isApproved,bool isUsed,string invoiceNo,DateTimeOffset invoiceDate)
         {
             LocalSalesNoteNo = localSalesNoteNo;
             LocalSalesNoteId = localSalesNoteId;
@@ -66,6 +68,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             TotalCartons = totalCartons;
             IsUsed = isUsed;
             IsApproved = isApproved;
+            InvoiceNo = invoiceNo;
+            InvoiceDate = invoiceDate;
         }
 
 
@@ -139,6 +143,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Gar
             if (TotalCartons != totalCartons)
             {
                 TotalCartons = totalCartons;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+
+        public void SetInvoiceDate(DateTimeOffset invoiceDate, string userName, string userAgent)
+        {
+            if (InvoiceDate != invoiceDate)
+            {
+                InvoiceDate = invoiceDate;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
