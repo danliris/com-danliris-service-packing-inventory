@@ -5,6 +5,7 @@ using Com.Moonlay.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -146,6 +147,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             }
 
             return _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> SetIsUsed(List<long> ids,bool isUsed)
+        {
+            foreach(var id in ids)
+            {
+                var modelToUpdate = _dbSet
+                .FirstOrDefault(s => s.Id == id);
+
+                modelToUpdate.SetIsUsed(isUsed, _identityProvider.Username, UserAgent);
+            }
+           
+            return await _dbContext.SaveChangesAsync();
         }
 
         //    public Task<int> ApproveFinanceAsync(int id)
