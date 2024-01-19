@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
@@ -142,6 +143,26 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
+
+        }
+
+
+        [HttpPut("update-used")]
+        public async Task<IActionResult> IsReceived([FromBody] UpdateIsReceivedGarmentShippingLocalSalesNoteTSViewModel command)
+        {
+            try
+            {
+                VerifyUser();
+
+                var result = await _service.SetIsUsed(command.Ids, command.IsUsed);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
 
         }
 
