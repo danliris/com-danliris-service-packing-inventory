@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingLocalSalesNoteTSModel GetModel()
         {
             var items = new HashSet<GarmentShippingLocalSalesNoteTSItemModel> { new GarmentShippingLocalSalesNoteTSItemModel(1, 1,1, "",1, 1, 1, "", "","") };
-            var model = new GarmentShippingLocalSalesNoteTSModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", "", "", 1, true, 1, 1, "", true, true, true, true, false,"","", DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);
+            var model = new GarmentShippingLocalSalesNoteTSModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", "", "", 1, true, 1, 1, "", true, true, true, true, false,"","", DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "",false, items);
 
             return model;
         }
@@ -25,7 +25,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.DataUtils.GarmentShipping.
         public override GarmentShippingLocalSalesNoteTSModel GetEmptyModel()
         {
             var items = new HashSet<GarmentShippingLocalSalesNoteTSItemModel> { new GarmentShippingLocalSalesNoteTSItemModel(1, 1, 1, "", 1, 1, 1, "", "", "") };
-            var model = new GarmentShippingLocalSalesNoteTSModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", "", "", 1, true, 1, 1, "", true, true, true, true, false, "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", items);
+            var model = new GarmentShippingLocalSalesNoteTSModel("", 1, "", "", DateTimeOffset.Now, 1, "", "", "", "", 1, true, 1, 1, "", true, true, true, true, false, "", "", DateTimeOffset.Now, DateTimeOffset.Now, false, false, "", 1, "", "", false, items);
 
             return model;
         }
