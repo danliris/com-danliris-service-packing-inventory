@@ -183,6 +183,10 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.LogHisto
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.Monitoring.GarmentInsuranceDispositionReport;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalCoverLetterTS;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetterTS;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesDOTS;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesDOTS;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -340,6 +344,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentShippingLocalSalesNoteTSRepository, GarmentShippingLocalSalesNoteTSRepository>();
             //services.AddTransient<IGarmentShippingLocalSalesNoteTSItemRepository, GarmentShippingLocalSalesNoteTSItemRepository>();
+
+            services.AddTransient<IGarmentLocalCoverLetterTSRepository, GarmentLocalCoverLetterTSRepository>();
+
+            services.AddTransient<IGarmentShippingLocalSalesDOTSRepository, GarmentShippingLocalSalesDOTSRepository>();
             #endregion
 
             #region Service
@@ -486,6 +494,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentReceiptSubconOmzetByUnitReportService, GarmentReceiptSubconOmzetByUnitReportService>();
 
             services.AddTransient<IGarmentShippingLocalSalesNoteTSService, GarmentShippingLocalSalesNoteTSService>();
+
+            services.AddTransient<IGarmentLocalCoverLetterTSService, GarmentLocalCoverLetterTSService>();
+
+            services.AddTransient<IGarmentShippingLocalSalesDOTSService, GarmentShippingLocalSalesDOTSService>();
             #endregion
 
             // Register Provider
