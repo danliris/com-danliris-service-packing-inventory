@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetterTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
@@ -21,14 +22,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
     public class GarmentShippingLocalSalesNoteTSController : ControllerBase
     {
         private readonly IGarmentShippingLocalSalesNoteTSService _service;
-        //private readonly IGarmentLocalCoverLetterService _clservice;
+        private readonly IGarmentLocalCoverLetterTSService _clservice;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
 
-        public GarmentShippingLocalSalesNoteTSController(IGarmentShippingLocalSalesNoteTSService service, /*IGarmentLocalCoverLetterService clservice,*/ IIdentityProvider identityProvider, IValidateService validateService)
+        public GarmentShippingLocalSalesNoteTSController(IGarmentShippingLocalSalesNoteTSService service, IGarmentLocalCoverLetterTSService clservice, IIdentityProvider identityProvider, IValidateService validateService)
         {
             _service = service;
-            //_clservice = clservice;
+            _clservice = clservice;
             _identityProvider = identityProvider;
             _validateService = validateService;
         }
@@ -251,47 +252,47 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         }
 
-        //[HttpGet("pdf/{Id}")]
-        //public async Task<IActionResult> GetPDF([FromRoute] int Id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var exception = new
-        //        {
-        //            error = ResultFormatter.FormatErrorMessage(ModelState)
-        //        };
-        //        return new BadRequestObjectResult(exception);
-        //    }
+        [HttpGet("pdf/{Id}")]
+        public async Task<IActionResult> GetPDF([FromRoute] int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var exception = new
+                {
+                    error = ResultFormatter.FormatErrorMessage(ModelState)
+                };
+                return new BadRequestObjectResult(exception);
+            }
 
-        //    try
-        //    {
-        //        VerifyUser();
-        //        var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
-        //        int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
-        //        var model = await _service.ReadById(Id);
+            try
+            {
+                VerifyUser();
+                var indexAcceptPdf = Request.Headers["Accept"].ToList().IndexOf("application/pdf");
+                int timeoffsset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
+                var model = await _service.ReadById(Id);
 
-        //        if (model == null)
-        //        {
-        //            return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
-        //        }
-        //        else
-        //        {
-        //            Buyer buyer = _service.GetBuyer(model.buyer.Id);
-        //            GarmentLocalCoverLetterViewModel cl = await _clservice.ReadByLocalSalesNoteId(model.Id);
-        //            var PdfTemplate = new GarmentShippingLocalSalesNotePdfTemplate();
-        //            MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, buyer, timeoffsset);
+                if (model == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NotFound, "Not Found");
+                }
+                else
+                {
+                    Buyer buyer = _service.GetBuyer(model.buyer.Code).FirstOrDefault();
+                    GarmentLocalCoverLetterTSViewModel cl = await _clservice.ReadByLocalSalesNoteId(model.Id);
+                    var PdfTemplate = new GarmentShippingLocalSalesNoteTSPdfTemplate();
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, buyer, timeoffsset);
 
-        //            return new FileStreamResult(stream, "application/pdf")
-        //            {
-        //                FileDownloadName = model.noteNo + ".pdf"
-        //            };
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-        //    }
-        //}
+                    return new FileStreamResult(stream, "application/pdf")
+                    {
+                        FileDownloadName = model.noteNo + ".pdf"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
         //[HttpGet("localSalesDebtorNow")]
         //public IActionResult GetLocalSalesDebtorNow(int month, int year)
@@ -310,7 +311,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         //    }
         //}
-                
+
         //[HttpGet("finance-reports")]
         //public IActionResult GetSalesNoteFinanceReport(string type, int month, int year, string buyer)
         //{
@@ -328,7 +329,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
         //        return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         //    }
         //}
-        
+
         //[HttpGet("localSalesDebtor")]
         //public IActionResult GetLocalSalesDebtor([FromQuery] string type, [FromQuery] int month, [FromQuery] int year)
         //{
