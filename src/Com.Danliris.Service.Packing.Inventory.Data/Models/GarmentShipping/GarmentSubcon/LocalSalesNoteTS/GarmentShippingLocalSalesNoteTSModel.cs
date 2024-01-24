@@ -30,6 +30,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public string Remark { get; set; }
         public bool IsUsed { get; set; }
         public bool IsCL { get; set; }
+        public bool IsDO { get; set; }
         public bool IsDetail { get; set; }
         public bool IsApproveShipping { get; set; }
         public bool IsApproveFinance { get; set; }
@@ -43,14 +44,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
         public int BankId { get; private set; }
         public string BankName { get; private set; }
         public string AccountNumber { get; private set; }
-        //public bool IsSubconPackingList { get; set; }
         public ICollection<GarmentShippingLocalSalesNoteTSItemModel> Items { get; private set; }
 
         public GarmentShippingLocalSalesNoteTSModel()
         {
         }
 
-        public GarmentShippingLocalSalesNoteTSModel(string salesContractNo, int salesContractId, string paymentType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName ,string buyerNPWP, string kaberType,  int tempo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isCL, bool isDetail, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, int bankId, string bankName, string accountNumber, ICollection<GarmentShippingLocalSalesNoteTSItemModel> items)
+        public GarmentShippingLocalSalesNoteTSModel(string salesContractNo, int salesContractId, string paymentType, string noteNo, DateTimeOffset date, int buyerId, string buyerCode, string buyerName ,string buyerNPWP, string kaberType,  int tempo, bool useVat, int vatId, int vatRate, string remark, bool isUsed, bool isCL, bool isDetail, bool isApproveShipping, bool isApproveFinance, string approveShippingBy, string approveFinanceBy, DateTimeOffset approveShippingDate, DateTimeOffset approveFinanceDate, bool isRejectedShipping, bool isRejectedFinance, string rejectedReason, int bankId, string bankName, string accountNumber, bool isDO, ICollection<GarmentShippingLocalSalesNoteTSItemModel> items)
         {
             SalesContractNo = salesContractNo;
             SalesContractId = salesContractId;
@@ -88,6 +88,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             BankName = bankName;
             AccountNumber = accountNumber;
             Items = items;
+            IsDO = isDO;
         }
 
         public void SetDate(DateTimeOffset date, string userName, string userAgent)
@@ -239,6 +240,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shi
             if (RejectedReason != rejectedReason)
             {
                 RejectedReason = rejectedReason;
+                this.FlagForUpdate(userName, userAgent);
+            }
+        }
+        public void SetIsDO(bool isDo, string userName, string userAgent)
+        {
+            if (IsDO != isDo)
+            {
+                IsDO = isDo;
                 this.FlagForUpdate(userName, userAgent);
             }
         }
