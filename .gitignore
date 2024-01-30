@@ -331,6 +331,3 @@ ASALocalRun/
 .vscode/
 src/Com.Danliris.Service.Packing.Inventory.WebApi/appsettings.json
 src/Com.Danliris.Service.Packing.Inventory.WebApi/appsettings.Development.json
-
-Com.Danliris.Service.Packing.Inventory.WebApi/appsettings.json
-Com.Danliris.Service.Packing.Inventory.WebApi/appsettings.Development.json
