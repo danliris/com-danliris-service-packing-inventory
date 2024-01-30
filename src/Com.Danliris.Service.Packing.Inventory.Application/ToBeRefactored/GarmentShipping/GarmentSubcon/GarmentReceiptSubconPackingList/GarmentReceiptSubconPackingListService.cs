@@ -368,7 +368,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             if (keyword != null)
             {
                 query = query.Where(q => q.Items.Any(i => i.RONo.Contains(keyword)) ||
-                    q.LocalSalesNoteNo.Contains(keyword) ||
+                    q.InvoiceNo.Contains(keyword) ||
                     //q.InvoiceType.Contains(keyword) ||
                     //q.PackingListType.Contains(keyword) ||
                     //q.SectionCode.Contains(keyword) ||

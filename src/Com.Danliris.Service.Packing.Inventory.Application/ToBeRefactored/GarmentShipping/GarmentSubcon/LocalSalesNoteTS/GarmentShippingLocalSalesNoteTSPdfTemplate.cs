@@ -1,5 +1,6 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetterTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using iTextSharp.text;
@@ -21,7 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         //    _identityProvider = identityProvider;
         //}
 
-        public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteTSViewModel viewModel, GarmentLocalCoverLetterViewModel cl, Buyer buyer, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteTSViewModel viewModel, GarmentLocalCoverLetterTSViewModel cl, Buyer buyer, int timeoffset)
         {
             const int MARGIN = 15;
 
@@ -339,7 +340,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private Buyer buyer;
 
         //public GarmentShippingLocalSalesNotePdfTemplatePageEvent(IIdentityProvider identityProvider, GarmentShippingLocalSalesNoteViewModel viewModel, GarmentLocalCoverLetterViewModel cl, Buyer buyer, int timeoffset)
-        public GarmentShippingLocalSalesNotePdfTemplatePageEvent(GarmentShippingLocalSalesNoteTSViewModel viewModel, GarmentLocalCoverLetterViewModel cl, Buyer buyer, int timeoffset)
+        public GarmentShippingLocalSalesNotePdfTemplatePageEvent(GarmentShippingLocalSalesNoteTSViewModel viewModel, GarmentLocalCoverLetterTSViewModel cl, Buyer buyer, int timeoffset)
         {
             //this.identityProvider = identityProvider;
             this.viewModel = viewModel;
