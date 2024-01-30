@@ -183,27 +183,28 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             double finalPrice = totalPrice + ppn;
 
             cellBodyRight.Phrase = new Phrase("Dasar Pengenaan Pajak.............. Rp.", normal_font);
-            cellBodyRight.Border = Rectangle.NO_BORDER;
-            cellBodyRight.Colspan = 6;
-            tableBody.AddCell(cellBodyRight);
+            cellBodyLeft.Phrase = new Phrase("Dasar Pengenaan Pajak..............  "+ string.Format("{0:n2}", totalPrice), normal_font);
+            cellBodyLeft.Border = Rectangle.NO_BORDER;
+            cellBodyLeft.Colspan = 6;
+            tableBody.AddCell(cellBodyLeft);
 
-            cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", totalPrice), normal_font);
-            cellBodyRightNoBorder.Border = Rectangle.NO_BORDER;
-            tableBody.AddCell(cellBodyRightNoBorder);
+            //cellBodyLeftNoBorder.Phrase = new Phrase(string.Format("{0:n2}", totalPrice), normal_font);
+            //cellBodyLeftNoBorder.Border = Rectangle.NO_BORDER;
+            //tableBody.AddCell(cellBodyLeftNoBorder);
 
-            cellBodyRight.Phrase = new Phrase("PPN = " + viewModel.vat.rate.ToString() + "% X Dasar Pengenaan Pajak.. Rp.", normal_font);
-            tableBody.AddCell(cellBodyRight);
+            cellBodyLeft.Phrase = new Phrase("PPN = " + viewModel.vat.rate.ToString() + "% X Dasar Pengenaan Pajak...  " + string.Format("{0:n2}", ppn), normal_font);
+            tableBody.AddCell(cellBodyLeft);
 
-            cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", ppn), normal_font);
-            cellBodyRightNoBorder.Border = Rectangle.BOTTOM_BORDER;
-            tableBody.AddCell(cellBodyRightNoBorder);
+            //cellBodyLeftNoBorder.Phrase = new Phrase(string.Format("{0:n2}", ppn), normal_font);
+            //cellBodyLeftNoBorder.Border = Rectangle.BOTTOM_BORDER;
+            //tableBody.AddCell(cellBodyLeftNoBorder);
 
-            cellBodyRight.Phrase = new Phrase("Jumlah............................. Rp.", normal_font);
-            tableBody.AddCell(cellBodyRight);
+            cellBodyLeft.Phrase = new Phrase("Jumlah.............................  " + string.Format("{0:n2}", finalPrice), normal_font);
+            tableBody.AddCell(cellBodyLeft);
 
-            cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", finalPrice), normal_font);
-            cellBodyRightNoBorder.Border = Rectangle.NO_BORDER;
-            tableBody.AddCell(cellBodyRightNoBorder);
+            //cellBodyLeftNoBorder.Phrase = new Phrase(string.Format("{0:n2}", finalPrice), normal_font);
+            //cellBodyLeftNoBorder.Border = Rectangle.NO_BORDER;
+            //tableBody.AddCell(cellBodyLeftNoBorder);
 
 
             tableBody.SpacingAfter = 5;
@@ -264,7 +265,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellFooterContent11.Phrase = (new Phrase("Terbilang   :", normal_font));
             tableFooter1.AddCell(cellFooterContent11);
-            cellFooterContent21.Phrase = (new Phrase(terbilang + " rupiah", normal_font));
+            cellFooterContent21.Phrase = (new Phrase(terbilang + "", normal_font));
             tableFooter1.AddCell(cellFooterContent21);
 
             cellFooterContent11.Phrase = (new Phrase("Catatan     :", normal_font));
