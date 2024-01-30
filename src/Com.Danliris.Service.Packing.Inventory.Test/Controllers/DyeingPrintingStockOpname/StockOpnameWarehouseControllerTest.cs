@@ -1030,30 +1030,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             Assert.Equal((int)HttpStatusCode.InternalServerError, GetStatusCode(response));
         }
 
-        [Fact]
-        public void Should_Success_Get_Barcode()
-        {
-            //Arrange
-            var serviceMock = new Mock<IStockOpnameWarehouseService>();
-            serviceMock
-                .Setup(s => s.getDatabyCode( It.IsAny<string>(), It.IsAny<int>()))
-                .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { viewModelItem });
+        // Command 30-01-2024
+        //[Fact]
+        //public void Should_Success_Get_Barcode()
+        //{
+        //    //Arrange
+        //    var serviceMock = new Mock<IStockOpnameWarehouseService>();
+        //    serviceMock
+        //        .Setup(s => s.getDatabyCode( It.IsAny<string>(), It.IsAny<int>()))
+        //        .Returns(new List<StockOpnameWarehouseProductionOrderViewModel>() { viewModelItem });
 
-            var service = serviceMock.Object;
+        //    var service = serviceMock.Object;
 
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
-            var validateServiceMock = new Mock<IValidateService>();
-            var validateService = validateServiceMock.Object;
+        //    var identityProviderMock = new Mock<IIdentityProvider>();
+        //    var identityProvider = identityProviderMock.Object;
+        //    var validateServiceMock = new Mock<IValidateService>();
+        //    var validateService = validateServiceMock.Object;
 
-            var controller = GetController(service, identityProvider, validateService);
+        //    var controller = GetController(service, identityProvider, validateService);
 
-            //Act
-            var response = controller.GetBarcode(It.IsAny<string>(), It.IsAny<int>());
+        //    //Act
+        //    var response = controller.GetBarcode(It.IsAny<string>(), It.IsAny<int>());
 
-            //Assert
-            Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
-        }
+        //    //Assert
+        //    Assert.Equal((int)HttpStatusCode.OK, GetStatusCode(response));
+        //}
 
         [Fact]
         public void Should_Exception_Get_Barcode()

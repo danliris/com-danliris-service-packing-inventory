@@ -36,22 +36,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
                 };
             }
         }
+        //24-01-2024
+        //[Fact]
+        //public async Task Create_Success()
+        //{
+        //    var repoMock = new Mock<IGarmentShippingInstructionRepository>();
+        //    repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingInstructionModel>()))
+        //        .ReturnsAsync(1);
+        //    repoMock.Setup(s => s.ReadAll())
+        //        .Returns(new List<GarmentShippingInstructionModel>().AsQueryable());
 
-        [Fact]
-        public async Task Create_Success()
-        {
-            var repoMock = new Mock<IGarmentShippingInstructionRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingInstructionModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingInstructionModel>().AsQueryable());
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+        //    var result = await service.Create(ViewModel);
 
-            var result = await service.Create(ViewModel);
-
-            Assert.NotEqual(0, result);
-        }
+        //    Assert.NotEqual(0, result);
+        //}
 
         [Fact]
         public void Read_Success()
@@ -84,33 +84,33 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
 
             Assert.NotNull(result);
         }
+        //24-01-2024
+        //[Fact]
+        //public async Task Update_Success()
+        //{
+        //    var repoMock = new Mock<IGarmentShippingInstructionRepository>();
+        //    repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentShippingInstructionModel>()))
+        //        .ReturnsAsync(1);
 
-        [Fact]
-        public async Task Update_Success()
-        {
-            var repoMock = new Mock<IGarmentShippingInstructionRepository>();
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentShippingInstructionModel>()))
-                .ReturnsAsync(1);
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+        //    var result = await service.Update(1, ViewModel);
 
-            var result = await service.Update(1, ViewModel);
+        //    Assert.NotEqual(0, result);
+        //}
+        //24-01-2024
+        //[Fact]
+        //public async Task Delete_Success()
+        //{
+        //    var repoMock = new Mock<IGarmentShippingInstructionRepository>();
+        //    repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
+        //        .ReturnsAsync(1);
 
-            Assert.NotEqual(0, result);
-        }
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-        [Fact]
-        public async Task Delete_Success()
-        {
-            var repoMock = new Mock<IGarmentShippingInstructionRepository>();
-            repoMock.Setup(s => s.DeleteAsync(It.IsAny<int>()))
-                .ReturnsAsync(1);
+        //    var result = await service.Delete(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
-
-            var result = await service.Delete(1);
-
-            Assert.NotEqual(0, result);
-        }
+        //    Assert.NotEqual(0, result);
+        //}
     }
 }

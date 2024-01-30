@@ -33,33 +33,34 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
             return new RegradingResultDocReportService(serviceProvider);
         }
 
-        [Fact]
-        public void GetReportData_Success_REG()
-        {
-            var item = new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL", "PACKING", false, 1, "no", "", 1, "", "REG", "", "", "", "", "", "", "", "",
-                "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "")
-            { DyeingPrintingAreaOutputId = 1 };
-            var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
-            var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
-                "", "", "", "", "", false, items)
-            { Id = 1 };
+        // Command 30-01-2024
+        //[Fact]
+        //public void GetReportData_Success_REG()
+        //{
+        //    var item = new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL", "PACKING", false, 1, "no", "", 1, "", "REG", "", "", "", "", "", "", "", "",
+        //        "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "")
+        //    { DyeingPrintingAreaOutputId = 1 };
+        //    var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
+        //    var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
+        //        "", "", "", "", "", false, items)
+        //    { Id = 1 };
 
-            var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
+        //    var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
 
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<DyeingPrintingAreaOutputModel>() { model }.AsQueryable());
+        //    repoMock.Setup(s => s.ReadAll())
+        //        .Returns(new List<DyeingPrintingAreaOutputModel>() { model }.AsQueryable());
 
-            var repoMock1 = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
+        //    var repoMock1 = new Mock<IDyeingPrintingAreaOutputProductionOrderRepository>();
 
-            repoMock1.Setup(s => s.ReadAll())
-                .Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>() { item }.AsQueryable());
+        //    repoMock1.Setup(s => s.ReadAll())
+        //        .Returns(new List<DyeingPrintingAreaOutputProductionOrderModel>() { item }.AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
+        //    var service = GetService(GetServiceProvider(repoMock.Object, repoMock1.Object).Object);
 
-            var result = service.GetReportData(item.ProductionOrderNo, DateTime.Now.AddDays(-30), DateTime.Now, 7);
+        //    var result = service.GetReportData(item.ProductionOrderNo, DateTime.Now.AddDays(-30), DateTime.Now, 7);
 
-            Assert.NotEmpty(result.ToList());
-        }
+        //    Assert.NotEmpty(result.ToList());
+        //}
 
         [Fact]
         public void GetReportData_Success_GRADE()

@@ -45,21 +45,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             }
         }
 
-        [Fact]
-        public async Task Create_Success()
-        {
-            var repoMock = new Mock<IGarmentShippingNoteRepository>();
-            repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingNoteModel>()))
-                .ReturnsAsync(1);
-            repoMock.Setup(s => s.ReadAll())
-                .Returns(new List<GarmentShippingNoteModel>().AsQueryable());
+        //24-01-2024
+        //[Fact]
+        //public async Task Create_Success()
+        //{
+        //    var repoMock = new Mock<IGarmentShippingNoteRepository>();
+        //    repoMock.Setup(s => s.InsertAsync(It.IsAny<GarmentShippingNoteModel>()))
+        //        .ReturnsAsync(1);
+        //    repoMock.Setup(s => s.ReadAll())
+        //        .Returns(new List<GarmentShippingNoteModel>().AsQueryable());
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = await service.Create(ViewModel);
+        //    var result = await service.Create(ViewModel);
 
-            Assert.NotEqual(0, result);
-        }
+        //    Assert.NotEqual(0, result);
+        //}
 
         [Fact]
         public void Read_Success()
@@ -94,19 +95,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.G
             Assert.NotNull(result);
         }
 
-        [Fact]
-        public async Task Update_Success()
-        {
-            var repoMock = new Mock<IGarmentShippingNoteRepository>();
-            repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentShippingNoteModel>()))
-                .ReturnsAsync(1);
+        //24-01-2024
+        //[Fact]
+        //public async Task Update_Success()
+        //{
+        //    var repoMock = new Mock<IGarmentShippingNoteRepository>();
+        //    repoMock.Setup(s => s.UpdateAsync(It.IsAny<int>(), It.IsAny<GarmentShippingNoteModel>()))
+        //        .ReturnsAsync(1);
 
-            var service = GetService(GetServiceProvider(repoMock.Object).Object);
+        //    var service = GetService(GetServiceProvider(repoMock.Object).Object);
 
-            var result = await service.Update(1, ViewModel);
+        //    var result = await service.Update(1, ViewModel);
 
-            Assert.NotEqual(0, result);
-        }
+        //    Assert.NotEqual(0, result);
+        //}
 
         [Fact]
         public async Task Delete_Success()

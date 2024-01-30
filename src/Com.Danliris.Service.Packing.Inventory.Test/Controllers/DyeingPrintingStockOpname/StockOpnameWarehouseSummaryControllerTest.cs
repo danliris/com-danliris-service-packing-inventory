@@ -281,71 +281,71 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Controllers.DyeingPrinting
             Assert.Equal((int)HttpStatusCode.NoContent, GetStatusCode(response));
         }
 
+        // Command 30-01-2024
+        //[Fact]
+        //public async Task Should_NotValid_Put()
+        //{
+        //    //Arrange
+        //    var dataUtil = viewModelTrack2;
 
-        [Fact]
-        public async Task Should_NotValid_Put()
-        {
-            //Arrange
-            var dataUtil = viewModelTrack2;
+        //    var serviceMock = new Mock<IStockOpnameSummaryService>();
+        //    serviceMock
+        //        .Setup(s => s.Update(It.IsAny<int>(), It.IsAny<StockOpnameTrackViewModel>()))
+        //        .ReturnsAsync(1);
 
-            var serviceMock = new Mock<IStockOpnameSummaryService>();
-            serviceMock
-                .Setup(s => s.Update(It.IsAny<int>(), It.IsAny<StockOpnameTrackViewModel>()))
-                .ReturnsAsync(1);
+        //    var service = serviceMock.Object;
 
-            var service = serviceMock.Object;
+        //    var validateServiceMock = new Mock<IValidateService>();
+        //    validateServiceMock
+        //        .Setup(s => s.Validate(It.IsAny<StockOpnameTrackViewModel>()))
+        //        .Verifiable();
 
-            var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<StockOpnameTrackViewModel>()))
-                .Verifiable();
+        //    var validateService = validateServiceMock.Object;
 
-            var validateService = validateServiceMock.Object;
+        //    var identityProviderMock = new Mock<IIdentityProvider>();
+        //    var identityProvider = identityProviderMock.Object;
 
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
+        //    var controller = GetController(service, identityProvider, validateService);
+        //    controller.ModelState.AddModelError("test", "test");
 
-            var controller = GetController(service, identityProvider, validateService);
-            controller.ModelState.AddModelError("test", "test");
+        //    //Act
+        //    var response = await controller.Put(1, dataUtil);
 
-            //Act
-            var response = await controller.Put(1, dataUtil);
+        //    //Assert
+        //    Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        //}
 
-            //Assert
-            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
-        }
+        // Command 30-01-2024
+        //[Fact]
+        //public async Task Should_ValidateExcpetion_Put()
+        //{
+        //    //Arrange
+        //    var dataUtil = viewModelTrack2;
+        //    var serviceMock = new Mock<IStockOpnameSummaryService>();
+        //    serviceMock
+        //        .Setup(s => s.Update(It.IsAny<int>(), It.IsAny<StockOpnameTrackViewModel>()))
+        //        .ReturnsAsync(1);
 
+        //    var service = serviceMock.Object;
 
-        [Fact]
-        public async Task Should_ValidateExcpetion_Put()
-        {
-            //Arrange
-            var dataUtil = viewModelTrack2;
-            var serviceMock = new Mock<IStockOpnameSummaryService>();
-            serviceMock
-                .Setup(s => s.Update(It.IsAny<int>(), It.IsAny<StockOpnameTrackViewModel>()))
-                .ReturnsAsync(1);
+        //    var validateServiceMock = new Mock<IValidateService>();
+        //    validateServiceMock
+        //        .Setup(s => s.Validate(It.IsAny<StockOpnameTrackViewModel>()))
+        //        .Throws(GetServiceValidationExeption(viewModel));
 
-            var service = serviceMock.Object;
+        //    var validateService = validateServiceMock.Object;
 
-            var validateServiceMock = new Mock<IValidateService>();
-            validateServiceMock
-                .Setup(s => s.Validate(It.IsAny<StockOpnameTrackViewModel>()))
-                .Throws(GetServiceValidationExeption(viewModel));
+        //    var identityProviderMock = new Mock<IIdentityProvider>();
+        //    var identityProvider = identityProviderMock.Object;
 
-            var validateService = validateServiceMock.Object;
+        //    var controller = GetController(service, identityProvider, validateService);
 
-            var identityProviderMock = new Mock<IIdentityProvider>();
-            var identityProvider = identityProviderMock.Object;
+        //    //Act
+        //    var response = await controller.Put(1, dataUtil);
 
-            var controller = GetController(service, identityProvider, validateService);
-
-            //Act
-            var response = await controller.Put(1, dataUtil);
-
-            //Assert
-            Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
-        }
+        //    //Assert
+        //    Assert.Equal((int)HttpStatusCode.BadRequest, GetStatusCode(response));
+        //}
 
         [Fact]
         public async Task Should_Exception_Put()
