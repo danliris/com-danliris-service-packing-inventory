@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.ShippingLocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
@@ -20,12 +21,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentShippingLocalSalesNoteTSRepository _repository;
         protected readonly ILogHistoryRepository logHistoryRepository;
         private readonly IServiceProvider serviceProvider;
-
-        public GarmentShippingLocalSalesNoteTSService(IServiceProvider serviceProvider)
+        private readonly PackingInventoryDbContext dbContext;
+        public GarmentShippingLocalSalesNoteTSService(IServiceProvider serviceProvider, PackingInventoryDbContext dbContext)
         {
             _repository = serviceProvider.GetService<IGarmentShippingLocalSalesNoteTSRepository>();
             logHistoryRepository = serviceProvider.GetService<ILogHistoryRepository>();
             this.serviceProvider = serviceProvider;
+
+            this.dbContext = dbContext;
         }
 
         private GarmentShippingLocalSalesNoteTSViewModel MapToViewModel(GarmentShippingLocalSalesNoteTSModel model)
@@ -92,7 +95,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 approveFinanceDate=model.ApproveFinanceDate,
                 approveShippingBy=model.ApproveShippingBy,
                 approveShippingDate=model.ApproveShippingDate,
-                //isSubconPackingList = model.IsSubconPackingList,
+                isDO = model.IsDO,
                 items = (model.Items ?? new List<GarmentShippingLocalSalesNoteTSItemModel>()).Select(i => new GarmentShippingLocalSalesNoteTSItemViewModel
                 {
                     Active = i.Active,
@@ -151,7 +154,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             vm.buyer = vm.buyer ?? new Buyer();
             vm.vat = vm.vat ?? new Vat();
             vm.bank = vm.bank ?? new BankAccount();
-            return new GarmentShippingLocalSalesNoteTSModel(vm.salesContractNo, vm.salesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(),/* vm.transactionType.id, vm.transactionType.code, vm.transactionType.name,*/ vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, /*vm.expenditureNo, vm.dispositionNo,*/ vm.useVat, vm.vat.id, vm.vat.rate, vm.remark, vm.isUsed, vm.isCL, vm.isDetail, vm.isApproveShipping, vm.isApproveFinance, vm.approveShippingBy, vm.approveFinanceBy, vm.approveShippingDate, vm.approveFinanceDate, vm.isRejectedShipping, vm.isRejectedFinance, vm.rejectedReason, vm.bank.id, vm.bank.bankName, vm.bank.AccountNumber, items) { Id = vm.Id };
+            return new GarmentShippingLocalSalesNoteTSModel(vm.salesContractNo, vm.salesContractId, vm.paymentType, GenerateNo(vm), vm.date.GetValueOrDefault(),/* vm.transactionType.id, vm.transactionType.code, vm.transactionType.name,*/ vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.npwp, vm.buyer.KaberType, vm.tempo, /*vm.expenditureNo, vm.dispositionNo,*/ vm.useVat, vm.vat.id, vm.vat.rate, vm.remark, vm.isUsed, vm.isCL, vm.isDetail, vm.isApproveShipping, vm.isApproveFinance, vm.approveShippingBy, vm.approveFinanceBy, vm.approveShippingDate, vm.approveFinanceDate, vm.isRejectedShipping, vm.isRejectedFinance, vm.rejectedReason, vm.bank.id, vm.bank.bankName, vm.bank.AccountNumber,vm.isDO, items) { Id = vm.Id };
         }
 
         private string GenerateNo(GarmentShippingLocalSalesNoteTSViewModel vm)
@@ -171,24 +174,57 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Create(GarmentShippingLocalSalesNoteTSViewModel viewModel)
         {
-            var model = MapToModel(viewModel);
+            var Created = 0;
+            using (var transaction = this.dbContext.Database.BeginTransaction())
+            {
+                try
+                {
 
-            //Add Log History
-            await logHistoryRepository.InsertAsync("SHIPPING", "Create Nota Penjualan Lokal Terima Subcon - " + model.NoteNo);
+                    var model = MapToModel(viewModel);
 
-            int Created = await _repository.InsertAsync(model);
+                    //Add Log History
+                    Created += await logHistoryRepository.InsertAsync("SHIPPING", "Create Nota Penjualan Lokal Terima Subcon - " + model.NoteNo);
+
+                    Created += await _repository.InsertAsync(model);
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
 
             return Created;
+
         }
 
         public async Task<int> Delete(int id)
         {
-            var data = await _repository.ReadByIdAsync(id);
+            var Deleted = 0;
+            using (var transaction = this.dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var data = await _repository.ReadByIdAsync(id);
 
-            //Add Log History
-            await logHistoryRepository.InsertAsync("SHIPPING", "Delete Nota Penjualan Lokal Terima Subcon - " + data.NoteNo);
+                    //Add Log History
+                    Deleted += await logHistoryRepository.InsertAsync("SHIPPING", "Delete Nota Penjualan Lokal Terima Subcon - " + data.NoteNo);
 
-            return await _repository.DeleteAsync(id);
+                    Deleted += await _repository.DeleteAsync(id);
+
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+
+            return Deleted;
+
+            
         }
 
         public ListResult<GarmentShippingLocalSalesNoteTSViewModel> Read(int page, int size, string filter, string order, string keyword)
@@ -226,17 +262,46 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Update(int id, GarmentShippingLocalSalesNoteTSViewModel viewModel)
         {
-            var model = MapToModel(viewModel);
+            var Updated = 0;
+            using (var transaction = this.dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var model = MapToModel(viewModel);
 
-            //Add Log History
-            await logHistoryRepository.InsertAsync("SHIPPING", "Update Nota Penjualan Lokal Terima Subcon - " + model.NoteNo);
+                    //Add Log History
+                    Updated += await logHistoryRepository.InsertAsync("SHIPPING", "Update Nota Penjualan Lokal Terima Subcon - " + model.NoteNo);
 
-            return await _repository.UpdateAsync(id, model);
+                    Updated += await _repository.UpdateAsync(id, model);
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+
+            return Updated;
         }
 
         public async Task<int> SetIsUsed(List<long> ids, bool isUsed)
         {
-            return await _repository.SetIsUsed(ids, isUsed);
+            var Updated = 0;
+            using (var transaction = this.dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    Updated += await _repository.SetIsUsed(ids, isUsed);
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            return Updated;
         }
 
         //public async Task<int> ApproveFinance(int id)
@@ -273,17 +338,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         //    return await _repository.RejectFinanceAsync(id, model);
         //}
 
-        public Buyer GetBuyer(int id)
+        public List<Buyer> GetBuyer(string buyerCode)
         {
-            string buyerUri = "master/garment-leftover-warehouse-buyers";
+            string buyerUri = "master/garment-buyers";
             IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
 
-            var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{buyerUri}/{id}").Result;
+            //var obj = new { Code = buyerCode };
+            var contents = JsonConvert.SerializeObject(new { Code = buyerCode });
+            var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{buyerUri}?filter={contents}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
                 Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
-                Buyer viewModel = JsonConvert.DeserializeObject<Buyer>(result.GetValueOrDefault("data").ToString());
+                List<Buyer> viewModel = JsonConvert.DeserializeObject<List<Buyer>>(result.GetValueOrDefault("data").ToString());
                 return viewModel;
             }
             else

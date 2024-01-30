@@ -75,6 +75,10 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.Shippin
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingNoteCreditAdvice;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCoverLetterTS;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalCoverLetterTS;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDOTS;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesDOTS;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -232,6 +236,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentShippingLocalSalesNoteTSModel> GarmentReceiptSubconLocalSalesNotes { get; set; }
         public DbSet<GarmentShippingLocalSalesNoteTSItemModel> GarmentReceiptSubconLocalSalesNoteItems { get; set; }
 
+        public DbSet<GarmentShippingLocalCoverLetterTSModel> GarmentReceiptSubconLocalCoverLetters { get; set; }
+
+        public DbSet<GarmentShippingLocalSalesDOTSModel> GarmentReceiptSubconLocalSalesDOs { get; set; }
+        public DbSet<GarmentShippingLocalSalesDOTSItemModel> GarmentReceiptSubconLocalSalesDOItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -338,6 +347,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteTSConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesNoteTSItemConfig());
+
+            modelBuilder.ApplyConfiguration(new GarmentLocalCoverLetterConfigTS());
+
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOTSConfig());
+            modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOTSItemConfig());
 
 
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());

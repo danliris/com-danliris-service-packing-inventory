@@ -36,7 +36,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public bool isRejectedShipping { get; set; }
         public bool isRejectedFinance { get; set; }
         public string rejectedReason { get; set; }
-        public bool isSubconPackingList { get; set; }
+        //public bool isSubconPackingList { get; set; }
+        public bool isDO { get; set; }
         public ICollection<GarmentShippingLocalSalesNoteTSItemViewModel> items { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
