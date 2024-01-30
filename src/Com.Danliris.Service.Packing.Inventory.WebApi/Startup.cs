@@ -573,7 +573,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services
                 //.AddMvcCore(options => options.Filters.Add(typeof(ValidateModelStateAttribute)))
                 .AddMvcCore()
-                //.AddJsonFormatters()
+                .AddJsonFormatters()
                 .AddApiExplorer()
                 .AddAuthorization()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -602,10 +602,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddSingleton<IValidator<IPWovenTypeViewModel>, IPWovenTypeViewModelValidator>();
             services.AddSingleton<IValidator<IPProcessTypeViewModel>, IPProcessTypeViewModelValidator>();
 
-            services.AddMvc(options =>
-            {
-                options.EnableEndpointRouting = false;
-            });
+
 
         }
 
