@@ -17,13 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.Danliris.Service.Packin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{01E895A7-2D98-4DB0-95C8-245DD8B4DBE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Danliris.Service.Packing.Inventory.EventBus", "src\BuildingBlocks\Com.Danliris.Service.Packing.Inventory.EventBus\Com.Danliris.Service.Packing.Inventory.EventBus.csproj", "{369E718E-1CFA-4F46-BF91-70681A07AA04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.Danliris.Service.Packing.Inventory.EventBus", "src\BuildingBlocks\Com.Danliris.Service.Packing.Inventory.EventBus\Com.Danliris.Service.Packing.Inventory.EventBus.csproj", "{369E718E-1CFA-4F46-BF91-70681A07AA04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Danliris.Service.Packing.Inventory.EventBusServiceBus", "src\BuildingBlocks\Com.Danliris.Service.Packing.Inventory.EventBusServiceBus\Com.Danliris.Service.Packing.Inventory.EventBusServiceBus.csproj", "{B12B0D69-A1D3-4F23-9815-D1DE0C0124BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.Danliris.Service.Packing.Inventory.EventBusServiceBus", "src\BuildingBlocks\Com.Danliris.Service.Packing.Inventory.EventBusServiceBus\Com.Danliris.Service.Packing.Inventory.EventBusServiceBus.csproj", "{B12B0D69-A1D3-4F23-9815-D1DE0C0124BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domains", "Domains", "{4DC53FD7-520F-45ED-9C88-B1BA00588E2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Danliris.Service.Packing.Inventory.Domain", "Com.Danliris.Service.Packing.Inventory.Domain\Com.Danliris.Service.Packing.Inventory.Domain.csproj", "{374DB097-74A9-4769-BD57-E6689205EE0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Com.Danliris.Service.Packing.Inventory.Domain", "Com.Danliris.Service.Packing.Inventory.Domain\Com.Danliris.Service.Packing.Inventory.Domain.csproj", "{374DB097-74A9-4769-BD57-E6689205EE0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Danliris.Service.Packing.Inventory.WebApi2", "Com.Danliris.Service.Packing.Inventory.WebApi2\Com.Danliris.Service.Packing.Inventory.WebApi2.csproj", "{504DFFB1-A6CB-4977-84BE-58D67A6AF950}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,18 @@ Global
 		{374DB097-74A9-4769-BD57-E6689205EE0A}.Release|x64.Build.0 = Release|Any CPU
 		{374DB097-74A9-4769-BD57-E6689205EE0A}.Release|x86.ActiveCfg = Release|Any CPU
 		{374DB097-74A9-4769-BD57-E6689205EE0A}.Release|x86.Build.0 = Release|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Debug|x64.Build.0 = Debug|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Debug|x86.Build.0 = Debug|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Release|x64.ActiveCfg = Release|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Release|x64.Build.0 = Release|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Release|x86.ActiveCfg = Release|Any CPU
+		{504DFFB1-A6CB-4977-84BE-58D67A6AF950}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
