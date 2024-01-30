@@ -1,6 +1,6 @@
 ﻿using Com.Moonlay.Models;
 
-namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNoteTS
+namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentSubcon.ShippingLocalSalesNoteTS
 {
     public class GarmentShippingLocalSalesNoteTSItemModel : StandardEntity
     {
