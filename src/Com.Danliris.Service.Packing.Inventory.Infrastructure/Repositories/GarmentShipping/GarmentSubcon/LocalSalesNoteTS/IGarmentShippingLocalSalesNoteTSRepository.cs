@@ -1,5 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Data;
-using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentSubcon.ShippingLocalSalesNoteTS;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
