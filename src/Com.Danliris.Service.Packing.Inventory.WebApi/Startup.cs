@@ -187,6 +187,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetterTS;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.LocalSalesDOTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesDOTS;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.Report.FinishedGoodsMinutes;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -211,6 +212,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             ApplicationSetting.StorageAccountKey = Configuration.GetValue<string>(Constant.STORAGE_ACCOUNT_KEY) ?? Configuration[Constant.STORAGE_ACCOUNT_KEY];
             ApplicationSetting.SalesEndpoint = Configuration.GetValue<string>(Constant.SALES_ENDPOINT) ?? Configuration[Constant.SALES_ENDPOINT];
             ApplicationSetting.DyeingPrintingEndpoint = Configuration.GetValue<string>(Constant.DYEINGPRINTING_ENDPOINT) ?? Configuration[Constant.DYEINGPRINTING_ENDPOINT];
+            ApplicationSetting.PurchasingEndpoint = Configuration.GetValue<string>(Constant.PURCHASING_ENDPOINT) ?? Configuration[Constant.PURCHASING_ENDPOINT];
 
         }
 
@@ -344,7 +346,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<ILogHistoryRepository, LogHistoryRepository>();
 
             services.AddTransient<IGarmentShippingLocalSalesNoteTSRepository, GarmentShippingLocalSalesNoteTSRepository>();
-            //services.AddTransient<IGarmentShippingLocalSalesNoteTSItemRepository, GarmentShippingLocalSalesNoteTSItemRepository>();
+            services.AddTransient<IGarmentShippingLocalSalesNoteTSItemRepository, GarmentShippingLocalSalesNoteTSItemRepository>();
 
             services.AddTransient<IGarmentLocalCoverLetterTSRepository, GarmentLocalCoverLetterTSRepository>();
 
@@ -501,6 +503,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLocalCoverLetterTSService, GarmentLocalCoverLetterTSService>();
 
             services.AddTransient<IGarmentShippingLocalSalesDOTSService, GarmentShippingLocalSalesDOTSService>();
+
+            services.AddTransient<IFinishedGoodsMinutesService, FinishedGoodsMinutesService>();
+            
             #endregion
 
             // Register Provider
