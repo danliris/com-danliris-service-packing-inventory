@@ -183,7 +183,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             double finalPrice = totalPrice + ppn;
 
             cellBodyRight.Phrase = new Phrase("Dasar Pengenaan Pajak.............. $ ", normal_font);
-            cellBodyLeft.Phrase = new Phrase("Dasar Pengenaan Pajak.............. $ "+ string.Format("{0:n2}", totalPrice), normal_font);
+            cellBodyLeft.Phrase = new Phrase("Dasar Pengenaan Pajak.............. $ " + string.Format("{0:n2}", totalPrice), normal_font);
             cellBodyLeft.Border = Rectangle.NO_BORDER;
             cellBodyLeft.Colspan = 6;
             tableBody.AddCell(cellBodyLeft);
@@ -382,8 +382,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             cellHeaderContent2.AddElement(new Phrase("Sukoharjo, " + viewModel.date.GetValueOrDefault().ToOffset(new TimeSpan(timeoffset, 0, 0)).ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("id-ID")), normal_font));
             cellHeaderContent2.AddElement(new Phrase("\n", normal_font));
-            cellHeaderContent2.AddElement(new Phrase(viewModel.buyer.Code + " - " + viewModel.buyer.Name /*+ " - " + buyer == null ? "": buyer.KaberType*/ , normal_font));
-            cellHeaderContent2.AddElement(new Phrase(/*buyer == null ?*/ "" /* : buyer.Address*/, normal_font));
+            cellHeaderContent2.AddElement(new Phrase(viewModel.buyer.Code + " - " + viewModel.buyer.Name + " - " + buyer.KaberType, normal_font));
+            //cellHeaderContent2.AddElement(new Phrase(viewModel.buyer.Code + " - " + viewModel.buyer.Name /*+ " - " + buyer == null ? "": buyer.KaberType*/ , normal_font));
+            cellHeaderContent2.AddElement(new Phrase(buyer.Address, normal_font));
+            //cellHeaderContent2.AddElement(new Phrase(/*buyer == null ?*/ "" /* : buyer.Address*/, normal_font));
             tableHeader.AddCell(cellHeaderContent2);
 
             document.Add(tableHeader);

@@ -166,6 +166,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 cellBodyLeftNoBorder.Phrase = new Phrase(item.uom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeftNoBorder);
 
+                //ini kolom harga sat.
                 cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.price), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
