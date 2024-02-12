@@ -359,6 +359,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             }
         }
 
+        //currency
+        public List<BICurrency> GetBICurrency()
+        {
+            string biCurrencyUri = "master/bi-currencies";
+            IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
+
+            //var obj = new { Code = buyerCode };
+            //var contents = JsonConvert.SerializeObject(new { Code = "USD" });
+            var response = httpClient.GetAsync($"{ApplicationSetting.CoreEndpoint}{biCurrencyUri}?keyword=USD").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(content);
+                List<BICurrency> viewModel = JsonConvert.DeserializeObject<List<BICurrency>>(result.GetValueOrDefault("data").ToString());
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+       
 
         //public IQueryable<GarmentShippingLocalSalesNoteTSViewModel> ReadShippingLocalSalesNoteListNow(int month, int year)
         //{
