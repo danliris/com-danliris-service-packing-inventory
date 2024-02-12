@@ -91,7 +91,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
 
         [HttpGet]
         public IActionResult Get([FromQuery] string keyword = null, [FromQuery] int page = 1, [FromQuery] int size = 25, [FromQuery]string order = "{}", [FromQuery] string filter = "{}")
-        {
+            {
             try
             {
                 var data = _service.Read(page, size, filter, order, keyword);
@@ -278,6 +278,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                 else
                 {
                     Buyer buyer = _service.GetBuyer(model.buyer.Code).FirstOrDefault();
+                    //currency
+                    BICurrency curency = _service.GetBICurrency().FirstOrDefault();
+                    model.BICurrency = curency;
+                    //----------
                     GarmentLocalCoverLetterTSViewModel cl = await _clservice.ReadByLocalSalesNoteId(model.Id);
                     var PdfTemplate = new GarmentShippingLocalSalesNoteTSPdfTemplate();
                     MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, buyer, timeoffsset);
