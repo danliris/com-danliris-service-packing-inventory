@@ -15,6 +15,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public DateTimeOffset? date { get; set; }
         //public TransactionType transactionType { get; set; }
         public Buyer buyer { get; set; }
+        public BICurrency BICurrency { get; set; }
         public BankAccount bank { get; set; }
         public int tempo { get; set; }
         //public string expenditureNo { get; set; }
