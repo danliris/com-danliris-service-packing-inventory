@@ -16,6 +16,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> Delete(int id);
         //Buyer GetBuyer(string buyerCode);
         List<Buyer> GetBuyer(string buyerCode);
+        List<BICurrency> GetBICurrency();
 
         Task<int> SetIsUsed(List<long> ids, bool isUsed);
         //IQueryable<GarmentShippingLocalSalesNoteTSViewModel> ReadShippingLocalSalesNoteListNow(int month, int year);
