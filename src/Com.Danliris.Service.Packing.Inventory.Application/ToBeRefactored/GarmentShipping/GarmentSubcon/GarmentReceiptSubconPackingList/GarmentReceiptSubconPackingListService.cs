@@ -17,6 +17,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilitie
 using System.Net.Http;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList.ViewModel;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.GarmentReceiptSubconPackingList;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList
 {
@@ -606,6 +607,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return garmentUnitExpenditureNoteResponse.EnsureSuccessStatusCode().ToString();
         }
 
-       
+        public virtual async Task<MemoryStreamResult> ReadPdfFilterCarton(int id)
+        {
+            var data = await _packingListRepository.ReadByIdAsync(id);
+
+            var PdfTemplate = new GarmentReceiptSubconPackingListPdfByCartonTemplate(_identityProvider);
+
+            var viewModel = MapToViewModel(data);
+
+            var stream = PdfTemplate.GeneratePdfTemplate(viewModel);
+
+            return new MemoryStreamResult(stream, "Packing List Terima Subcon - " + data.InvoiceNo + ".pdf");
+        }
+
     }
 }
