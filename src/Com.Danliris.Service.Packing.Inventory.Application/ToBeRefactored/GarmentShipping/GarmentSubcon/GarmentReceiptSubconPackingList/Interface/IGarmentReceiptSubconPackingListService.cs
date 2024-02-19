@@ -20,6 +20,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         Task<int> UpdateIsApproved(UpdateIsApprovedPackingListViewModel viewModel);
         Task<MemoryStreamResult> ReadPdfFilterCarton(int id);
+        Task<List<GarmentReceiptSubconPackingListModel>> ReadByIds(List<int> ids);
 
     }
 }
