@@ -620,5 +620,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new MemoryStreamResult(stream, "Packing List Terima Subcon - " + data.InvoiceNo + ".pdf");
         }
 
+        public async Task<List<GarmentReceiptSubconPackingListModel>>ReadByIds(List<int> ids)
+        {
+            var data = _packingListRepository.ReadAll().Where(x => ids.Contains(x.Id)).ToList();
+
+            return data;
+        }
+
     }
 }

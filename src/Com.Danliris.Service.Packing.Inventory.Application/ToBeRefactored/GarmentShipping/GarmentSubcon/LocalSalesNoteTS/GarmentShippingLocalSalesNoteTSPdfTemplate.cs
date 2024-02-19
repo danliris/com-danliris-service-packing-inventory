@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetter;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetterTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -22,7 +23,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         //    _identityProvider = identityProvider;
         //}
 
-        public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteTSViewModel viewModel, GarmentLocalCoverLetterTSViewModel cl, Buyer buyer, int timeoffset)
+        public MemoryStream GeneratePdfTemplate(GarmentShippingLocalSalesNoteTSViewModel viewModel, GarmentLocalCoverLetterTSViewModel cl, Buyer buyer, int timeoffset, List<GarmentReceiptSubconPackingListModel> pl)
         {
             const int MARGIN = 15;
 
@@ -120,9 +121,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //#endregion
 
             #region bodyTable
-            PdfPTable tableBody = new PdfPTable(6);
+            PdfPTable tableBody = new PdfPTable(7);
             tableBody.WidthPercentage = 100;
-            tableBody.SetWidths(new float[] { 1.2f, 1f, /*5f,*/ 2f, 1f, 2f, 2f });
+            tableBody.SetWidths(new float[] { 1.2f, 1f,1, 2f, 1f, 2f, 2f });
             PdfPCell cellBodyLeft = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyLeftNoBorder = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_LEFT };
             PdfPCell cellBodyRight = new PdfPCell() { Border = Rectangle.BOTTOM_BORDER | Rectangle.TOP_BORDER | Rectangle.LEFT_BORDER | Rectangle.RIGHT_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT };
@@ -135,37 +136,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyCenter.Phrase = new Phrase("Satuan", normal_font);
             tableBody.AddCell(cellBodyCenter);
 
-            //cellBodyCenter.Phrase = new Phrase("Nama Barang", normal_font);
-            //tableBody.AddCell(cellBodyCenter);
+            cellBodyCenter.Phrase = new Phrase("Kode Barang", normal_font);
+            tableBody.AddCell(cellBodyCenter);
+
+            cellBodyCenter.Phrase = new Phrase("Nama Barang", normal_font);
+            tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Quantity", normal_font);
-            cellBodyCenter.Colspan = 2;
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Harga Sat.", normal_font);
-            cellBodyCenter.Colspan = 1;
             tableBody.AddCell(cellBodyCenter);
 
             cellBodyCenter.Phrase = new Phrase("Jumlah", normal_font);
-            cellBodyCenter.Colspan = 1;
             tableBody.AddCell(cellBodyCenter);
 
             foreach (var item in viewModel.items)
             {
+                var ItemPL = pl.Select(x => x.Items.First());
+                //var aa = matchPL.Items.Select(x => x.ComodityCode);
+                //var matchPL = pl.Where(x => x.Items.FirstOrDefault(s => s.Id == item.packingListId)
                 cellBodyRight.Phrase = new Phrase(item.packageQuantity == 0 ? "" : string.Format("{0:n2}", item.packageQuantity), normal_font);
                 tableBody.AddCell(cellBodyRight);
 
                 cellBodyLeft.Phrase = new Phrase(item.packageUom == null ? "" : item.packageUom.Unit, normal_font);
                 tableBody.AddCell(cellBodyLeft);
 
-                //cellBodyLeft.Phrase = new Phrase(item.product.code + " - " + item.product.name, normal_font);
-                //tableBody.AddCell(cellBodyLeft);
+                cellBodyLeft.Phrase = new Phrase(ItemPL.Select(x => x.ComodityCode).First(), normal_font);
+                tableBody.AddCell(cellBodyLeft);
 
-                cellBodyRightNoBorder.Phrase = new Phrase(string.Format("{0:n2}", item.quantity), normal_font);
-                tableBody.AddCell(cellBodyRightNoBorder);
+                cellBodyLeft.Phrase = new Phrase(ItemPL.Select(x => x.ComodityName).First(), normal_font);
+                tableBody.AddCell(cellBodyLeft);
 
-                cellBodyLeftNoBorder.Phrase = new Phrase(item.uom.Unit, normal_font);
-                tableBody.AddCell(cellBodyLeftNoBorder);
+                cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.quantity), normal_font);
+                tableBody.AddCell(cellBodyRight);
+
+                //cellBodyLeftNoBorder.Phrase = new Phrase(item.uom.Unit, normal_font);
+                //tableBody.AddCell(cellBodyLeftNoBorder);
 
                 //cellBodyRight.Phrase = new Phrase(string.Format("{0:n2}", item.price), normal_font);
 
@@ -281,6 +288,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellFooterContent11.Phrase = (new Phrase("Catatan     :", normal_font));
             tableFooter1.AddCell(cellFooterContent11);
             cellFooterContent21.Phrase = (new Phrase(viewModel.remark, normal_font));
+            tableFooter1.AddCell(cellFooterContent21);
+
+            cellFooterContent11.Phrase = (new Phrase("Kurs / Rate : ", normal_font));
+            tableFooter1.AddCell(cellFooterContent11);
+            cellFooterContent21.Phrase = (new Phrase("Rp. " + string.Format("{0:n2}", viewModel.BICurrency.Rate), normal_font));
             tableFooter1.AddCell(cellFooterContent21);
 
             tableFooter1.SpacingAfter = 2;
