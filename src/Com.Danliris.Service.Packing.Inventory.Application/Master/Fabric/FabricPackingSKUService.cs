@@ -348,9 +348,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.Master.Fabric
                     _unitOfWork.ProductSKUs.Insert(model);
                     _unitOfWork.Commit();
 
+                    var motif = form.motif.Length > 64 ? form.motif.Substring(0, 63) :  form.motif;
+
                     productFabricSKU = new FabricProductSKUModel(code, model.Id, 0, 0, 0, 0, 0, processTypeId, form.yarnMaterialId, gradeId, uom.Id,
                         form.materialId, form.materialName, form.materialConstructionId, form.materialConstructionName,
-                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, form.motif, form.color, form.Grade, form.Width, false, form.FinishWidth);
+                        form.yarnMaterialId, form.yarnMaterialName, form.ProductionOrderNo, form.uomUnit, motif, form.color, form.Grade, form.Width, false, form.FinishWidth);
 
                     _unitOfWork.FabricSKUProducts.Insert(productFabricSKU);
                     _unitOfWork.Commit();
