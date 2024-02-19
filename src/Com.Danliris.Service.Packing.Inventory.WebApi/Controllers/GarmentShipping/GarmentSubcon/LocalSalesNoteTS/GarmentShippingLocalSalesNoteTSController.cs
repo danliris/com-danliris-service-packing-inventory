@@ -1,8 +1,10 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalCoverLetterTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNoteTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -22,16 +24,18 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
     public class GarmentShippingLocalSalesNoteTSController : ControllerBase
     {
         private readonly IGarmentShippingLocalSalesNoteTSService _service;
+        private readonly IGarmentReceiptSubconPackingListService _plservice;
         private readonly IGarmentLocalCoverLetterTSService _clservice;
         private readonly IIdentityProvider _identityProvider;
         private readonly IValidateService _validateService;
 
-        public GarmentShippingLocalSalesNoteTSController(IGarmentShippingLocalSalesNoteTSService service, IGarmentLocalCoverLetterTSService clservice, IIdentityProvider identityProvider, IValidateService validateService)
+        public GarmentShippingLocalSalesNoteTSController(IGarmentShippingLocalSalesNoteTSService service, IGarmentLocalCoverLetterTSService clservice, IIdentityProvider identityProvider, IValidateService validateService, IGarmentReceiptSubconPackingListService plService)
         {
             _service = service;
             _clservice = clservice;
             _identityProvider = identityProvider;
             _validateService = validateService;
+            _plservice = plService;
         }
 
         protected void VerifyUser()
@@ -283,8 +287,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
                     model.BICurrency = curency;
                     //----------
                     GarmentLocalCoverLetterTSViewModel cl = await _clservice.ReadByLocalSalesNoteId(model.Id);
+
+                    List<GarmentReceiptSubconPackingListModel> pl = await _plservice.ReadByIds(model.items.Select(x => x.packingListId).ToList());
                     var PdfTemplate = new GarmentShippingLocalSalesNoteTSPdfTemplate();
-                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, buyer, timeoffsset);
+                    MemoryStream stream = PdfTemplate.GeneratePdfTemplate(model, cl, buyer, timeoffsset,pl);
 
                     return new FileStreamResult(stream, "application/pdf")
                     {
