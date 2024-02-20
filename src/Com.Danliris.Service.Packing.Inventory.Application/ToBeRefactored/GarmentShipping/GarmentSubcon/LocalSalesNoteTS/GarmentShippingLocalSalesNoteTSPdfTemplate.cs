@@ -200,7 +200,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cellBodyLeft.Phrase = new Phrase("Dasar Pengenaan Pajak.............. Rp " + string.Format("{0:n2}", totalPrice), normal_font);
 
             cellBodyLeft.Border = Rectangle.NO_BORDER;
-            cellBodyLeft.Colspan = 6;
+            cellBodyLeft.Colspan = 7;
             tableBody.AddCell(cellBodyLeft);
 
             //cellBodyLeftNoBorder.Phrase = new Phrase(string.Format("{0:n2}", totalPrice), normal_font);
