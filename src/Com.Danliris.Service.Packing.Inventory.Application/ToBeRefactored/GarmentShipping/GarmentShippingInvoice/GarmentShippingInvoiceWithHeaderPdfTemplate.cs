@@ -950,7 +950,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             cb.MoveTo(signX - 60, signY - 2);
             cb.LineTo(signX + 45, signY - 2);
             cb.Stroke();
-            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 105, 0);
+            cb.ShowTextAligned(PdfContentByte.ALIGN_CENTER, "AUTHORIZED SIGNATURE", document.RightMargin + 500, signY - 15, 0);
 
             #endregion
 
