@@ -11,6 +11,8 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using System.IO;
 using System.Data;
 using OfficeOpenXml;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.ShippingLocalSalesNoteTS;
+using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.Report.ShipmentLocalSalesNote
 {
@@ -24,6 +26,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         private readonly IGarmentReceiptSubconPackingListRepository garmentReceiptSubconPackingList;
         private readonly IGarmentReceiptSubconPackingListItemRepository garmentReceiptSubconPackingListItem;
         private readonly IGarmentLocalCoverLetterTSRepository garmentLocalCoverLetterTSRepository;
+        private readonly IGarmentShippingLocalSalesNoteTSService _service;
 
         public ShipmentLocalSalesNoteService(IServiceProvider serviceProvider)
         {
@@ -34,6 +37,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             garmentReceiptSubconPackingList = serviceProvider.GetService<IGarmentReceiptSubconPackingListRepository>();
             garmentReceiptSubconPackingListItem = serviceProvider.GetService<IGarmentReceiptSubconPackingListItemRepository>();
             garmentLocalCoverLetterTSRepository = serviceProvider.GetService<IGarmentLocalCoverLetterTSRepository>();
+            _service = serviceProvider.GetService<IGarmentShippingLocalSalesNoteTSService>();
+      
         }
 
         public async Task<List<ShipmentLocalSalesNoteVM>> GetReportQuery(DateTime dateFrom,DateTime DateTo)
@@ -67,6 +72,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                   UomUnit = d.UomUnit,
                                   DPP = (b.Quantity * b.Price),
                                   PPn = (double)a.VatRate,
+                                  Kurs = c.Kurs
                               })
                               .GroupBy(x => new
                                {
@@ -84,7 +90,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    x.ProductName,
                                    x.UomUnit,
                                    x.DPP,
-                                   x.PPn
+                                   x.PPn,
+                                   x.Kurs
                                }, (key, group) => new ShipmentLocalSalesNoteVM
                                {
                                    LocalCoverLetterNo = key.LocalCoverLetterNo,
@@ -102,12 +109,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                                    Quantity = group.Sum(x => x.Quantity),
                                    UomUnit = key.UomUnit,
                                    DPP = key.DPP,
-                                   PPn = key.PPn
+                                   PPn = key.PPn,
+                                   Kurs = key.Kurs
                                }).ToList();
-            
-            for(var i =0; i < finalQuery.Count(); i++)
+
+            for (var i =0; i < finalQuery.Count(); i++)
             {
-                finalQuery[i].PPn = (finalQuery[i].PPn / 100) * finalQuery[i].DPP;
+                var kurs = finalQuery[i].Kurs;
+                finalQuery[i].DPP = finalQuery[i].DPP * kurs;
+                finalQuery[i].PPn = ((finalQuery[i].PPn / 100) * finalQuery[i].DPP);
                 finalQuery[i].Total = finalQuery[i].PPn + finalQuery[i].DPP;
             }
 
