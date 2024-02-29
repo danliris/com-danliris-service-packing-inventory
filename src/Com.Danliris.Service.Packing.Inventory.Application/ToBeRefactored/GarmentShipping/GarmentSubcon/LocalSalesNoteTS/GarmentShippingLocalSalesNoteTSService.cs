@@ -232,7 +232,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var query = _repository.ReadAll();
             List<string> SearchAttributes = new List<string>()
             {
-                "NoteNo", "BuyerCode", "BuyerName", "DispositionNo"
+                "NoteNo", "BuyerCode", "BuyerName"/*, "DispositionNo"*/
             };
             query = QueryHelper<GarmentShippingLocalSalesNoteTSModel>.Search(query, SearchAttributes, keyword);
 
