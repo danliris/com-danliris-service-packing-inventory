@@ -23,5 +23,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public double DPP { get; set; }
         public double PPn { get; set; }
         public double Total { get; set; }
+        public double Kurs { get; set; }
     }
 }

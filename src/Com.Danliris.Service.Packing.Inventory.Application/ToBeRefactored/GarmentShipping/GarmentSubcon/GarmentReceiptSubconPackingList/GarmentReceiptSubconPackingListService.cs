@@ -18,6 +18,7 @@ using System.Net.Http;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList.ViewModel;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.GarmentReceiptSubconPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.GarmentReceiptSubconPackingList.ViewModel;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList
 {
@@ -94,6 +95,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 IsApproved = model.IsApproved,
                 InvoiceNo = model.InvoiceNo,
                 InvoiceDate = model.InvoiceDate,
+                IsValidatedMD = model.IsValidatedMD,
+                ValidatedMDBy = model.ValidatedMDBy,
+                ValidatedMDDate = model.ValidatedMDDate,
+                Kurs = model.Kurs,
+                ValidatedMDRemark = model.ValidatedMDRemark,
+                IsValidatedShipping = model.IsValidatedShipping,
+                ValidatedShippingBy = model.ValidatedShippingBy,
+                ValidatedShippingDate = model.ValidatedShippingDate,
+                RejectReason = model.RejectReason,
+                RejectTo = model.RejectTo,
                 Items = (model.Items ?? new List<GarmentReceiptSubconPackingListItemModel>()).Select(i => new GarmentReceiptSubconPackingListItemViewModel
                 {
                     Active = i.Active,
@@ -221,7 +232,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     var sizes = (d.Sizes ?? new List<GarmentReceiptSubconPackingListDetailSizeViewModel>()).Select(s =>
                     {
                         s.Size = s.Size ?? new SizeViewModel();
-                        return new GarmentReceiptSubconPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Size.SizeIdx, s.Quantity,s.Color,s.PackingOutItemId) { Id = s.Id };
+                        return new GarmentReceiptSubconPackingListDetailSizeModel(s.Size.Id, s.Size.Size, s.Size.SizeIdx, s.Quantity, s.Color, s.PackingOutItemId) { Id = s.Id };
                     }).ToList();
 
                     return new GarmentReceiptSubconPackingListDetailModel(d.Carton1, d.Carton2, d.Style, d.CartonQuantity, d.QuantityPCS, d.TotalQuantity, d.Length, d.Width, d.Height, d.GrossWeight, d.NetWeight, d.NetNetWeight, sizes, d.Index) { Id = d.Id };
@@ -231,7 +242,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 i.Uom = i.Uom ?? new UnitOfMeasurement();
                 i.Unit = i.Unit ?? new Unit();
                 i.Comodity = i.Comodity ?? new Comodity();
-                return new GarmentReceiptSubconPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.MarketingName, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, i.Remarks,i.PackingOutNo, details,i.TotalQuantityPackingOut)
+                return new GarmentReceiptSubconPackingListItemModel(i.RONo, i.SCNo, i.BuyerBrand.Id, i.BuyerBrand.Name, i.Comodity.Id, i.Comodity.Code, i.Comodity.Name, i.ComodityDescription, i.MarketingName, i.Quantity, i.Uom.Id.GetValueOrDefault(), i.Uom.Unit, i.PriceRO, i.Price, i.PriceFOB, i.PriceCMT, i.Amount, i.Valas, i.Unit.Id, i.Unit.Code, i.Article, i.OrderNo, i.Description, i.DescriptionMd, i.Remarks, i.PackingOutNo, details, i.TotalQuantityPackingOut)
                 {
                     Id = i.Id
                 };
@@ -264,8 +275,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 viewModel.IsApproved,
                 viewModel.IsUsed,
                 viewModel.InvoiceNo ?? GenerateInvoiceNo(viewModel),
-                viewModel.InvoiceDate
-                );
+                viewModel.InvoiceDate,
+                viewModel.IsValidatedMD,
+                viewModel.ValidatedMDBy,
+                viewModel.ValidatedMDDate,
+                viewModel.Kurs,
+                viewModel.ValidatedMDRemark,
+                viewModel.IsValidatedShipping,
+                viewModel.ValidatedShippingBy,
+                viewModel.ValidatedShippingDate,
+                viewModel.RejectReason,
+                viewModel.RejectTo
+               );
 
             return garmentPackingListModel;
         }
@@ -594,6 +615,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 var model = await _packingListRepository.ReadByIdAsync(id);
                 model.SetIsApproved(viewModel.Approved, _identityProvider.Username, UserAgent);
+                if (model.RejectTo == "PACKING")
+                {
+                    model.SetRejectReason(null, _identityProvider.Username, UserAgent);
+                    model.SetRejectTo(null, _identityProvider.Username, UserAgent);
+                }
             }
 
             return await _packingListRepository.SaveChanges();
@@ -625,6 +651,78 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var data = _packingListRepository.ReadAll().Where(x => ids.Contains(x.Id)).ToList();
 
             return data;
+        }
+
+        public async Task<int>ApprovePackingList(ApprovalGarmentReceiptSubconPackingListViewModel data)
+        {
+            var updated = 0;
+            using (var transaction = this.dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var modelToUpdate = await _packingListRepository.ReadByIdAsync(data.id);
+
+                    if(data.type == "MD")
+                    {
+                        modelToUpdate.SetValidatedMD(true, _identityProvider.Username, UserAgent);
+                        modelToUpdate.SetValidatedMDBy(_identityProvider.Username, _identityProvider.Username, UserAgent);
+                        modelToUpdate.SetValidatedMDDate(DateTimeOffset.Now,_identityProvider.Username, UserAgent);
+                        modelToUpdate.SetKurs(data.kurs,_identityProvider.Username, UserAgent);
+                        modelToUpdate.SetValidatedMDRemark(data.approvedMDRemark, _identityProvider.Username, UserAgent);
+                        
+                        if(modelToUpdate.RejectTo == "MD")
+                        {
+                            modelToUpdate.SetRejectReason(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetRejectTo(null, _identityProvider.Username, UserAgent);
+                        }
+                    }
+
+                    if(data.type == "SHIPPING" && data.isReject == false)
+                    {
+                       
+                        modelToUpdate.SetValidatedShipping(true, _identityProvider.Username, UserAgent);
+                        modelToUpdate.SetValidatedShippingBy(_identityProvider.Username,_identityProvider.Username, UserAgent);
+                        modelToUpdate.SetValidatedShippingDate(DateTimeOffset.Now,_identityProvider.Username, UserAgent);
+                        //modelToUpdate.SetRejectReason(null, _identityProvider.Username, UserAgent);
+                    }
+                    else if (data.type == "SHIPPING" && data.isReject == true)
+                    {
+                        if(data.rejectTo == "MD")
+                        {
+                            modelToUpdate.SetValidatedMD(false, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetValidatedMDBy(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetValidatedMDDate(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetKurs(0, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetValidatedMDRemark(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetRejectTo("MD", _identityProvider.Username, UserAgent);
+                        }
+
+                        if (data.rejectTo == "PACKING")
+                        {
+                            modelToUpdate.SetValidatedMD(false, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetValidatedMDBy(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetValidatedMDDate(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetKurs(0, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetValidatedMDRemark(null, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetIsApproved(false, _identityProvider.Username, UserAgent);
+                            modelToUpdate.SetRejectTo("PACKING", _identityProvider.Username, UserAgent);
+                        }
+
+                        modelToUpdate.SetRejectReason(data.rejectReason, _identityProvider.Username, UserAgent);
+                    }
+                    
+
+                    updated = await _packingListRepository.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            return updated;
+
         }
 
     }
