@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList.ViewModel;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.GarmentReceiptSubconPackingList.ViewModel;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentReceiptSubconPackingList;
 using System;
@@ -21,6 +22,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         Task<int> UpdateIsApproved(UpdateIsApprovedPackingListViewModel viewModel);
         Task<MemoryStreamResult> ReadPdfFilterCarton(int id);
         Task<List<GarmentReceiptSubconPackingListModel>> ReadByIds(List<int> ids);
+        Task<int> ApprovePackingList(ApprovalGarmentReceiptSubconPackingListViewModel data);
 
     }
 }
