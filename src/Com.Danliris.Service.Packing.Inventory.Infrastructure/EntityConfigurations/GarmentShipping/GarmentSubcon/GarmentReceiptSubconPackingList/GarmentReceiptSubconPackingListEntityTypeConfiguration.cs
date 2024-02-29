@@ -59,6 +59,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                .HasMaxLength(50);
 
             builder
+             .Property(s => s.ValidatedMDBy)
+             .HasMaxLength(100);
+
+            builder
+            .Property(s => s.ValidatedMDRemark)
+            .HasMaxLength(1000);
+
+            builder
+             .Property(s => s.ValidatedShippingBy)
+             .HasMaxLength(100);
+
+            builder
+            .Property(s => s.RejectReason)
+            .HasMaxLength(1000);
+
+            builder
                 .HasMany(h => h.Items)
                 .WithOne()
                 .HasForeignKey(f => f.PackingListId);
