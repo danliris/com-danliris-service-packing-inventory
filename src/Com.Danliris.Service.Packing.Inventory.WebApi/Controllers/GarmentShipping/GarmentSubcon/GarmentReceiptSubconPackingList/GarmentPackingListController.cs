@@ -1,6 +1,7 @@
 ﻿
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentReceiptSubconPackingList.ViewModel;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.GarmentReceiptSubconPackingList.ViewModel;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
@@ -234,6 +235,43 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentShipp
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("approval")]
+        public async Task<IActionResult> Approval([FromBody] ApprovalGarmentReceiptSubconPackingListViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                _validateService.Validate(viewModel);
+                var result = await _service.ApprovePackingList(viewModel);
+
+                return Ok(result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                var Result = new
+                {
+                    error = ex.Message,
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.InternalServerError,
+                    message = ex.Message
+                };
+
+                return new BadRequestObjectResult(Result);
             }
         }
     }
