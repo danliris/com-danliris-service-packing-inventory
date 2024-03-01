@@ -35,6 +35,19 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public bool IsUsed { get;  set; }
         public string InvoiceNo { get; set; }
         public DateTimeOffset InvoiceDate { get; set; }
+
+        //Approval
+        public bool IsValidatedMD { get;  set; }
+        public string ValidatedMDBy { get;  set; }
+        public DateTimeOffset? ValidatedMDDate { get;  set; }
+        public double Kurs { get;  set; }
+        public string ValidatedMDRemark { get;  set; }
+
+        public bool IsValidatedShipping { get;  set; }
+        public string ValidatedShippingBy { get;  set; }
+        public DateTimeOffset? ValidatedShippingDate { get;  set; }
+        public string RejectReason { get;  set; }
+        public string RejectTo { get;  set; }
         public ICollection<GarmentReceiptSubconPackingListItemViewModel> Items { get; set; }
 
 
