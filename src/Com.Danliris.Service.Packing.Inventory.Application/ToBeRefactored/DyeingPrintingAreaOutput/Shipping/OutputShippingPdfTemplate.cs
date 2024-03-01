@@ -14,7 +14,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string TITLE = "PT DAN LIRIS";
         public string ADDRESS = "BANARAN, GROGOL, SUKOHARJO";
         public string DOCUMENT_TITLE = "BON PENGIRIMAN BARANG";
-        public string ISO = "FM.FP-GJ-15-005";
+        public string ISO = "FM.DP-00-GJ-15-005/R3";
 
         public Font HEADER_FONT_BOLD = FontFactory.GetFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 14);
         public Font HEADER_FONT = FontFactory.GetFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED, 12);
