@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.ShippingLocalSalesNoteTS
+namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentSubcon.ShippingLocalSalesNoteTS
 {
     public class GarmentShippingLocalSalesNoteTSModel : StandardEntity
     {
