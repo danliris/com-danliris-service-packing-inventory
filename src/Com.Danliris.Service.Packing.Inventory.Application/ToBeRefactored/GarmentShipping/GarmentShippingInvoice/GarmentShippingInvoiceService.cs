@@ -1,6 +1,7 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice.CostCalculationGarmentVM;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.GarmentShippingInvoice;
@@ -14,6 +15,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice
 {
@@ -348,7 +351,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			pl.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.SideMarkImagePath);
 			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
 
-			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7);
+			List<CostCalculationGarmentViewModel> ccg = await GetDataCCGByRO(pl.Items.Select(x => x.RONo).Distinct().ToList());
+
+			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7,ccg);
 
 			return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xls");
 		}
@@ -370,7 +375,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			pl.SideMarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.SideMarkImagePath);
 			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
 
-			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7);
+			List<CostCalculationGarmentViewModel> ccg = await GetDataCCGByRO(pl.Items.Select(x => x.RONo).Distinct().ToList());
+
+			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7,ccg);
 
 			return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xls");
 		}
@@ -517,8 +524,29 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return query.AsQueryable();
         }
 
-        
-    }
+		public async Task<List<CostCalculationGarmentViewModel>> GetDataCCGByRO(List<string> ros)
+		{
+			var listdata = new List<CostCalculationGarmentViewModel>();
+			var salesUri = $"cost-calculation-garments/by-ros";
+			IHttpClientService httpClient = (IHttpClientService)serviceProvider.GetService(typeof(IHttpClientService));
+			var garmentProductionUri = ApplicationSetting.SalesEndpoint + salesUri;
+			var response = await httpClient.SendAsync(HttpMethod.Get, garmentProductionUri, new StringContent(JsonConvert.SerializeObject(ros), Encoding.Unicode, "application/json"));
+
+			if (response.IsSuccessStatusCode)
+			{
+				var contentString = await response.Content.ReadAsStringAsync();
+				Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(contentString);
+				var dataString = content.GetValueOrDefault("data").ToString();
+
+				listdata = JsonConvert.DeserializeObject<List<CostCalculationGarmentViewModel>>(dataString);
+
+            }
+			return listdata;
+		}
+
+
+
+	}
 }
 
     
