@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentPackingList;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentShippingInvoice.CostCalculationGarmentVM;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using OfficeOpenXml;
@@ -23,7 +24,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             _identityProvider = identityProvider;
         }
 
-        public MemoryStream GenerateExcelTemplate(GarmentShippingInvoiceViewModel viewModel, Buyer buyer, BankAccount bank, GarmentPackingListViewModel pl, int timeoffset)
+        public MemoryStream GenerateExcelTemplate(GarmentShippingInvoiceViewModel viewModel, Buyer buyer, BankAccount bank, GarmentPackingListViewModel pl, int timeoffset, List<CostCalculationGarmentViewModel> ccg)
         {
            
             DataTable result = new DataTable();
@@ -486,6 +487,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"H{MarkIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium; 
             }
 
+            for (var a = 0; a < pl.Items.Count(); a++)
+            {
+                //Get FOB Price From CCG
+                var matchCC = ccg.FirstOrDefault(x => x.RO_Number == pl.Items[a].RONo);
+
+                double fob = 0;
+                var isFabricCM = false;
+                double priceFOB = 0;
+                if (matchCC != null)
+                {
+                    foreach (var ccgItem in matchCC.CostCalculationGarment_Materials)
+                    {
+
+                        if (ccgItem.isFabricCM)
+                        {
+                            isFabricCM = true;
+                            fob += Convert.ToDouble(ccgItem.CM_Price * 1.05 / matchCC.Rate.Value);
+                        }
+
+                    }
+
+                    if (pl.Items[a].PriceFOB == 0 && pl.Items[a].PriceCMT == 0)
+                    {
+                        if (isFabricCM)
+                        {
+                            pl.Items[a].PriceFOB = Convert.ToDouble(matchCC.ConfirmPrice + priceFOB);
+
+                        }
+                        else
+                        {
+                            pl.Items[a].PriceFOB = Convert.ToDouble(matchCC.ConfirmPrice);
+                        }
+                    }
+                }
+            }
+
             foreach (var item in viewModel.Items.OrderBy(o => o.ComodityDesc))
             {
                 sheet.Cells[$"A{valueIndex}"].Value = item.ComodityDesc.TrimEnd();
@@ -518,18 +555,22 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Cells[$"F{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 sheet.Cells[$"F{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
 
-                sheet.Cells[$"G{valueIndex}"].Value = string.Format("{0:n4}", item.Price);
+
+
+                var matchPL = pl.Items.FirstOrDefault(x => x.RONo == item.RONo && x.OrderNo == item.ComodityDesc);
+                sheet.Cells[$"G{valueIndex}"].Value = string.Format("{0:n4}", matchPL.PriceFOB);
                 sheet.Cells[$"G{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                 sheet.Cells[$"G{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 sheet.Cells[$"G{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
 
-                sheet.Cells[$"H{valueIndex}"].Value = string.Format("{0:n2}", item.Amount);
+                var amount = matchPL.PriceFOB * item.Quantity;
+                sheet.Cells[$"H{valueIndex}"].Value = string.Format("{0:n2}", amount);
                 sheet.Cells[$"H{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                 sheet.Cells[$"H{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 sheet.Cells[$"H{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
 
                 totalQtys += item.Quantity;
-                totalAmnts += item.Amount;
+                totalAmnts += Convert.ToDecimal(amount);
 
                 if (total.ContainsKey(item.Uom.Unit))
                 {
