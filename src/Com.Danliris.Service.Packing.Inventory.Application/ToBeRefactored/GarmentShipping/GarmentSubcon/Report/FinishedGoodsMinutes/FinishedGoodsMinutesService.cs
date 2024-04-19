@@ -120,9 +120,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "SUPPLIER", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "QTY MASUK", DataType = typeof(double) });
             result.Columns.Add(new DataColumn() { ColumnName = "SATUAN", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "HARGA SATUAN", DataType = typeof(double) });
             result.Columns.Add(new DataColumn() { ColumnName = "NO BC MASUK", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "JENIS BC MASUK", DataType = typeof(string) });
 
+            result.Columns.Add(new DataColumn() { ColumnName = "JENIS BC MASUK", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "TANGGAL BC MASUK", DataType = typeof(string) });
 
             if(query.Count > 0)
@@ -137,8 +138,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         result.Rows.Add(h.InvoiceNo, h.RONo, h.BCNo, h.BCType, BCDateOut
                             , h.SentQty, h.SentUomUnit, h.ComodityName, h.BuyerName, h.LocalSalesNote
                             , i.ProductName, i.ProductCode, i.UsedQty, i.UsedUomUnit, i.DONo
-                            , i.SupplierName, i.ReceiptQty, i.ReceiptUomUnit, i.ReceiptBCNo, i.ReceiptBCType
-                            , BCDateIn);
+                            , i.SupplierName, i.ReceiptQty, i.ReceiptUomUnit,i.PricePerDeal, i.ReceiptBCNo
+                            , i.ReceiptBCType, BCDateIn);
                     }
                 }
             }
@@ -181,7 +182,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             index = 5;
 
-            string[] colsToMerge = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+            string[] colsToMerge = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K" };
             foreach (KeyValuePair<string, int> c in bonspan)
             {
                 foreach (var colToMerge in colsToMerge)
@@ -195,7 +196,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells["A4"].LoadFromDataTable(result, true, OfficeOpenXml.Table.TableStyles.Light16);
             sheet.Cells.AutoFitColumns();
 
-            sheet.Cells[$"A4:U4"].Style.Font.Bold = true;
+            sheet.Cells[$"A4:V4"].Style.Font.Bold = true;
 
             MemoryStream stream = new MemoryStream();
             package.SaveAs(stream);
