@@ -33,6 +33,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string ReceiptBCType { get; set; }
         public DateTimeOffset ReceiptBCDate { get; set; }
         public string RONo { get; set; }
+        public double PricePerDeal { get; set; }
     }
 
     public class GetBCOUTVM
