@@ -61,7 +61,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          },
                 };
 
-            var model = new GarmentReceiptSubconPackingListModel(1, "23/LBJ/0001", DateTimeOffset.Now, 1, "SC001", 1, "LBJ", "PENJUALAN BARANG JADI", 1, "BYR001", "BUYER 001", "NPWP BUYER", "PAYMENT TERM", true, true, items, 10, 10, 10, 1, true, true,"",DateTimeOffset.Now)
+            var model = new GarmentReceiptSubconPackingListModel(1, "23/LBJ/0001", DateTimeOffset.Now, 1, "SC001", 1, "LBJ", "PENJUALAN BARANG JADI", 1, "BYR001", "BUYER 001", "NPWP BUYER", "PAYMENT TERM", true, true, items, 10, 10, 10, 1, true, true,"",DateTimeOffset.Now, 
+                                                                    true, "", DateTimeOffset.Now, 1, "",true, "", DateTimeOffset.Now, "","")
             {
                 Id = 1
             };
@@ -99,7 +100,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.GarmentShipping.M
                          },
                 };
 
-            var model = new GarmentReceiptSubconPackingListModel(1, "23/LBJ/0001", DateTimeOffset.Now, 1, "SC001", 1, "LBJ", "PENJUALAN BARANG JADI", 1, "BYR001", "BUYER 001", "NPWP BUYER", "PAYMENT TERM", true, true, items, 10, 10, 10, 1, true, true,"", DateTimeOffset.Now)
+            var model = new GarmentReceiptSubconPackingListModel(1, "23/LBJ/0001", DateTimeOffset.Now, 1, "SC001", 1, "LBJ", "PENJUALAN BARANG JADI", 1, "BYR001", "BUYER 001", "NPWP BUYER", "PAYMENT TERM", true, true, items, 10, 10, 10, 1, true, true,"", DateTimeOffset.Now,
+                                                                    true, "", DateTimeOffset.Now, 1, "", true, "", DateTimeOffset.Now, "", "")
             {
                 Id = 1
             };
