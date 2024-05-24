@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string ProductTextileCode { get; set; }
         public string ProductTextileName { get; set; }
         #endregion
+        public int DPPreInputWarehouseId { get; set; }
 
         public DyeingPrintingAreaMovementModel()
         {
@@ -423,6 +424,54 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackagingUnit = packingUnit;
             PackagingLength = packingLength;
             InventoryType = inventoryType;
+        }
+
+        /// <summary>
+        /// Reject Gudang Jadi
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="materialOrigin"></param>
+        /// <param name="area"></param>
+        /// <param name="type"></param>
+        /// <param name="dyeingPrintingAreaDocumentId"></param>
+        /// <param name="dyeingPrintingAreaDocumentBonNo"></param>
+        /// <param name="productionOrderId"></param>
+        /// <param name="productionOrderNo"></param>
+        /// <param name="buyer"></param>
+        /// <param name="construction"></param>
+        /// <param name="unit"></param>
+        /// <param name="color"></param>
+        /// <param name="motif"></param>
+        /// <param name="uomUnit"></param>
+        /// <param name="balance"></param>
+        /// <param name="dyeingPrintingAreaProductionOrderDocumentId"></param>
+        /// <param name="productionOrderType"></param>
+        
+
+        public DyeingPrintingAreaMovementModel(DateTimeOffset date, string materialOrigin, string area, string type, int dyeingPrintingAreaDocumentId, string dyeingPrintingAreaDocumentBonNo,
+            long productionOrderId, string productionOrderNo,  string buyer, string construction, string unit, string color,
+            string motif, string uomUnit, double balance, int dyeingPrintingAreaProductionOrderDocumentId, string productionOrderType, int dPPreInputWarehouseId, decimal packagingQty)
+        {
+            Date = date;
+            MaterialOrigin = materialOrigin;
+            Area = area;
+            Type = type;
+            DyeingPrintingAreaDocumentId = dyeingPrintingAreaDocumentId;
+            DyeingPrintingAreaDocumentBonNo = dyeingPrintingAreaDocumentBonNo;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            Buyer = buyer;
+            Construction = construction;
+            Unit = unit;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Balance = balance;
+            DyeingPrintingAreaProductionOrderDocumentId = dyeingPrintingAreaProductionOrderDocumentId;
+            ProductionOrderType = productionOrderType;
+            DPPreInputWarehouseId = dPPreInputWarehouseId;
+            PackagingQty = packagingQty;
+
         }
 
         public void SetArea(string newArea, string user, string agent)

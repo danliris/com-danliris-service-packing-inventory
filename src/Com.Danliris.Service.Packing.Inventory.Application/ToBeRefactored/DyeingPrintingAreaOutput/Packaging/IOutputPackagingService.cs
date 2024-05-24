@@ -17,7 +17,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         Task<OutputPackagingViewModel> ReadByIdBon(int id);
         ListResult<IndexViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<MemoryStream> GenerateExcel(int id);
-        Task<MemoryStream> GenerateExcel(int id,int timeZone);
+        Task<MemoryStream> GenerateExcel(int id, bool isBon, int timeZone);
         ListResult<IndexViewModel> ReadBonOutFromPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPack(int page, int size, string filter, string order, string keyword);
         ListResult<InputPackagingProductionOrdersViewModel> ReadSppInFromPackSumBySPPNo(int page, int size, string filter, string order, string keyword);
