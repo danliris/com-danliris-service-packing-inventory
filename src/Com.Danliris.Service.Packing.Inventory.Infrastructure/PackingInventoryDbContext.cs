@@ -258,6 +258,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingLocalSalesDOTSModel> GarmentReceiptSubconLocalSalesDOs { get; set; }
         public DbSet<GarmentShippingLocalSalesDOTSItemModel> GarmentReceiptSubconLocalSalesDOItems { get; set; }
+        public DbSet<ProductRFIDModel> ProductRFIDs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -402,6 +403,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DPWarehouseMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DPWarehouseSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DPWarehousePreInputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<ProductRFIDModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 
             modelBuilder.Entity<CategoryModel>().HasQueryFilter(entity => !entity.IsDeleted);

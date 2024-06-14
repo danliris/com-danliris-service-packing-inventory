@@ -196,6 +196,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.OUT;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingIN;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingRetur;
+using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductRFID;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -308,6 +309,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IRepository<UnitOfMeasurementModel>, UOMRepository>();
             services.AddTransient<IRepository<ProductSKUModel>, ProductSKURepository>();
             services.AddTransient<IRepository<ProductPackingModel>, ProductPackingRepository>();
+            services.AddTransient<IRepository<ProductRFIDModel>, ProductRFIDRepository>();
 
             services.AddTransient<IBaseRepository<ProductPackingInventoryDocumentModel>, BaseRepository<ProductPackingInventoryDocumentModel>>();
             services.AddTransient<IBaseRepository<ProductPackingInventoryMovementModel>, BaseRepository<ProductPackingInventoryMovementModel>>();
@@ -425,6 +427,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IProductSKUService, ProductSKUService>();
             services.AddTransient<IProductPackingService, ProductPackingService>();
             services.AddTransient<IFabricPackingSKUService, FabricPackingSKUService>();
+            services.AddTransient<IProductRFIDService, ProductRFIDService>();
 
             services.AddTransient<IInventorySKUService, InventorySKUService>();
 
