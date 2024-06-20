@@ -46,6 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Description { get; set; }
         public string DestinationBuyerName { get; set; }
         public DateTimeOffset CreatedUtcOrderNo { get; set; }
-        
+        public List<RFIDViewModel> RFIDList { get; set; }
+
     }
 }

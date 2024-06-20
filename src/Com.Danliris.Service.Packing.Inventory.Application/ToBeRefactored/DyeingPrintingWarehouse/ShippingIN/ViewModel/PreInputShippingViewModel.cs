@@ -46,7 +46,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string DestinationBuyerName { get; set; }
         public int DPWarhouseInputItemId { get; set; }
 
+        public List<RFIDViewModel> RFIDList { get; set; }
+
 
 
     }
+
+   
 }

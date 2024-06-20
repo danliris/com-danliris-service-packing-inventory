@@ -11,5 +11,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.Product
         public string ProductPackingCode { get; set; }
         public string RFID { get; set; }
         public string CurrentArea { get; set; }
+        public int DOId { get; set; }
+        public string DONo { get; set; }
     }
 }
