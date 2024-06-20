@@ -20,6 +20,7 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using System.IO;
 using System.Data;
 using System.Globalization;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Product;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingIN
 {
@@ -35,6 +36,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         private readonly DbSet<DPWarehouseInputItemModel> _dbSetInputItemWarehouse;
         private readonly DbSet<DPWarehouseSummaryModel> _dbSetSummary;
         private readonly DbSet<DPWarehouseMovementModel> _dbSetMovement;
+        private readonly DbSet<ProductRFIDModel> _dbSetProductRFID;
         private readonly IDPWarehouseInputRepository _dPWarehouseInputRepository;
         private readonly IDPWarehouseSummaryRepository _dPWarehouseSummaryRepository;
         private readonly IIdentityProvider _identityProvider;
@@ -54,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             _dbSetMovement = dbContext.Set<DPWarehouseMovementModel>();
             _dbSetInputWarehouse = dbContext.Set<DPWarehouseInputModel>();
             _dbSetInputItemWarehouse = dbContext.Set<DPWarehouseInputItemModel>();
+            _dbSetProductRFID = dbContext.Set<ProductRFIDModel>();
         }
 
         public List<PreInputShippingViewModel> GetOutputPreShippingProductionOrders(long deliveriOrderSalesId)
@@ -139,8 +142,12 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 DeliveryOrderSalesType = s.DeliveryOrderSalesType,
                 PackagingUnit = s.PackagingUnit,
                 PackingInstruction = s.PackingInstruction,
-                DestinationBuyerName = s.DestinationBuyerName
+                DestinationBuyerName = s.DestinationBuyerName,
+                RFIDList = _dbSetProductRFID.Where( x => x.ProductPackingId == s.ProductPackingId && x.DOId == s.DeliveryOrderSalesId && x.CurrentArea == DyeingPrintingArea.WLSHIPPING).Select(p => new RFIDViewModel() { 
+                            RFID = p.RFID
                 
+                }).ToList()
+
 
 
 
@@ -184,6 +191,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 try
                 {
                     var model = _dbSet.AsNoTracking().FirstOrDefault(s => s.Date.Date == viewModel.Date.Date && s.ShippingType == "GUDANG JADI");
+                    
                     var listItem = new List<DPShippingInputItemModel>();
 
                     if (model == null)
@@ -261,11 +269,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         {
                             var warehouseItem = _dbSetOutputWarhouseItem.FirstOrDefault(x => x.Id == s.Id);
 
+                            
                             warehouseItem.HasNextAreaDocument = true;
                             warehouseItem.NextAreaInputStatus = "DITERIMA";
                             EntityExtension.FlagForUpdate(warehouseItem, _identityProvider.Username, UserAgent);
 
+                            var productRFID = _dbSetProductRFID.Where(x => x.ProductPackingId == s.ProductPackingId && x.DOId == s.DeliveryOrder.Id && x.CurrentArea == DyeingPrintingArea.WLSHIPPING);
+
+                            foreach (var i in productRFID)
+                            {
+                                var itemRFID = _dbSetProductRFID.FirstOrDefault(x => x.Id == i.Id);
+
+                                itemRFID.CurrentArea = DyeingPrintingArea.SHIPPING;
+                                EntityExtension.FlagForUpdate(itemRFID, _identityProvider.Username, UserAgent);
+
+                            }
+
                         }
+
 
                         Created = await _dbContext.SaveChangesAsync();
 
@@ -335,6 +356,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             warehouseItem.HasNextAreaDocument = true;
                             warehouseItem.NextAreaInputStatus = "DITERIMA";
                             EntityExtension.FlagForUpdate(warehouseItem, _identityProvider.Username, UserAgent);
+
+
+                            var productRFID = _dbSetProductRFID.Where(x => x.ProductPackingId == s.ProductPackingId && x.DOId == s.DeliveryOrder.Id && x.CurrentArea == DyeingPrintingArea.WLSHIPPING);
+
+                            foreach (var i in productRFID)
+                            {
+                                var itemRFID = _dbSetProductRFID.FirstOrDefault(x => x.Id == i.Id);
+
+                                itemRFID.CurrentArea = DyeingPrintingArea.SHIPPING;
+                                EntityExtension.FlagForUpdate(itemRFID, _identityProvider.Username, UserAgent);
+
+                            }
                         }
                         Created = await _dbContext.SaveChangesAsync();
                         await createMovement(listItem);
@@ -528,7 +561,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     ProductPackingId = s.ProductPackingId,
                     FabricPackingId = s.FabricPackingId,
                     ProductPackingCode = s.ProductPackingCode,
-                  
+                    RFIDList = _dbSetProductRFID.Where(x => x.ProductPackingId == s.ProductPackingId && x.DOId == s.DeliveryOrderSalesId && x.CurrentArea == DyeingPrintingArea.SHIPPING).Select(p => new RFIDViewModel()
+                    {
+                        RFID = p.RFID
+
+                    }).ToList()
+
+
                 }
                     
                     ).ToList()
@@ -1053,6 +1092,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             modelOutput.HasNextAreaDocument = true;
 
                             EntityExtension.FlagForUpdate(modelOutput, _identityProvider.Username, UserAgent);
+
+                            //update Curent Area Table Product RFID
+                            var productRFID = _dbSetProductRFID.Where(x => x.ProductPackingId == item.ProductPackingId && x.DOId == item.DeliveryOrder.Id && x.CurrentArea == DyeingPrintingArea.WLSHIPPING);
+
+                            foreach (var i in productRFID)
+                            {
+                                var itemRFID = _dbSetProductRFID.FirstOrDefault(x => x.Id == i.Id);
+
+                                itemRFID.CurrentArea = DyeingPrintingArea.GUDANGJADI;
+                                EntityExtension.FlagForUpdate(itemRFID, _identityProvider.Username, UserAgent);
+
+                            }
                         }
 
                         Created = await _dbContext.SaveChangesAsync();
@@ -1152,6 +1203,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             modelOutput.HasNextAreaDocument = true;
 
                             EntityExtension.FlagForUpdate(modelOutput, _identityProvider.Username, UserAgent);
+
+                            //update Curent Area Table Product RFID
+                            var productRFID = _dbSetProductRFID.Where(x => x.ProductPackingId == item.ProductPackingId && x.DOId == item.DeliveryOrder.Id && x.CurrentArea == DyeingPrintingArea.WLSHIPPING);
+
+                            foreach (var i in productRFID)
+                            {
+                                var itemRFID = _dbSetProductRFID.FirstOrDefault(x => x.Id == i.Id);
+
+                                itemRFID.CurrentArea = DyeingPrintingArea.GUDANGJADI;
+                                EntityExtension.FlagForUpdate(itemRFID, _identityProvider.Username, UserAgent);
+
+                            }
                         }
                         Created = await _dbContext.SaveChangesAsync();
 
