@@ -197,6 +197,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPr
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingIN;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingRetur;
 using Com.Danliris.Service.Packing.Inventory.Application.Master.ProductRFID;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.DyeingPrintingWarehouse.ShippingOut;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -486,6 +487,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDPWarehouseOutService, DPWarehouseOutService>();
             services.AddTransient<IDPShippingInService, DPShippingInService>();
             services.AddTransient<IDPShippingReturService, DPShippingReturService>();
+            services.AddTransient<IDPShippingOutService, DPShippingOutService>();
 
             services.AddTransient<IProductionSubmissionReportService, ProductionSubmissionReportService>();
             services.AddTransient<IQcToWarehouseReportService, QcToWarehouseReportService>();

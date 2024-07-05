@@ -29,5 +29,52 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
             DPShippingOutputItems = new HashSet<DPShippingOutputItemModel>();
         }
 
+        public DPShippingOutputModel(DateTimeOffset date, string bonNo,  bool hasOuputArea,
+            string destinationArea,  int deliveryOrderId, string deliveryOrderNo, string destinationBuyerName, string shippingCode, bool updateBySales,
+             ICollection<DPShippingOutputItemModel> dPShippingOutputItems)
+        {
+            Date = date;
+
+            BonNo = bonNo;
+            HasOuputArea = hasOuputArea;
+            DestinationArea = destinationArea;
+            DPShippingOutputItems = dPShippingOutputItems;
+            DeliveryOrderSalesId = deliveryOrderId;
+            DeliveryOrderSalesNo = deliveryOrderNo;
+            DestinationBuyerName = destinationBuyerName;
+            ShippingCode = shippingCode;
+            
+
+            UpdateBySales = updateBySales;
+        }
+
+        public DPShippingOutputModel(DateTimeOffset date, string bonNo, bool hasOuputArea,
+            string destinationArea, int deliveryOrderId, string deliveryOrderNo, string destinationBuyerName, string shippingCode, bool updateBySales,
+            string packingListNo, string packingType, string packingListRemark,
+            string packingListAuthorized, string packingListLCNumber, string packingListIssuedBy, string packingListDescription,
+             ICollection<DPShippingOutputItemModel> dPShippingOutputItems)
+        {
+            Date = date;
+
+            BonNo = bonNo;
+            HasOuputArea = hasOuputArea;
+            DestinationArea = destinationArea;
+            DPShippingOutputItems = dPShippingOutputItems;
+            DeliveryOrderSalesId = deliveryOrderId;
+            DeliveryOrderSalesNo = deliveryOrderNo;
+            DestinationBuyerName = destinationBuyerName;
+            ShippingCode = shippingCode;
+            PackingListNo = packingListNo;
+            PackingType = packingType;
+            PackingListRemark = packingListRemark;
+            PackingListAuthorized = packingListAuthorized;
+            PackingListLCNumber = packingListLCNumber;
+            PackingListIssuedBy = packingListIssuedBy;
+            PackingListDescription = packingListDescription;
+
+
+            UpdateBySales = updateBySales;
+        }
+
     }
 }

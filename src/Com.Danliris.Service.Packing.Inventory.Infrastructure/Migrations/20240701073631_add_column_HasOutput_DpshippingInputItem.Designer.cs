@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240701073631_add_column_HasOutput_DpshippingInputItem")]
+    partial class add_column_HasOutput_DpshippingInputItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1844,8 +1846,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("CreatedUtcOrderNo");
 
-                    b.Property<int>("DPShippingInputItemId");
-
                     b.Property<int>("DPShippingOutputId");
 
                     b.Property<DateTimeOffset>("Date");
@@ -1855,8 +1855,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("DeletedBy");
 
                     b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<string>("DeliveryNote");
 
                     b.Property<int>("DeliveryOrderSalesId");
 

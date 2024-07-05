@@ -403,6 +403,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<DPWarehouseMovementModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DPWarehouseSummaryModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<DPWarehousePreInputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPShippingInputModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPShippingInputItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPShippingOutputItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
+            modelBuilder.Entity<DPShippingOutputModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<ProductRFIDModel>().HasQueryFilter(entity => !entity.IsDeleted);
             //modelBuilder.Entity<DyeingPrintingAreaOutputAvalItemModel>().HasQueryFilter(entity => !entity.IsDeleted);
 

@@ -56,6 +56,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public string DestinationBuyerName { get;set; }
         public string MaterialOrigin { get; set; }
         public string DeliveryOrderSalesType { get; set; }
+        public bool HasOutputArea { get; set; }
         public DPShippingInputModel DPShippingInput { get; set; }
        
 
