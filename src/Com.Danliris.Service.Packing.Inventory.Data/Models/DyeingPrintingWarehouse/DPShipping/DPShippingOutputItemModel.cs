@@ -59,8 +59,167 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingWareh
         public decimal PackingListNet { get; set; }
         public string DeliveryOrderSalesType { get; set; }
         public DateTimeOffset CreatedUtcOrderNo { get; set; }
+        public int DPShippingInputItemId { get; set; }
+        public string DeliveryNote { get; set; }
         public DPShippingOutputModel DPShippingOutput { get; set; }
 
+        public DPShippingOutputItemModel()
+        {
+        }
+
+        public DPShippingOutputItemModel( string area,  string destinationArea, bool hasNextAreaDocument, int deliveryOrderSalesId, string deliveryOrderSalesNo, int productionOrderId, string productionOrderNo, string productionOrderType, string productionOrderQuantity, int buyerId, string buyer, string construction,
+            string unit, string color, string motif, string grade, string uomUnit,  double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking,  string shippingGrade, string shippingRemark, double weight,
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string remark, 
+            int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+            int productSKUId, int fabricSKUId, string productSKUCode,  int productPackingId, int fabricPackingId, string productPackingCode, double packingLength, string finishWidth, string destinationBuyerName, string materialOrigin, string deliveryOrderSalesType, string packingInstruction, int dPShippingInputItemId
+            ) : this()
+
+        {
+            Area = area;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            BuyerName = buyer;
+            Construction = construction;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            Balance = balance;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+            
+            Unit = unit;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
+            PackagingQty = qtyPacking;
+            PackagingType = packingType;
+            PackagingUnit = packingUnit;
+
+            DPShippingOutputId = dyeingPrintingAreaInputProductonOrderId;
+
+            BuyerId = buyerId;
+
+           
+
+            ShippingGrade = shippingGrade;
+            ShippingRemark = shippingRemark;
+           
+
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialConstructionName = materialConstructionName;
+            MaterialConstructionId = materialConstructionId;
+            MaterialWidth = materialWidth;
+            FinishWidth = finishWidth;
+
+           
+            Remark = remark;
+            
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+
+            PackagingLength = packingLength;
+            
+            DestinationBuyerName = destinationBuyerName;
+            
+            MaterialOrigin = materialOrigin;
+            DeliveryOrderSalesType = deliveryOrderSalesType;
+            PackingInstruction = packingInstruction;
+            DPShippingInputItemId = dPShippingInputItemId;
+        }
+
+        //Output Buyer
+        public DPShippingOutputItemModel(string area, string destinationArea, bool hasNextAreaDocument, int deliveryOrderSalesId, string deliveryOrderSalesNo, int productionOrderId, string productionOrderNo, string productionOrderType, string productionOrderQuantity, int buyerId, string buyer, string construction,
+            string unit, string color, string motif, string grade, string uomUnit, double balance, int dyeingPrintingAreaInputProductonOrderId, string packingUnit, string packingType, decimal qtyPacking, string shippingGrade, string shippingRemark, double weight,
+            int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, string remark,
+            int processTypeId, string processTypeName, int yarnMaterialId, string yarnMaterialName,
+            int productSKUId, int fabricSKUId, string productSKUCode, int productPackingId, int fabricPackingId, string productPackingCode, double packingLength, string finishWidth, string destinationBuyerName, string materialOrigin, string deliveryOrderSalesType, string packingInstruction, int dPShippingInputItemId,
+            decimal packingListNet, decimal packingListGross, string packingListBaleNo, string deliveryNote
+            ) : this()
+
+        {
+            Area = area;
+            ProductionOrderId = productionOrderId;
+            ProductionOrderNo = productionOrderNo;
+            ProductionOrderOrderQuantity = productionOrderQuantity;
+            BuyerName = buyer;
+            Construction = construction;
+            Color = color;
+            Motif = motif;
+            UomUnit = uomUnit;
+            Grade = grade;
+            ProductionOrderType = productionOrderType;
+            DeliveryOrderSalesId = deliveryOrderSalesId;
+            Balance = balance;
+            DeliveryOrderSalesNo = deliveryOrderSalesNo;
+
+            Unit = unit;
+            DestinationArea = destinationArea;
+            HasNextAreaDocument = hasNextAreaDocument;
+            PackagingQty = qtyPacking;
+            PackagingType = packingType;
+            PackagingUnit = packingUnit;
+
+            DPShippingOutputId = dyeingPrintingAreaInputProductonOrderId;
+
+            BuyerId = buyerId;
+
+
+
+            ShippingGrade = shippingGrade;
+            ShippingRemark = shippingRemark;
+
+
+            MaterialId = materialId;
+            MaterialName = materialName;
+            MaterialConstructionName = materialConstructionName;
+            MaterialConstructionId = materialConstructionId;
+            MaterialWidth = materialWidth;
+            FinishWidth = finishWidth;
+
+
+            Remark = remark;
+
+            ProcessTypeId = processTypeId;
+            ProcessTypeName = processTypeName;
+            YarnMaterialId = yarnMaterialId;
+            YarnMaterialName = yarnMaterialName;
+
+            ProductSKUId = productSKUId;
+            FabricSKUId = fabricSKUId;
+            ProductSKUCode = productSKUCode;
+
+            ProductPackingId = productPackingId;
+            FabricPackingId = fabricPackingId;
+            ProductPackingCode = productPackingCode;
+
+            PackagingLength = packingLength;
+
+            DestinationBuyerName = destinationBuyerName;
+
+            MaterialOrigin = materialOrigin;
+            DeliveryOrderSalesType = deliveryOrderSalesType;
+            PackingInstruction = packingInstruction;
+            DPShippingInputItemId = dPShippingInputItemId;
+            PackingListNet = packingListNet;
+            PackingListGross = packingListGross;
+            PackingListBaleNo = packingListBaleNo;
+            DeliveryNote = deliveryNote;
+        }
 
     }
+
+    
 }
