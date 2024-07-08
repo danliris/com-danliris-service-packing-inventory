@@ -60,11 +60,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 }
             }
 
-            if (string.IsNullOrEmpty(Shift))
-                yield return new ValidationResult("Shift harus diisi", new List<string> { "Shift" });
+            //if (string.IsNullOrEmpty(Shift))
+            //    yield return new ValidationResult("Shift harus diisi", new List<string> { "Shift" });
 
-            if (string.IsNullOrEmpty(Group))
-                yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
+            //if (string.IsNullOrEmpty(Group))
+            //    yield return new ValidationResult("Group harus diisi", new List<string> { "Group" });
 
             if (Type == DyeingPrintingArea.OUT && string.IsNullOrEmpty(DestinationArea))
                 yield return new ValidationResult("Tujuan Area Harus Diisi!", new List<string> { "DestinationArea" });

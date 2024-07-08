@@ -783,5 +783,60 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
         }
 
+        public async Task<int> Update(int Id, OutputShippingViewModel viewModel)
+        {
+            int Update = 0;
+            using (var transaction = this._dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var model = _dbSet.FirstOrDefault(x => x.Id == Id);
+                    model.PackingListDescription = viewModel.PackingListDescription;
+                    model.PackingListAuthorized = viewModel.PackingListAuthorized;
+                    model.PackingListIssuedBy = viewModel.PackingListIssuedBy;
+                    model.PackingListLCNumber = viewModel.PackingListLCNumber;
+                    model.PackingListRemark = viewModel.PackingListRemark;
+                    model.UpdateBySales = true;
+                    EntityExtension.FlagForUpdate(model, _identityProvider.Username, UserAgent);
+
+                    foreach (var i in viewModel.ShippingItems)
+                    {
+                        var modelItem = _dbSetItem.FirstOrDefault(x => x.Id == i.Id);
+
+                        if (modelItem != null)
+                        {
+                            modelItem.DeliveryNote = i.DeliveryNote;
+                            modelItem.PackingListBaleNo = i.PackingListBaleNo;
+                            modelItem.PackingListGross = i.PackingListGross;
+                            modelItem.PackingListNet = i.PackingListNet;
+                        }
+                        else {
+                            continue;
+                        }
+                        
+                    
+                    }
+
+                    Update = await _dbContext.SaveChangesAsync();
+
+                    transaction.Commit();
+
+                }
+                catch (Exception e){
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+
+            
+            }
+
+               
+
+
+
+            return Update;
+        
+        }
+
     }
 }

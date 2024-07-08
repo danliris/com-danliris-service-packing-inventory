@@ -12,6 +12,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
     {
         List<InputShippingItemViewModel> GetInputByDeliveryOrder(long deliveryOrderId);
         Task<int> Create(OutputShippingViewModel viewModel);
+        Task<int> Update(int Id, OutputShippingViewModel viewModel);
         ListResult<IndexOutViewModel> Read(int page, int size, string filter, string order, string keyword);
         Task<OutputShippingViewModel> ReadById(int id);
     }
