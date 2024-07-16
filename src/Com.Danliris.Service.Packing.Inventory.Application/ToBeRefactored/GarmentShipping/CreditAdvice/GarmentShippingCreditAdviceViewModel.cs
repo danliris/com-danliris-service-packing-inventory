@@ -13,6 +13,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public string invoiceNo { get; set; }
         public DateTimeOffset? date { get; set; }
         public double amount { get; set; }
+        public double lessFabricCost { get; set; }
+        public double dhlCharges { get; set; }
         public double amountToBePaid { get; set; }
         public double amountPaid { get; set; }
         public double balanceamount { get; set; }

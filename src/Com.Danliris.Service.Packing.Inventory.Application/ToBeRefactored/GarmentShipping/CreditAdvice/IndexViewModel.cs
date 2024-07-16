@@ -10,6 +10,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public DateTimeOffset? date { get; set; }
         public double amount { get; set; }
+        public double lessFabricCost { get; set; }
+
+        public double dhlCharges { get; set; }
+
         public double amountToBePaid { get; set; }
 
         public string buyerName { get; set; }
