@@ -51,8 +51,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 amountToBePaid = model.AmountToBePaid,
                 amountPaid = model.AmountPaid,
                 balanceamount = model.BalanceAmount,
-                lessFabricCost = model.LessFabricCost,
-
+ 
                 valas = model.Valas,
                 lcType = model.LCType,
                 inkaso = model.Inkaso,
