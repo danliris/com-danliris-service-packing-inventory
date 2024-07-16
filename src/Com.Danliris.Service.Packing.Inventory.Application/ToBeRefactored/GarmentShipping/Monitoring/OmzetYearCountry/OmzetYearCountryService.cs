@@ -33,6 +33,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             var invoicequery = shippingInvoiceRepository.ReadAll();
 
+            invoicequery = invoicequery.Where(w => w.PEBDate != DateTimeOffset.MinValue);
+
+            invoicequery = invoicequery.Where(w => w.PEBNo != null && w.PEBNo != "-" && w.PEBNo != " ");
+
             var packinglistquery = shippingpackinglistRepository.ReadAll();
 
             packinglistquery = packinglistquery.Where(w => w.TruckingDate >= dateFrom && w.TruckingDate < dateTo);
