@@ -71,7 +71,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         from CA in dd.DefaultIfEmpty()
                         join d in quaryInvItem on a.Id equals d.GarmentShippingInvoiceId
                         where a.IsDeleted == false && b.IsDeleted == false && CA.IsDeleted == false
-                        && a.PEBDate != DateTimeOffset.MinValue && d.CMTPrice > 0
+                        && a.PEBDate != DateTimeOffset.MinValue && a.PEBNo != null && a.PEBNo != "-" 
+                        && a.PEBNo != " "  && d.CMTPrice > 0
 
                         select new GarmentCMTSalesViewModel
                         {

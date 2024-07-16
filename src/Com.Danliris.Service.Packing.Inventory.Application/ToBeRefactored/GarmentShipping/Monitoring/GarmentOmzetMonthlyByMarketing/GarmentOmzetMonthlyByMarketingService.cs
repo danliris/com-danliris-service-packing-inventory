@@ -48,7 +48,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //    queryitem = queryitem.Where(w => w.MarketingName == marketingName);
             //}
 
-            queryPL = queryPL.Where(w => w.Omzet == true);           
+            queryPL = queryPL.Where(w => w.Omzet == true);      
+            
             //queryPL = queryPL.Where(w => w.IsUsed == true);
 
             var newQ = (from a in queryPL
