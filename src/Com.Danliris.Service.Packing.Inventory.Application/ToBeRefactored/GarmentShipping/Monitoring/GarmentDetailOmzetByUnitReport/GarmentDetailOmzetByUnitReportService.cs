@@ -61,15 +61,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             List<GarmentDetailOmzetByUnitReportViewModel> omzetgmt = new List<GarmentDetailOmzetByUnitReportViewModel>();
 
-            var Queryshipping = (from a in queryInv
-                                 join b in queryPL on a.PackingListId equals b.Id
-                               
-                                 select new GarmentDetailOmzetByUnitReportTempViewModel
-                                 {
-                                     PLId = b.Id,
-                                     PEBDate = a.PEBDate,
-                                     TruckingDate = b.TruckingDate,                                            
-                                 }).Distinct();
+            var Query = (from a in queryPL
+                         join b in queryInv on a.Id equals b.PackingListId
+                         join c in quaryInvItem on b.Id equals c.GarmentShippingInvoiceId
+                         where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false
+                               && c.UnitCode == (string.IsNullOrWhiteSpace(unit) ? c.UnitCode : unit)
+                               && b.PEBDate != DateTimeOffset.MinValue
+                               && b.PEBNo != null && b.PEBNo != "-" && b.PEBNo != " "
+                               && (a.InvoiceNo.Substring(0, 2) == "DS" || a.InvoiceNo.Substring(0, 2) == "DL")
 
             var Query1 = (from a in expendGood
                           join b in Queryshipping on a.PackingListId equals b.PLId

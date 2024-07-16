@@ -45,6 +45,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             queryPL = queryPL.Where(w => w.Omzet == true);            
             queryPL = queryPL.Where(w => w.Accounting == true);
+
             //queryPL = queryPL.Where(w => w.IsUsed == true);
 
             var newQ = (from a in queryPL
