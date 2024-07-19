@@ -48,7 +48,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var quaryInvItem = shippingInvoiceItemRepository.ReadAll();
             var queryPL = packingListRepository.ReadAll();
 
-            queryInv = queryInv.Where(x => x.PEBDate != DateTimeOffset.MinValue);
+            //queryInv = queryInv.Where(x => x.PEBDate != DateTimeOffset.MinValue);
 
             queryPL = queryPL.Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
 
@@ -67,6 +67,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                           join b in quaryInvItem on a.Id equals b.GarmentShippingInvoiceId
                           join c in queryPL on a.PackingListId equals c.Id
                           //where ROs.Contains(b.RONo) && invo.Contains(a.InvoiceNo)
+                          where  a.PEBNo != null && a.PEBNo != "-" && a.PEBNo != " "
+                                 && a.PEBDate != DateTimeOffset.MinValue
 
                           select new GarmentDetailOmzetByUnitReportViewModel
                           {

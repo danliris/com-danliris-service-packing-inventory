@@ -42,6 +42,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var newQ = from a in packinglistquery
                        join b in invoicequery on a.Id equals b.PackingListId
                        join c in invoiceitemquery on b.Id equals c.GarmentShippingInvoiceId
+                       where b.PEBNo != null && b.PEBNo != "-" && b.PEBNo != " "
+                                 && b.PEBDate != DateTimeOffset.MinValue
 
                        select new OmzetYearBuyerComodityTempViewModel
                        {
