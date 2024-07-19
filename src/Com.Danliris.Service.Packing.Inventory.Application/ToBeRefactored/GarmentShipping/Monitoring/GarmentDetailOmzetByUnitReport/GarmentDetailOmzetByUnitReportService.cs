@@ -67,6 +67,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                          where a.IsDeleted == false && b.IsDeleted == false && c.IsDeleted == false
                                && c.UnitCode == (string.IsNullOrWhiteSpace(unit) ? c.UnitCode : unit)
                                && b.PEBDate != DateTimeOffset.MinValue
+                               && b.PEBNo != null && b.PEBNo != "-" && b.PEBNo != " "
                                && (a.InvoiceNo.Substring(0, 2) == "DS" || a.InvoiceNo.Substring(0, 2) == "DL")
 
                          group new { Qty = c.Quantity, Amt = c.Amount } by new
