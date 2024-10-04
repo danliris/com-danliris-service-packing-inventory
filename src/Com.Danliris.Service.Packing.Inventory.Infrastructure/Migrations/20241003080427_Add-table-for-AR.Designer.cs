@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241003080427_Add-table-for-AR")]
+    partial class AddtableforAR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,8 +250,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedUtc");
 
-                    b.Property<int>("Month");
-
                     b.Property<DateTime>("PEBDate");
 
                     b.Property<string>("PEBNo")
@@ -306,8 +306,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy");
 
                     b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("Month");
 
                     b.Property<DateTime>("PEBDate");
 
@@ -373,8 +371,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<double>("LiquidAmount");
 
                     b.Property<double>("LiquidTotalAmount");
-
-                    b.Property<int>("Month");
 
                     b.Property<double>("ReceiptAmount");
 
@@ -443,8 +439,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.Property<string>("MemoNo")
                         .HasMaxLength(30);
 
-                    b.Property<int>("Month");
-
                     b.Property<DateTime>("OffsetDate");
 
                     b.Property<string>("ReceiptNo")
@@ -500,8 +494,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("MemoNo")
                         .HasMaxLength(30);
-
-                    b.Property<int>("Month");
 
                     b.Property<string>("Remark")
                         .HasMaxLength(1000);

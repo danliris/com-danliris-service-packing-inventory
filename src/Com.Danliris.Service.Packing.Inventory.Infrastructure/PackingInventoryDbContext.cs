@@ -79,6 +79,11 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalCo
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalCoverLetterTS;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesDOTS;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalSalesDOTS;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.CashInBank;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.CMT;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.DownPayment;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.OmzetCorrectionsModel;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -241,6 +246,13 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
         public DbSet<GarmentShippingLocalSalesDOTSModel> GarmentReceiptSubconLocalSalesDOs { get; set; }
         public DbSet<GarmentShippingLocalSalesDOTSItemModel> GarmentReceiptSubconLocalSalesDOItems { get; set; }
+
+        //AR
+        public DbSet<AR_BalanceModel> AR_Balances { get; set; }
+        public DbSet<DownPaymentModel> AR_DownPayments { get; set; }
+        public DbSet<OmzetCorrectionModel> AR_OmzetCorrections { get; set; }
+        public DbSet<CMTModel> AR_CMTs { get; set; }
+        public DbSet<CashInBankModel> AR_CashInBank { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
