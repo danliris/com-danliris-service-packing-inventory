@@ -189,6 +189,11 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Garment
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesDOTS;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.Report.FinishedGoodsMinutes;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.GarmentSubcon.Report.ShipmentLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.CashInBank;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.CMT;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.DownPayment;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.OmzetCorrectionService;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.AR_ReportMutation;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -507,7 +512,14 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IFinishedGoodsMinutesService, FinishedGoodsMinutesService>();
             services.AddTransient<IShipmentLocalSalesNoteService, ShipmentLocalSalesNoteService>();
-            
+
+            //AR
+            services.AddTransient<ICashInBankService, CashInBankService>();
+            services.AddTransient<ICMTService, CMTService>();
+            services.AddTransient<IDownPaymentService, DownPaymentService>();
+            services.AddTransient<IOmzetCorrectionService, OmzetCorrectionService>();
+            services.AddTransient<IAR_ReportMutationService, AR_ReportMutationService>();
+
             #endregion
 
             // Register Provider

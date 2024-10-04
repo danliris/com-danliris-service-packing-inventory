@@ -1,9 +1,12 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentShippingInvoice;
+using Com.Moonlay.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OfficeOpenXml;
@@ -28,6 +31,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         private readonly IIdentityProvider _identityProvider;
 
+        private readonly PackingInventoryDbContext dbContext;
+
         public GarmentRecapOmzetReportService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -35,6 +40,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             repository = serviceProvider.GetService<IGarmentShippingInvoiceRepository>();
             itemrepository = serviceProvider.GetService<IGarmentShippingInvoiceItemRepository>();
             _identityProvider = serviceProvider.GetService<IIdentityProvider>();
+
+            dbContext = serviceProvider.GetService<PackingInventoryDbContext>();
         }
 
         public List<GarmentRecapOmzetReportViewModel> GetData(DateTime? dateFrom, DateTime? dateTo, int offset)
@@ -301,6 +308,68 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             package.SaveAs(stream);
             return stream;
         }
+
+        public async Task<int> PushToBeginingBalance(DateTime? dateFrom, DateTime? dateTo, int offset)
+        {
+
+            var transaction = dbContext.Database.BeginTransaction();
+            {
+                try
+                {
+                    var data = GetData(dateFrom, dateTo, offset);
+
+                    var dataGroup = data.GroupBy(x => new { x.TruckingDate, x.BuyerAgentCode, x.Destination, x.InvoiceNo, x.InvoiceDate, x.PEBNo, x.PEBDate, x.CurrencyCode, x.Rate }).Select(s => new GarmentRecapOmzetReportViewModel
+                    {
+                        TruckingDate = s.Key.TruckingDate,
+                        BuyerAgentCode = s.Key.BuyerAgentCode,
+                        Destination = s.Key.Destination,
+                        InvoiceNo = s.Key.InvoiceNo,
+                        InvoiceDate = s.Key.InvoiceDate,
+                        PEBNo = s.Key.PEBNo,
+                        PEBDate = s.Key.PEBDate,
+                        Quantity = s.Sum(x => x.Quantity),
+                        CurrencyCode = s.Key.CurrencyCode,
+                        Rate = s.Key.Rate,
+                        Amount = s.Sum(x => x.Amount),
+                        AmountIDR = s.Sum(x => x.AmountIDR),
+                    }).ToList();
+
+                    var dataToInser = dataGroup.Select(s => new AR_BalanceModel
+                    {
+                        BuyerAgentCode = s.BuyerAgentCode,
+                        Destination = s.Destination,
+                        InvoiceNo = s.InvoiceNo,
+                        InvoiceDate = s.InvoiceDate.Date,
+                        PEBNo = s.PEBNo,
+                        PEBDate = s.PEBDate.Date,
+                        Quantity = s.Quantity,
+                        CurrencyCode = s.CurrencyCode,
+                        Amount = (double)s.Amount,
+                        Rate = (double)s.Rate,
+                        AmountIDR = (double)s.AmountIDR,
+                        TruckingDate = s.TruckingDate.Date,
+                        Month = s.TruckingDate.Month,
+                    });
+
+                    foreach(var item in dataToInser)
+                    {
+                        item.FlagForCreate(_identityProvider.Username, "Repository");
+                        dbContext.AR_Balances.Add(item);
+                    }
+
+                    await dbContext.SaveChangesAsync();
+                    transaction.Commit();
+
+                    return 1;
+
+                }
+                catch(Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+        }
+
 
 
         //async Task<GarmentDetailCurrency> GetCurrencies(string code, DateTime date)
