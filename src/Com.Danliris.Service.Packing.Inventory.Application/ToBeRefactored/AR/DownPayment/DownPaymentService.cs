@@ -49,7 +49,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.D
 
         public ReadResponse<DownPaymentList> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            var query = _dbContext.AR_DownPayments.AsQueryable();
+            var query = _dbContext.AR_DownPayments.Where(x => !x.IsDeleted).AsQueryable();
 
             var searchAttributes = new List<string>()
             {

@@ -116,7 +116,6 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.AR.DownPayme
         }
 
         [HttpGet("download")]
-        //public IActionResult GetXls([FromQuery] int month, [FromQuery] int year)
         public async Task<IActionResult> GetXls([FromQuery] DateTime? dateFrom, [FromQuery] DateTime? dateTo)
         {
             try
@@ -124,8 +123,10 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.AR.DownPayme
                 byte[] xlsInBytes;
                 int offset = Convert.ToInt32(Request.Headers["x-timezone-offset"]);
 
+                DateTime DateFrom = dateFrom == null ? new DateTime(1970, 1, 1) : dateFrom.Value;
+                DateTime DateTo = dateFrom == null ? new DateTime(1970, 1, 1) : dateTo.Value;
                 //var xls = _service.GenerateExcel(month, year, offset);
-                var xls = await _mutationService.GetExcel();
+                var xls = await _mutationService.GetExcel(DateFrom, DateTo);
 
                 string filename = String.Format("AR_Mutasi - {0}.xlsx", DateTime.UtcNow.ToString("ddMMyyyy"));
 

@@ -31,7 +31,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.O
 
         public ReadResponse<DownPaymentList> Read(int page, int size, string order, List<string> select, string keyword, string filter)
         {
-            var query = _dbContext.AR_OmzetCorrections.AsQueryable();
+            var query = _dbContext.AR_OmzetCorrections.Where(s => !s.IsDeleted).AsQueryable();
 
             var searchAttributes = new List<string>()
             {
@@ -56,7 +56,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.O
                 BuyerCode = entity.BuyerCode,
                 Amount =  entity.Amount,
                 Kurs = entity.Kurs,
-                TotalAmount = entity.TotalAmount
+                TotalAmount = entity.TotalAmount,
+                Month = entity.Month,
 
             }).ToList();
 

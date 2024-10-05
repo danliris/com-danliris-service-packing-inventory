@@ -8,117 +8,117 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.A
     {
 
         // Informasi Utama
-        public string Bulan { get; set; }
+        public int Bulan { get; set; }
         public string NoInvoice { get; set; }
         public string KodeBuyer { get; set; }
-        public DateTime? TglTrucking { get; set; }
-        public DateTime? TglPEB { get; set; }
+        public DateTime TglTrucking { get; set; }
+        public DateTime TglPEB { get; set; }
 
         // Saldo Awal
-        public decimal SaldoAwalUS { get; set; }
-        public decimal SaldoAwalRate { get; set; }
-        public decimal SaldoAwalIDR { get; set; }
+        public double SaldoAwalUS { get; set; }
+        public double SaldoAwalRate { get; set; }
+        public double SaldoAwalIDR { get; set; }
 
         // Penjualan
-        public decimal PenjualanUS { get; set; }
-        public decimal PenjualanRate { get; set; }
-        public decimal PenjualanIDR { get; set; }
+        public double PenjualanUS { get; set; }
+        public double PenjualanRate { get; set; }
+        public double PenjualanIDR { get; set; }
 
         // JANUARI
-        public decimal KoreksiOmzetJanuariUSD { get; set; }
-        public decimal KoreksiOmzetJanuariIDR { get; set; }
-        public decimal PelunasanJanuariUSD { get; set; }
-        public decimal PelunasanJanuariIDR { get; set; }
-        public decimal SaldoAkhirJanuariUSD { get; set; }
-        public decimal SaldoAkhirJanuariIDR { get; set; }
+        public double KoreksiOmzetJanuariUSD { get; set; }
+        public double KoreksiOmzetJanuariIDR { get; set; }
+        public double PelunasanJanuariUSD { get; set; }
+        public double PelunasanJanuariIDR { get; set; }
+        public double SaldoAkhirJanuariUSD { get; set; }
+        public double SaldoAkhirJanuariIDR { get; set; }
 
         // FEBRUARI
-        public decimal KoreksiOmzetFebruariUSD { get; set; }
-        public decimal KoreksiOmzetFebruariIDR { get; set; }
-        public decimal PelunasanFebruariUSD { get; set; }
-        public decimal PelunasanFebruariIDR { get; set; }
-        public decimal SaldoAkhirFebruariUSD { get; set; }
-        public decimal SaldoAkhirFebruariIDR { get; set; }
+        public double KoreksiOmzetFebruariUSD { get; set; }
+        public double KoreksiOmzetFebruariIDR { get; set; }
+        public double PelunasanFebruariUSD { get; set; }
+        public double PelunasanFebruariIDR { get; set; }
+        public double SaldoAkhirFebruariUSD { get; set; }
+        public double SaldoAkhirFebruariIDR { get; set; }
 
         // MARET
-        public decimal KoreksiOmzetMaretUSD { get; set; }
-        public decimal KoreksiOmzetMaretIDR { get; set; }
-        public decimal PelunasanMaretUSD { get; set; }
-        public decimal PelunasanMaretIDR { get; set; }
-        public decimal SaldoAkhirMaretUSD { get; set; }
-        public decimal SaldoAkhirMaretIDR { get; set; }
+        public double KoreksiOmzetMaretUSD { get; set; }
+        public double KoreksiOmzetMaretIDR { get; set; }
+        public double PelunasanMaretUSD { get; set; }
+        public double PelunasanMaretIDR { get; set; }
+        public double SaldoAkhirMaretUSD { get; set; }
+        public double SaldoAkhirMaretIDR { get; set; }
 
         // APRIL
-        public decimal KoreksiOmzetAprilUSD { get; set; }
-        public decimal KoreksiOmzetAprilIDR { get; set; }
-        public decimal PelunasanAprilUSD { get; set; }
-        public decimal PelunasanAprilIDR { get; set; }
-        public decimal SaldoAkhirAprilUSD { get; set; }
-        public decimal SaldoAkhirAprilIDR { get; set; }
+        public double KoreksiOmzetAprilUSD { get; set; }
+        public double KoreksiOmzetAprilIDR { get; set; }
+        public double PelunasanAprilUSD { get; set; }
+        public double PelunasanAprilIDR { get; set; }
+        public double SaldoAkhirAprilUSD { get; set; }
+        public double SaldoAkhirAprilIDR { get; set; }
 
         // MEI
-        public decimal KoreksiOmzetMeiUSD { get; set; }
-        public decimal KoreksiOmzetMeiIDR { get; set; }
-        public decimal PelunasanMeiUSD { get; set; }
-        public decimal PelunasanMeiIDR { get; set; }
-        public decimal SaldoAkhirMeiUSD { get; set; }
-        public decimal SaldoAkhirMeiIDR { get; set; }
+        public double KoreksiOmzetMeiUSD { get; set; }
+        public double KoreksiOmzetMeiIDR { get; set; }
+        public double PelunasanMeiUSD { get; set; }
+        public double PelunasanMeiIDR { get; set; }
+        public double SaldoAkhirMeiUSD { get; set; }
+        public double SaldoAkhirMeiIDR { get; set; }
 
         // JUNI
-        public decimal KoreksiOmzetJuniUSD { get; set; }
-        public decimal KoreksiOmzetJuniIDR { get; set; }
-        public decimal PelunasanJuniUSD { get; set; }
-        public decimal PelunasanJuniIDR { get; set; }
-        public decimal SaldoAkhirJuniUSD { get; set; }
-        public decimal SaldoAkhirJuniIDR { get; set; }
+        public double KoreksiOmzetJuniUSD { get; set; }
+        public double KoreksiOmzetJuniIDR { get; set; }
+        public double PelunasanJuniUSD { get; set; }
+        public double PelunasanJuniIDR { get; set; }
+        public double SaldoAkhirJuniUSD { get; set; }
+        public double SaldoAkhirJuniIDR { get; set; }
 
         // JULI
-        public decimal KoreksiOmzetJuliUSD { get; set; }
-        public decimal KoreksiOmzetJuliIDR { get; set; }
-        public decimal PelunasanJuliUSD { get; set; }
-        public decimal PelunasanJuliIDR { get; set; }
-        public decimal SaldoAkhirJuliUSD { get; set; }
-        public decimal SaldoAkhirJuliIDR { get; set; }
+        public double KoreksiOmzetJuliUSD { get; set; }
+        public double KoreksiOmzetJuliIDR { get; set; }
+        public double PelunasanJuliUSD { get; set; }
+        public double PelunasanJuliIDR { get; set; }
+        public double SaldoAkhirJuliUSD { get; set; }
+        public double SaldoAkhirJuliIDR { get; set; }
 
         // AGUSTUS
-        public decimal KoreksiOmzetAgustusUSD { get; set; }
-        public decimal KoreksiOmzetAgustusIDR { get; set; }
-        public decimal PelunasanAgustusUSD { get; set; }
-        public decimal PelunasanAgustusIDR { get; set; }
-        public decimal SaldoAkhirAgustusUSD { get; set; }
-        public decimal SaldoAkhirAgustusIDR { get; set; }
+        public double KoreksiOmzetAgustusUSD { get; set; }
+        public double KoreksiOmzetAgustusIDR { get; set; }
+        public double PelunasanAgustusUSD { get; set; }
+        public double PelunasanAgustusIDR { get; set; }
+        public double SaldoAkhirAgustusUSD { get; set; }
+        public double SaldoAkhirAgustusIDR { get; set; }
 
         // SEPTEMBER
-        public decimal KoreksiOmzetSeptemberUSD { get; set; }
-        public decimal KoreksiOmzetSeptemberIDR { get; set; }
-        public decimal PelunasanSeptemberUSD { get; set; }
-        public decimal PelunasanSeptemberIDR { get; set; }
-        public decimal SaldoAkhirSeptemberUSD { get; set; }
-        public decimal SaldoAkhirSeptemberIDR { get; set; }
+        public double KoreksiOmzetSeptemberUSD { get; set; }
+        public double KoreksiOmzetSeptemberIDR { get; set; }
+        public double PelunasanSeptemberUSD { get; set; }
+        public double PelunasanSeptemberIDR { get; set; }
+        public double SaldoAkhirSeptemberUSD { get; set; }
+        public double SaldoAkhirSeptemberIDR { get; set; }
 
         // OKTOBER
-        public decimal KoreksiOmzetOktoberUSD { get; set; }
-        public decimal KoreksiOmzetOktoberIDR { get; set; }
-        public decimal PelunasanOktoberUSD { get; set; }
-        public decimal PelunasanOktoberIDR { get; set; }
-        public decimal SaldoAkhirOktoberUSD { get; set; }
-        public decimal SaldoAkhirOktoberIDR { get; set; }
+        public double KoreksiOmzetOktoberUSD { get; set; }
+        public double KoreksiOmzetOktoberIDR { get; set; }
+        public double PelunasanOktoberUSD { get; set; }
+        public double PelunasanOktoberIDR { get; set; }
+        public double SaldoAkhirOktoberUSD { get; set; }
+        public double SaldoAkhirOktoberIDR { get; set; }
 
         // NOVEMBER
-        public decimal KoreksiOmzetNovemberUSD { get; set; }
-        public decimal KoreksiOmzetNovemberIDR { get; set; }
-        public decimal PelunasanNovemberUSD { get; set; }
-        public decimal PelunasanNovemberIDR { get; set; }
-        public decimal SaldoAkhirNovemberUSD { get; set; }
-        public decimal SaldoAkhirNovemberIDR { get; set; }
+        public double KoreksiOmzetNovemberUSD { get; set; }
+        public double KoreksiOmzetNovemberIDR { get; set; }
+        public double PelunasanNovemberUSD { get; set; }
+        public double PelunasanNovemberIDR { get; set; }
+        public double SaldoAkhirNovemberUSD { get; set; }
+        public double SaldoAkhirNovemberIDR { get; set; }
 
         // DESEMBER
-        public decimal KoreksiOmzetDesemberUSD { get; set; }
-        public decimal KoreksiOmzetDesemberIDR { get; set; }
-        public decimal PelunasanDesemberUSD { get; set; }
-        public decimal PelunasanDesemberIDR { get; set; }
-        public decimal SaldoAkhirDesemberUSD { get; set; }
-        public decimal SaldoAkhirDesemberIDR { get; set; }
+        public double KoreksiOmzetDesemberUSD { get; set; }
+        public double KoreksiOmzetDesemberIDR { get; set; }
+        public double PelunasanDesemberUSD { get; set; }
+        public double PelunasanDesemberIDR { get; set; }
+        public double SaldoAkhirDesemberUSD { get; set; }
+        public double SaldoAkhirDesemberIDR { get; set; }
     }
 
 }

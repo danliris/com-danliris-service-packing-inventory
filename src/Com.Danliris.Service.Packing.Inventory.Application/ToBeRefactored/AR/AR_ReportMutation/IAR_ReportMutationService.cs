@@ -8,6 +8,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.A
 {
     public interface IAR_ReportMutationService
     {
-        Task<MemoryStream> GetExcel();
+
+        Task<MemoryStream> GetExcel(DateTime dateFrom, DateTime dateTo);
     }
 }

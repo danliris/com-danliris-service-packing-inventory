@@ -2,6 +2,7 @@
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.AR;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.RecapOmzet;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.IdentityProvider;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentShipping.GarmentPackingList;
@@ -334,7 +335,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         AmountIDR = s.Sum(x => x.AmountIDR),
                     }).ToList();
 
-                    var dataToInser = dataGroup.Select(s => new AR_BalanceModel
+                    var dataToInser = dataGroup.Select(s => new RecapOmzetModel
                     {
                         BuyerAgentCode = s.BuyerAgentCode,
                         Destination = s.Destination,
@@ -354,7 +355,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     foreach(var item in dataToInser)
                     {
                         item.FlagForCreate(_identityProvider.Username, "Repository");
-                        dbContext.AR_Balances.Add(item);
+                        dbContext.AR_RecapOmzet.Add(item);
                     }
 
                     await dbContext.SaveChangesAsync();

@@ -275,7 +275,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.DownPayment
                             Amount = converterChecker.GeneratePureDouble(worksheet.Cells[row, 6]).Value,
                             Kurs = converterChecker.GeneratePureDouble(worksheet.Cells[row, 7]).Value,
                             TotalAmount = converterChecker.GeneratePureDouble(worksheet.Cells[row, 8]).Value,
-                            Month = converterChecker.GenerateValueInt(worksheet.Cells[row, 3])
+                            Month = converterChecker.GenerateValueInt(worksheet.Cells[row, 1])
                         };
 
                         result.Add(data);
