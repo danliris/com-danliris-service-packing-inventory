@@ -261,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Column(10).Width = 20;
 
                     #region KopTable
-                    sheet.Cells[$"A1:D1"].Value = "PT AMBASSADOR GARMINDO";
+                    sheet.Cells[$"A1:D1"].Value = "PT DAN LIRIS";
                     sheet.Cells[$"A1:D1"].Merge = true;
                     sheet.Cells[$"A1:D1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A1:D1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
@@ -325,7 +325,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Column(12).Width = 20;
 
                     #region KopTable
-                    sheet.Cells[$"A1:D1"].Value = "PT AMBASSADOR GARMINDO";
+                    sheet.Cells[$"A1:D1"].Value = "PT DAN LIRIS";
                     sheet.Cells[$"A1:D1"].Merge = true;
                     sheet.Cells[$"A1:D1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A1:D1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
