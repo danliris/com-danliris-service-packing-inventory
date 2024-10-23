@@ -376,10 +376,20 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 			pl.RemarkImageFile = await _azureImageService.DownloadImage(IMG_DIR, pl.RemarkImagePath);
 
 			List<CostCalculationGarmentViewModel> ccg = await GetDataCCGByRO(pl.Items.Select(x => x.RONo).Distinct().ToList());
+			var stream = new System.IO.MemoryStream();
+			if (viewModel.BuyerAgent.Name.Trim() == "LF CENTENNIAL PTE LTD")
+			{
+                stream = ExcelTemplate.GenerateExcelTemplateLFCENTENNIAL(viewModel, buyer, bank, pl, 7, ccg);
 
-			var stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7,ccg);
+                return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xlsx");
+			}
+			else
+			{
+				stream = ExcelTemplate.GenerateExcelTemplate(viewModel, buyer, bank, pl, 7, ccg);
+			}
 
-			return new MemoryStreamResult(stream, "Invoice " + datainv.InvoiceNo + ".xls");
+
+            return new MemoryStreamResult(stream,"Invoice " + datainv.InvoiceNo + ".xlsx");
 		}
 
 		public virtual async Task<MemoryStreamResult> ReadInvoiceCMTWithHeaderExcelById(int id)
