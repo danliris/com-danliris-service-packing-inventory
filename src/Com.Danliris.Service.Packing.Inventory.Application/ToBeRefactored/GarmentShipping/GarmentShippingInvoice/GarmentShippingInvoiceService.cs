@@ -377,7 +377,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 			List<CostCalculationGarmentViewModel> ccg = await GetDataCCGByRO(pl.Items.Select(x => x.RONo).Distinct().ToList());
 			var stream = new System.IO.MemoryStream();
-			if (viewModel.BuyerAgent.Name.Trim() == "LF CENTENNIAL PTE LTD")
+			if (viewModel.BuyerAgent.Name.Trim() == "LF CENTENNIAL PTE LTD" && viewModel.DeliverTo.Trim().Contains("LANDS END"))
 			{
                 stream = ExcelTemplate.GenerateExcelTemplateLFCENTENNIAL(viewModel, buyer, bank, pl, 7, ccg);
 
