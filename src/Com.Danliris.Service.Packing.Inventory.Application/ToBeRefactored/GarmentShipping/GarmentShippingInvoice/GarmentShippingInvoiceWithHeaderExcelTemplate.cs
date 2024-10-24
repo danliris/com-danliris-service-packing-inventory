@@ -1404,7 +1404,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 }
             }
 
-            foreach (var item in viewModel.Items.OrderBy(o => o.ComodityDesc))
+            //foreach (var item in viewModel.Items.OrderBy(o => o.ComodityDesc))
+            foreach (var item in viewModel.Items.OrderBy(o => o.PackingListItemId))
             {
                 sheet.Cells[$"A{valueIndex}"].Value = item.ComodityDesc.TrimEnd();
                 sheet.Cells[$"A{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
@@ -1420,13 +1421,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
                 if (item.Uom.Unit.Substring(0, 2) == "MT" || item.Uom.Unit.Substring(0, 2) == "YA" || item.Uom.Unit.Substring(0, 2) == "YD")
                 {
-                    sheet.Cells[$"E{valueIndex}"].Value = string.Format("{0:n2}", item.Quantity);
+                    //sheet.Cells[$"E{valueIndex}"].Value = string.Format("{0:n2}", item.Quantity);
+                    sheet.Cells[$"E{valueIndex}"].Value = Math.Round(item.Quantity, 2);
                     sheet.Cells[$"E{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"E{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 }
                 else
                 {
-                    sheet.Cells[$"E{valueIndex}"].Value = string.Format("{0:n0}", item.Quantity);
+                    //sheet.Cells[$"E{valueIndex}"].Value = string.Format("{0:n0}", item.Quantity);
+                    sheet.Cells[$"E{valueIndex}"].Value = Math.Round(item.Quantity, 0);
                     sheet.Cells[$"E{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                     sheet.Cells[$"E{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 }
@@ -1439,13 +1442,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
 
                 var matchPL = pl.Items.FirstOrDefault(x => x.RONo == item.RONo && x.OrderNo == item.ComodityDesc);
-                sheet.Cells[$"G{valueIndex}"].Value = string.Format("{0:n4}", matchPL.PriceFOB);
+                //sheet.Cells[$"G{valueIndex}"].Value = string.Format("{0:n4}", matchPL.PriceFOB);
+                sheet.Cells[$"G{valueIndex}"].Value = Math.Round(matchPL.PriceFOB, 4);
                 sheet.Cells[$"G{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                 sheet.Cells[$"G{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 sheet.Cells[$"G{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
 
                 var amount = matchPL.PriceFOB * item.Quantity;
-                sheet.Cells[$"H{valueIndex}"].Value = string.Format("{0:n2}", amount);
+                //sheet.Cells[$"H{valueIndex}"].Value = string.Format("{0:n2}", amount);
+                sheet.Cells[$"H{valueIndex}"].Value = Math.Round(item.Amount, 2);
                 sheet.Cells[$"H{valueIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                 sheet.Cells[$"H{valueIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                 sheet.Cells[$"H{valueIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
@@ -1522,7 +1527,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             sheet.Cells[$"F{grandTotalIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
             sheet.Cells[$"F{grandTotalIndex}"].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
 
-            sheet.Cells[$"H{grandTotalIndex}"].Value = string.Format("{0:n2}", totalAmnts);
+            //sheet.Cells[$"H{grandTotalIndex}"].Value = string.Format("{0:n2}", totalAmnts);
+            sheet.Cells[$"H{grandTotalIndex}"].Value = Math.Round(totalAmnts, 2);
             sheet.Cells[$"H{grandTotalIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
             sheet.Cells[$"H{grandTotalIndex}"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
             sheet.Cells[$"H{grandTotalIndex}"].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
@@ -1544,7 +1550,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             {
                 sheet.Row(spellingAdjustIndex).Height = 18;
                 sheet.Cells[$"A{spellingAdjustIndex}"].Value = "TOTAL AMOUNT FOB";
-                sheet.Cells[$"B{spellingAdjustIndex}"].Value = "  : USD " + string.Format("{0:n2}", totalAmnts);
+                //sheet.Cells[$"B{spellingAdjustIndex}"].Value = "  : USD "+ string.Format("{0:n2}", totalAmnts);
+                sheet.Cells[$"D{spellingAdjustIndex}"].Value = "  : USD " + Math.Round(totalAmnts, 2);
                 sheet.Cells[$"D{spellingAdjustIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
 
                 decimal totalPaid = totalAmnts;
@@ -1556,7 +1563,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     totalPaid += adj.AdjustmentValue;
                     sheet.Cells[$"A{AdjustIndex}"].Value = adj.AdjustmentDescription;
                     sheet.Cells[$"A{AdjustIndex}:B{AdjustIndex}"].Merge = true;
-                    sheet.Cells[$"C{AdjustIndex}"].Value = "  : USD " + string.Format("{0:n2}", adj.AdjustmentValue);
+                    //sheet.Cells[$"C{AdjustIndex}"].Value = "  : USD " + string.Format("{0:n2}", adj.AdjustmentValue);
+                    sheet.Cells[$"C{AdjustIndex}"].Value = "  : USD " + Math.Round(adj.AdjustmentValue, 2);
                     sheet.Cells[$"D{AdjustIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
 
                     AdjustIndex++;
@@ -1568,7 +1576,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 sheet.Row(TtltIndex).Height = 18;
                 sheet.Cells[$"A{TtltIndex}"].Value = "TOTAL AMOUNT TO BE PAID";
                 sheet.Cells[$"A{TtltIndex}:B{TtltIndex}"].Merge = true;
-                sheet.Cells[$"C{TtltIndex}"].Value = "  : USD " + string.Format("{0:n2}", totalPaid);
+                //sheet.Cells[$"C{TtltIndex}"].Value = "  : USD " + string.Format("{0:n2}", totalPaid);
+                sheet.Cells[$"C{TtltIndex}"].Value = "  : USD " + Math.Round(totalPaid, 2);
                 sheet.Cells[$"D{TtltIndex}"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
 
                 if (totalPaid < 0)
