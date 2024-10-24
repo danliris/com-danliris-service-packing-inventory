@@ -262,7 +262,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             double totalCMTPrice = 0;
             decimal totalPrice = 0;
             Dictionary<string, double> total = new Dictionary<string, double>();
-            foreach (var item in viewModel.Items)
+
+            //foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(o => o.PackingListItemId))
             {
                 totalAmount += item.Amount;
                 totalQuantity += item.Quantity;
@@ -364,7 +366,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             //bodyTableCellFooter.Phrase = new Phrase($"{result1}", body_font);
             //bodyTableCellFooter.HorizontalAlignment = Element.ALIGN_RIGHT;
             //bodyTableCellFooter.VerticalAlignment = Element.ALIGN_CENTER;
-            //bodyTableCellFooter.Colspan = 1;
+            //bodyTableCellFooter.Colspan = 1;CN00024
             //bodyTableCellFooter.Border = Rectangle.LEFT_BORDER | Rectangle.TOP_BORDER | Rectangle.BOTTOM_BORDER;
             //bodyTable.AddCell(bodyTableCellFooter);
             if (result2.Substring(0, 2) == "MT" || result2.Substring(0, 2) == "YA" || result2.Substring(0, 2) == "YD")

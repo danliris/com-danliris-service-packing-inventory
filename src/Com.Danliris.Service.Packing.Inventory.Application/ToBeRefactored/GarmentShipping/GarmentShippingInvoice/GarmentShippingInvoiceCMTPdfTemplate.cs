@@ -348,7 +348,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             double totalCMTPrice = 0;
             decimal totalPrice = 0;
             Dictionary<string, double> total = new Dictionary<string, double>();
-            foreach (var item in viewModel.Items)
+
+            //foreach (var item in viewModel.Items)
+            foreach (var item in viewModel.Items.OrderBy(o => o.PackingListItemId))
             {
                 totalAmount += item.Amount;
                 totalQuantity += item.Quantity;
