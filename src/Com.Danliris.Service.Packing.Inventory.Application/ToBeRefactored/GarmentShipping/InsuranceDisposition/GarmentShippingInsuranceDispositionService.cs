@@ -124,10 +124,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var month = DateTime.Now.ToString("MM");
 
             var prefix = $"DL/Polis Asuransi/{month}/{year}/";
+            //var prefixToSearch = $"DL/Polis Asuransi/{month}/{year}/";
 
-            var lastInvoiceNo = _repository.ReadAll().Where(w => w.DispositionNo.StartsWith(prefix))
+            //old numbering
+            //var lastInvoiceNo = _repository.ReadAll().Where(w => w.DispositionNo.StartsWith(prefix))
+            //    .OrderByDescending(o => o.DispositionNo)
+            //    .Select(s => int.Parse(s.DispositionNo.Replace(prefix, "")))
+            //    .FirstOrDefault();
+
+            //new numbering
+            var lastInvoiceNo = _repository.ReadAll().Where(w => w.DispositionNo.Substring(21, 4) == year)
                 .OrderByDescending(o => o.DispositionNo)
-                .Select(s => int.Parse(s.DispositionNo.Replace(prefix, "")))
+                .Select(s => int.Parse(s.DispositionNo.Substring(s.DispositionNo.Length - 3)))
                 .FirstOrDefault();
             var invoiceNo = $"{prefix}{(lastInvoiceNo + 1).ToString("D3")}";
 

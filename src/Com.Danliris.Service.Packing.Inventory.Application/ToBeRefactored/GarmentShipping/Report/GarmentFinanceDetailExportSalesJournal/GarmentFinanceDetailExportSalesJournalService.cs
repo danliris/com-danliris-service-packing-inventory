@@ -75,8 +75,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             var queryInv = repository.ReadAll();
          
             var queryPL = plrepository.ReadAll()
-                  .Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date
-                     && (w.InvoiceType == "DL" || w.InvoiceType == "DS" || w.InvoiceType == "DLR" || w.InvoiceType == "SMR"));
+                  .Where(w => w.TruckingDate.AddHours(offset).Date >= DateFrom.Date && w.TruckingDate.AddHours(offset).Date <= DateTo.Date);
+                     //&& (w.InvoiceType == "DL" || w.InvoiceType == "DS" || w.InvoiceType == "DLR" || w.InvoiceType == "SMR"));
 
             var joinQuery = from a in queryInv
                             join b in queryPL on a.PackingListId equals b.Id
@@ -261,7 +261,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Column(10).Width = 20;
 
                     #region KopTable
-                    sheet.Cells[$"A1:D1"].Value = "PT AMBASSADOR GARMINDO";
+                    sheet.Cells[$"A1:D1"].Value = "PT DAN LIRIS";
                     sheet.Cells[$"A1:D1"].Merge = true;
                     sheet.Cells[$"A1:D1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A1:D1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
@@ -325,7 +325,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                     sheet.Column(12).Width = 20;
 
                     #region KopTable
-                    sheet.Cells[$"A1:D1"].Value = "PT AMBASSADOR GARMINDO";
+                    sheet.Cells[$"A1:D1"].Value = "PT DAN LIRIS";
                     sheet.Cells[$"A1:D1"].Merge = true;
                     sheet.Cells[$"A1:D1"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
                     sheet.Cells[$"A1:D1"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;

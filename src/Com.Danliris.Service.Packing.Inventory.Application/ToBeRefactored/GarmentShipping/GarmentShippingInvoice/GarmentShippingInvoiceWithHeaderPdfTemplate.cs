@@ -195,7 +195,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             Dictionary<string, double> total = new Dictionary<string, double>();
 
-            foreach (var item in viewModel.Items.OrderBy(o => o.ComodityDesc))
+            //foreach (var item in viewModel.Items.OrderBy(o => o.ComodityDesc))
+            foreach (var item in viewModel.Items.OrderBy(o => o.PackingListItemId))
             {
                 totalAmount += item.Amount;
                 totalQuantity += item.Quantity;
