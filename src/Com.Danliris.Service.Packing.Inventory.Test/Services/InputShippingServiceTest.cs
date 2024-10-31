@@ -556,7 +556,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
             {
                 return new DyeingPrintingAreaOutputModel(ViewModelFDO.Date, ViewModelFDO.Area, ViewModelFDO.Shift, ViewModelFDO.BonNo, ViewModelFDO.HasNextAreaDocument, ViewModelFDO.DestinationArea,
                    ViewModelFDO.Group, ViewModelFDO.DeliveryOrder.Id, ViewModelFDO.DeliveryOrder.No, ViewModelFDO.HasSalesInvoice, ViewModelFDO.Type, ViewModelFDO.ShippingCode, ViewModelFDO.PackingListNo, ViewModelFDO.PackingType, ViewModelFDO.PackingListRemark, ViewModelFDO.PackingListAuthorized,
-                   ViewModelFDO.PackingListLCNumber, ViewModelFDO.PackingListIssuedBy, ViewModelFDO.PackingListDescription, ViewModelFDO.UpdateBySales,
+                   ViewModelFDO.PackingListLCNumber, ViewModelFDO.PackingListIssuedBy, ViewModelFDO.PackingListDescription, ViewModelFDO.UpdateBySales, null,
                    ViewModelFDO.ShippingProductionOrders.Select(s =>
                     new DyeingPrintingAreaOutputProductionOrderModel(ViewModelFDO.Area, ViewModelFDO.DestinationArea, ViewModelFDO.HasNextAreaDocument, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.ProductionOrder.Id, s.ProductionOrder.No, s.ProductionOrder.Type, s.ProductionOrder.OrderQuantity, s.Buyer,
                         s.Construction, s.Unit, s.Color, s.Motif, s.Grade, s.UomUnit, s.DeliveryNote, s.Qty, s.Id, s.Packing, s.PackingType, s.QtyPacking, s.BuyerId, s.HasSalesInvoice, s.ShippingGrade, s.ShippingRemark, s.Weight, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,

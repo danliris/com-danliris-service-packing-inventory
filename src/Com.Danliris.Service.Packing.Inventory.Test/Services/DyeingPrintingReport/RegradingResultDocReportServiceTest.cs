@@ -69,7 +69,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
             { DyeingPrintingAreaOutputId = 1 };
             var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
             var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
-                "", "", "", "", "", false, items)
+                "", "", "", "", "", false, "", items)
             { Id = 1, CreatedUtc = DateTime.Now };
 
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
@@ -98,7 +98,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
             { DyeingPrintingAreaOutputId = 1 };
             var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
             var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
-                "", "", "", "", "", false, items)
+                "", "", "", "", "", false, "", items)
             { Id = 1, CreatedUtc = DateTime.Now };
 
             var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();

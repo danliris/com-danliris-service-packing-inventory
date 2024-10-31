@@ -243,6 +243,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         "",
                                                         "",
                                                         false,
+                                                        "",
                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalQuantity,
                                                         s.AvalQuantityKg, s.AvalQuantity, s.AvalQuantity, ViewModel.Id, ViewModel.Area, "SHIPPING", "note"))
                                                                            .ToList());
@@ -272,6 +273,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services
                                                         "",
                                                         "",
                                                         false,
+                                                        "",
                                                         ViewModel.AvalItems.Select(s => new DyeingPrintingAreaOutputProductionOrderModel(s.AvalType, s.AvalCartNo, s.AvalUomUnit, s.AvalQuantity,
                                                         s.AvalQuantityKg, s.AvalQuantity, s.AvalQuantity, ViewModel.Id, ViewModel.Area, "SHIPPING", "note"))
                                                                            .ToList());
