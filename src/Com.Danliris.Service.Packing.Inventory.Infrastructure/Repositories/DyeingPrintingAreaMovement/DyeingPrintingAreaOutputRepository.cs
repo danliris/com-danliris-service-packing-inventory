@@ -144,9 +144,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
                 }
 
             }
-
-            //model.FlagForDelete(_identityProvider.Username, UserAgent);
-            _dbSet.Update(model);
+            
+            model.FlagForDelete(_identityProvider.Username, UserAgent);
+            //_dbSet.Update(model);
 
             result += await _dbContext.SaveChangesAsync();
             return result;
@@ -267,7 +267,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
         {
             return _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).IgnoreQueryFilters().AsNoTracking();
         }
-
+        
         public Task<DyeingPrintingAreaOutputModel> ReadByIdAsync(int id)
         {
             return _dbSet.Include(s => s.DyeingPrintingAreaOutputProductionOrders).FirstOrDefaultAsync(s => s.Id == id);
@@ -614,6 +614,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             dbModel.SetPackingListRemark(model.PackingListRemark, _identityProvider.Username, UserAgent);
             dbModel.SetPackingLCNumber(model.PackingListLCNumber, _identityProvider.Username, UserAgent);
+            dbModel.SetUomUnit(model.UomUnit, _identityProvider.Username, UserAgent);
             if (model.DestinationArea == DyeingPrintingArea.BUYER)
             {
                 dbModel.SetPackingIssuedBy(model.PackingListIssuedBy, _identityProvider.Username, UserAgent);
