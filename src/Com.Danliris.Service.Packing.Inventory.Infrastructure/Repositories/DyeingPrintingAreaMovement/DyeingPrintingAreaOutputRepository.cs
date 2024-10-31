@@ -614,6 +614,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Dye
             dbModel.SetGroup(model.Group, _identityProvider.Username, UserAgent);
             dbModel.SetPackingListRemark(model.PackingListRemark, _identityProvider.Username, UserAgent);
             dbModel.SetPackingLCNumber(model.PackingListLCNumber, _identityProvider.Username, UserAgent);
+            dbModel.SetUomUnit(model.UomUnit, _identityProvider.Username, UserAgent);
             if (model.DestinationArea == DyeingPrintingArea.BUYER)
             {
                 dbModel.SetPackingIssuedBy(model.PackingListIssuedBy, _identityProvider.Username, UserAgent);

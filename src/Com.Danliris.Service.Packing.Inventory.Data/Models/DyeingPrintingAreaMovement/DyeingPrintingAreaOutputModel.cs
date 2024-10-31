@@ -38,6 +38,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string PackingListIssuedBy { get; private set; }
         public string PackingListDescription { get; private set; }
         public bool UpdateBySales { get; private set; }
+        public string UomUnit { get; private set; }
         
 
 
@@ -158,7 +159,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="updateBySales"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
             string destinationArea, string group, long deliveryOrderId, string deliveryOrderNo, bool hasSalesInvoice, string type, string shippingCode, string packingListNo, string packingType, string packingListRemark,
-            string packingListAuthorized, string packingListLCNumber, string packingListIssuedBy, string packingListDescription, bool updateBySales,
+            string packingListAuthorized, string packingListLCNumber, string packingListIssuedBy, string packingListDescription, bool updateBySales, string uomUnit,
              ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
@@ -184,6 +185,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             PackingListIssuedBy = packingListIssuedBy;
             PackingListDescription = packingListDescription;
             UpdateBySales = updateBySales;
+            UomUnit = uomUnit;  
         }
 
         ///// <summary>
@@ -376,6 +378,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             if (newUpdateBySales != UpdateBySales)
             {
                 UpdateBySales = newUpdateBySales;
+                this.FlagForUpdate(user, agent);
+            }
+        }
+
+        public void SetUomUnit(string newUomUnit, string user, string agent)
+        {
+            if (newUomUnit != UomUnit)
+            {
+                UomUnit = newUomUnit;
                 this.FlagForUpdate(user, agent);
             }
         }
