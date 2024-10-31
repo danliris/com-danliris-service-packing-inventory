@@ -37,6 +37,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string PackingListIssuedBy { get;  set; }
         public string PackingListDescription { get;  set; }
         public bool UpdateBySales { get;  set; }
+        public string UomUnit { get; set; }
         public ICollection<OutputShippingProductionOrderViewModel> ShippingProductionOrders { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
