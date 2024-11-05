@@ -235,8 +235,9 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             //var connectionString = Configuration.GetConnectionString(DEFAULT_CONNECTION) ?? Configuration[DEFAULT_CONNECTION];
             var keyVaultEnpoint = new Uri(Configuration["VaultKey"]);
             var secretClient = new SecretClient(keyVaultEnpoint, new DefaultAzureCredential());
-
-            KeyVaultSecret kvs = secretClient.GetSecret(Configuration["VaultKeySecret"]);
+            
+            KeyVaultSecret kvsDB = secretClient.GetSecret(Configuration["VaultKeyDbSecret"]);
+            KeyVaultSecret kvsServer = secretClient.GetSecret(Configuration["VaultKeyServerSecret"]);
 
             services
                 .AddEntityFrameworkSqlServer()
@@ -244,7 +245,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
                 //{
                 //    options.UseSqlServer(connectionString);
                 //});
-                .AddDbContext<PackingInventoryDbContext>(option => option.UseSqlServer(kvs.Value));
+                .AddDbContext<PackingInventoryDbContext>(option => option.UseSqlServer(string.Concat(kvsDB.Value, kvsServer.Value)));
             RegisterApplicationSetting();
 
             // Register Middleware
