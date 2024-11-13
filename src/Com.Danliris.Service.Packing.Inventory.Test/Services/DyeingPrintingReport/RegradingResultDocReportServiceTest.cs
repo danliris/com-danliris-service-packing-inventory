@@ -33,17 +33,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Test.Services.DyeingPrintingRep
             return new RegradingResultDocReportService(serviceProvider);
         }
 
-        // Command 30-01-2024
-        //[Fact]
-        //public void GetReportData_Success_REG()
-        //{
-        //    var item = new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL", "PACKING", false, 1, "no", "", 1, "", "REG", "", "", "", "", "", "", "", "",
-        //        "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "")
-        //    { DyeingPrintingAreaOutputId = 1 };
-        //    var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
-        //    var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
-        //        "", "", "", "", "", false, items)
-        //    { Id = 1 };
+        [Fact]
+        public void GetReportData_Success_REG()
+        {
+            var item = new DyeingPrintingAreaOutputProductionOrderModel("INSPECTION MATERIAL", "PACKING", false, 1, "no", "", 1, "", "REG", "", "", "", "", "", "", "", "",
+                "", 1, 1, 1, "", 1, "", 1, "", "", "", "", "", 1, "", 1, "", 1, 1, "", false, "", DateTimeOffset.Now, DateTimeOffset.Now, "", 1, "", "", DateTime.Now)
+            { DyeingPrintingAreaOutputId = 1 };
+            var items = new List<DyeingPrintingAreaOutputProductionOrderModel>() { item };
+            var model = new DyeingPrintingAreaOutputModel(DateTimeOffset.Now, "INSPECTION MATERIAL", "", "", false, "", "", 1, "", false, "", "", "", "",
+                "", "", "", "", "", false, "", items)
+            { Id = 1 };
 
         //    var repoMock = new Mock<IDyeingPrintingAreaOutputRepository>();
 
