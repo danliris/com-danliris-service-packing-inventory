@@ -297,7 +297,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 cellHeader.Phrase = new Phrase(detail.Key, TEXT_FONT);
                 table.AddCell(cellHeader);
 
-                cellRight.Phrase = new Phrase(detail.Sum(s => s.Qty).ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                cellRight.Phrase = new Phrase(detail.Sum(s => s.Qty).ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
                 table.AddCell(cellRight);
                 lengthTotal += detail.Sum(s => s.Qty);
 
@@ -309,7 +309,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             cellHeader.Phrase = new Phrase("", TEXT_FONT);
             table.AddCell(cellHeader);
 
-            cellRight.Phrase = new Phrase(lengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            cellRight.Phrase = new Phrase(lengthTotal.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
 
             //cellContainer.AddElement(table);
@@ -429,18 +429,18 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                 table.AddCell(cellHeader);
 
                 var convyardLength = 1.09361 * detail.Qty;
-                var yardLength = Math.Round(convyardLength, 0);
-                cellRight.Phrase = new Phrase(yardLength.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                var yardLength = Math.Round(convyardLength, 4);
+                cellRight.Phrase = new Phrase(yardLength.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
                 table.AddCell(cellRight);
                 yardLengthTotal += yardLength;
 
-                cellRight.Phrase = new Phrase(detail.Qty.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                cellRight.Phrase = new Phrase(detail.Qty.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
                 table.AddCell(cellRight);
                 lengthTotal += detail.Qty;
 
                 // KG
                 //cellRight.Phrase = new Phrase((packingReceiptItem.Quantity * packingReceiptItem.Weight).ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
-                cellRight.Phrase = new Phrase(detail.Weight.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+                cellRight.Phrase = new Phrase(detail.Weight.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
                 table.AddCell(cellRight);
                 weightTotal += detail.Weight;
 
@@ -490,15 +490,15 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             table.AddCell(cellRight);
 
             var convyardLengthTotal = 1.09361 * (double)lengthTotal;
-            var yardLengthTotal1 = Math.Round(convyardLengthTotal, 0);
+            var yardLengthTotal1 = Math.Round(convyardLengthTotal, 4);
 
-            cellRight.Phrase = new Phrase(yardLengthTotal == 0 ? "" : yardLengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            cellRight.Phrase = new Phrase(yardLengthTotal == 0 ? "" : yardLengthTotal.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
 
-            cellRight.Phrase = new Phrase(lengthTotal == 0 ? "" : lengthTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            cellRight.Phrase = new Phrase(lengthTotal == 0 ? "" : lengthTotal.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
 
-            cellRight.Phrase = new Phrase(weightTotal == 0 ? "" : weightTotal.ToString("N2", CultureInfo.InvariantCulture), TEXT_FONT);
+            cellRight.Phrase = new Phrase(weightTotal == 0 ? "" : weightTotal.ToString("N4", CultureInfo.InvariantCulture), TEXT_FONT);
             table.AddCell(cellRight);
 
             container.AddCell(table);
