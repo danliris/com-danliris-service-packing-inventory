@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesContract;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     public interface IGarmentMDLocalSalesContractService
     {
         Task<int> Create(GarmentMDLocalSalesContractViewModel viewModel);
+        ListResult<GarmentMDLocalSalesContractViewModel> Read(int page, int size, string filter, string order, string keyword);
     }
 }

@@ -1,10 +1,13 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentShipping.LocalSalesContract;
+using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentMD;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.LogHistory;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Utilities;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +46,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return invoiceNo;
         }
 
-        private GarmentMDLocalSalesContractViewModel MapToViewModel(GarmentMDLocalSalesContractModel model)
+        public GarmentMDLocalSalesContractViewModel MapToViewModel(GarmentMDLocalSalesContractModel model)
         {
             GarmentMDLocalSalesContractViewModel viewModel = new GarmentMDLocalSalesContractViewModel
             {
@@ -106,7 +109,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return viewModel;
         }
 
-        private GarmentMDLocalSalesContractModel MapToModel(GarmentMDLocalSalesContractViewModel vm)
+        public GarmentMDLocalSalesContractModel MapToModel(GarmentMDLocalSalesContractViewModel vm)
         {
             vm.uom = vm.uom ?? new UnitOfMeasurement();
             vm.transactionType = vm.transactionType ?? new TransactionType();
@@ -119,6 +122,30 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
         public Task<int> Create(GarmentMDLocalSalesContractViewModel viewModel)
         {
             throw new NotImplementedException();
+        }
+
+        public ListResult<GarmentMDLocalSalesContractViewModel> Read(int page, int size, string filter, string order, string keyword)
+        {
+            var query = _repository.ReadAll();
+            List<string> SearchAttributes = new List<string>()
+            {
+                "SalesContractNo", "BuyerCode", "BuyerName", "SellerName", "TransactionTypeCode", "TransactionTypeName"
+            };
+            query = QueryHelper<GarmentMDLocalSalesContractModel>.Search(query, SearchAttributes, keyword);
+
+            Dictionary<string, object> FilterDictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(filter);
+            query = QueryHelper<GarmentMDLocalSalesContractModel>.Filter(query, FilterDictionary);
+
+            Dictionary<string, string> OrderDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(order);
+            query = QueryHelper<GarmentMDLocalSalesContractModel>.Order(query, OrderDictionary);
+
+            var data = query
+                .Skip((page - 1) * size)
+                .Take(size)
+                .Select(model => MapToViewModel(model))
+                .ToList();
+
+            return new ListResult<GarmentMDLocalSalesContractViewModel>(data, page, size, query.Count());
         }
     }
 }
