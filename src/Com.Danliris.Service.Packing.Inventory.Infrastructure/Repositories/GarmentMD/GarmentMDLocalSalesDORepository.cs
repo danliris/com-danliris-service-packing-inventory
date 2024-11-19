@@ -76,6 +76,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetNettWeight(model.NettWeight, _identityProvider.Username, UserAgent);
             modelToUpdate.SetDescription(model.Description, _identityProvider.Username, UserAgent);
 
+            modelToUpdate.SetPackQuantity(model.PackQuantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackUomId(model.PackUomId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPackUomUnit(model.PackUomUnit, _identityProvider.Username, UserAgent);
+
             modelToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
