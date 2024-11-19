@@ -31,6 +31,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             var model = _dbSet
                 .FirstOrDefault(s => s.Id == id);
 
+            model.FlagForDelete(_identityProvider.Username, UserAgent);
+
             return _dbContext.SaveChangesAsync();
         }
 
@@ -80,6 +82,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             modelToUpdate.SetPrice(model.Price, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUomId(model.UomId, _identityProvider.Username, UserAgent);
             modelToUpdate.SetUomUnit(model.UomUnit, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.FlagForUpdate(_identityProvider.Username, UserAgent);
 
             return _dbContext.SaveChangesAsync();
         }
