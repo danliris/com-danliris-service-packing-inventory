@@ -85,6 +85,7 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.CMT;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.DownPayment;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.OmzetCorrectionsModel;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.RecapOmzet;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalSalesContract;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -256,6 +257,9 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<CashInBankModel> AR_CashInBank { get; set; }
         public DbSet<RecapOmzetModel> AR_RecapOmzet { get; set; }
 
+        //LocalSales
+        public DbSet<GarmentMDLocalSalesContractModel> GarmentMDLocalSalesContracts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -368,7 +372,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOTSConfig());
             modelBuilder.ApplyConfiguration(new GarmentShippingLocalSalesDOTSItemConfig());
-
+            modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesContractConfig());
 
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureEntityTypeConfiguration());
             //modelBuilder.ApplyConfiguration(new GarmentShippingCostStructureItemEntityTypeConfiguration());
@@ -425,6 +429,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.Entity<IPYarnTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             modelBuilder.Entity<IPProcessTypeModel>().HasQueryFilter(entity => !entity.IsDeleted);
             #endregion
+
+            modelBuilder.Entity<GarmentMDLocalSalesContractModel>().HasQueryFilter(entity => !entity.IsDeleted);   
 
             base.OnModelCreating(modelBuilder);
         }

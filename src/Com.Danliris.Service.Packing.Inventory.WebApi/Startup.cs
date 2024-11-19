@@ -194,6 +194,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.CMT;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.DownPayment;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.OmzetCorrectionService;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.AR_ReportMutation;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentMD;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.LocalSalesContract;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -357,6 +359,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentLocalCoverLetterTSRepository, GarmentLocalCoverLetterTSRepository>();
 
             services.AddTransient<IGarmentShippingLocalSalesDOTSRepository, GarmentShippingLocalSalesDOTSRepository>();
+
+            services.AddTransient<IGarmentMDLocalSalesContractRepository, GarmentMDLocalSalesContractRepository>();
             #endregion
 
             #region Service
@@ -519,6 +523,8 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IDownPaymentService, DownPaymentService>();
             services.AddTransient<IOmzetCorrectionService, OmzetCorrectionService>();
             services.AddTransient<IAR_ReportMutationService, AR_ReportMutationService>();
+
+            services.AddTransient<IGarmentMDLocalSalesContractService, GarmentMDLocalSalesContractService>();
 
             #endregion
 

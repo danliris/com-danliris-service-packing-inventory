@@ -4,6 +4,8 @@
     <Compile Remove="EntityConfigurations\DyeingPrintingAreaMovementHistoryEntityTypeConfiguration.cs" />
     <Compile Remove="EntityConfigurations\DyeingPrintingAreaOutputAvalItemEntityTypeConfiguration.cs" />
     <Compile Remove="EntityConfigurations\OldDyeingPrintingAreaMovementEntityTypeConfiguration.cs" />
+    <Compile Remove="Migrations\20241118095506_Add-Table-For-NewLocalSalesContract.cs" />
+    <Compile Remove="Migrations\20241118095506_Add-Table-For-NewLocalSalesContract.Designer.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaMovementHistoryRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\DyeingPrintingAreaOutputAvalItemRepository.cs" />
     <Compile Remove="Repositories\DyeingPrintingAreaMovement\IDyeingPrintingAreaMovementHistoryRepository.cs" />

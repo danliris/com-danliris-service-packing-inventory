@@ -144,6 +144,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
             return invoiceNo;
         }
+
         public async Task<int> Create(GarmentShippingLocalSalesContractViewModel viewModel)
         {
             var model = MapToModel(viewModel);
