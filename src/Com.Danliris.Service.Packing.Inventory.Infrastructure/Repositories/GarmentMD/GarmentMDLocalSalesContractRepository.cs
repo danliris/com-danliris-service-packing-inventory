@@ -56,7 +56,32 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
 
         public Task<int> UpdateAsync(int id, GarmentMDLocalSalesContractModel model)
         {
-            throw new NotImplementedException();
+            var modelToUpdate = _dbSet
+            .FirstOrDefault(s => s.Id == id);
+
+            modelToUpdate.SetBuyerAddress(model.BuyerAddress, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyerCode(model.BuyerCode, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyerId(model.BuyerId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyerName(model.BuyerName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetBuyerNPWP(model.BuyerNPWP, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetIsUseVat(model.IsUseVat, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSellerAddress(model.SellerAddress, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSellerName(model.SellerName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSellerNPWP(model.SellerNPWP, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSellerPosition(model.SellerPosition, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetSubTotal(model.SubTotal, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetVatId(model.VatId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetVatRate(model.VatRate, _identityProvider.Username, UserAgent);
+
+            modelToUpdate.SetComodityName(model.ComodityName, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetQuantity(model.Quantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemainingQuantity(model.RemainingQuantity, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetRemark(model.Remark, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetPrice(model.Price, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetUomId(model.UomId, _identityProvider.Username, UserAgent);
+            modelToUpdate.SetUomUnit(model.UomUnit, _identityProvider.Username, UserAgent);
+
+            return _dbContext.SaveChangesAsync();
         }
     }
 }

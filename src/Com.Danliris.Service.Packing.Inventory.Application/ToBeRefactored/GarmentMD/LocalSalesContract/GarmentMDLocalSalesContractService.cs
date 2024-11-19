@@ -119,9 +119,16 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             return new GarmentMDLocalSalesContractModel(GenerateNo(vm), vm.salesContractDate.GetValueOrDefault(), vm.transactionType.id, vm.transactionType.code, vm.transactionType.name, vm.sellerName, vm.sellerPosition, vm.sellerAddress, vm.sellerNPWP, vm.buyer.Id, vm.buyer.Code, vm.buyer.Name, vm.buyer.Address, vm.buyer.npwp, vm.isUseVat, vm.vat.id, vm.vat.rate, vm.subTotal, vm.isLocalSalesDOCreated, vm.comodityName, vm.quantity, vm.remainingQuantity, vm.uom.Id.Value, vm.uom.Unit, vm.price, vm.remark) { Id = vm.Id };
         }
 
-        public Task<int> Create(GarmentMDLocalSalesContractViewModel viewModel)
+        public async Task<int> Create(GarmentMDLocalSalesContractViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var model = MapToModel(viewModel);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("MERCHANDISER", "Create Sales Contract Lokal - " + model.SalesContractNo);
+
+            int Created = await _repository.InsertAsync(model);
+
+            return Created;
         }
 
         public ListResult<GarmentMDLocalSalesContractViewModel> Read(int page, int size, string filter, string order, string keyword)
@@ -146,6 +153,35 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 .ToList();
 
             return new ListResult<GarmentMDLocalSalesContractViewModel>(data, page, size, query.Count());
+        }
+
+        public async Task<GarmentMDLocalSalesContractViewModel> ReadById(int id)
+        {
+            var data = await _repository.ReadByIdAsync(id);
+
+            var viewModel = MapToViewModel(data);
+
+            return viewModel;
+        }
+
+        public async Task<int> Update(int id, GarmentMDLocalSalesContractViewModel viewModel)
+        {
+            var model = MapToModel(viewModel);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("MERCHANDISER", "Update Sales Contract Lokal - " + model.SalesContractNo);
+
+            return await _repository.UpdateAsync(id, model);
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var data = await _repository.ReadByIdAsync(id);
+
+            //Add Log History
+            await logHistoryRepository.InsertAsync("MERCHANDISER", "Delete Sales Contract Lokal - " + data.SalesContractNo);
+
+            return await _repository.DeleteAsync(id);
         }
     }
 }

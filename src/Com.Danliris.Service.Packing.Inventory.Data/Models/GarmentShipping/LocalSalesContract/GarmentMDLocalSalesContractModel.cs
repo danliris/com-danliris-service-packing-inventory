@@ -220,6 +220,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.Loc
                 this.FlagForUpdate(userName, userAgent);
             }
         }
+
         public void SetQuantity(double quantity, string userName, string userAgent)
         {
             if (Quantity != quantity)
@@ -229,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.Loc
             }
         }
 
-        public void SeRemainingQuantity(double remainingQuantity, string userName, string userAgent)
+        public void SetRemainingQuantity(double remainingQuantity, string userName, string userAgent)
         {
             if (RemainingQuantity != remainingQuantity)
             {

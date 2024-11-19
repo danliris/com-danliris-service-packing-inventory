@@ -8,6 +8,8 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
+using Com.Danliris.Service.Packing.Inventory.WebApi.Helper;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentMD
 {
@@ -60,6 +62,100 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi.Controllers.GarmentMD
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            try
+            {
+                var data = await _service.ReadById(id);
+
+                return Ok(new
+                {
+                    data
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] GarmentMDLocalSalesContractViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                _validateService.Validate(viewModel);
+                var result = await _service.Create(viewModel);
+
+                return Created("/", result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] GarmentMDLocalSalesContractViewModel viewModel)
+        {
+            try
+            {
+                VerifyUser();
+                _validateService.Validate(viewModel);
+                var result = await _service.Update(id, viewModel);
+
+                return Ok(result);
+            }
+            catch (ServiceValidationException ex)
+            {
+                var Result = new
+                {
+                    error = ResultFormatter.Fail(ex),
+                    apiVersion = "1.0.0",
+                    statusCode = HttpStatusCode.BadRequest,
+                    message = "Data does not pass validation"
+                };
+
+                return new BadRequestObjectResult(Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            try
+            {
+                VerifyUser();
+                var result = await _service.Delete(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
         }
     }
 }

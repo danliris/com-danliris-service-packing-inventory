@@ -11,5 +11,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
     {
         Task<int> Create(GarmentMDLocalSalesContractViewModel viewModel);
         ListResult<GarmentMDLocalSalesContractViewModel> Read(int page, int size, string filter, string order, string keyword);
+        Task<GarmentMDLocalSalesContractViewModel> ReadById(int id);
+        Task<int> Update(int id, GarmentMDLocalSalesContractViewModel viewModel);
+        Task<int> Delete(int id);
     }
 }
