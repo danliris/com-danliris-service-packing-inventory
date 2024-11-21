@@ -51,6 +51,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 yield return new ValidationResult("Bag Gudang tidak boleh kosong", new List<string> { "storageDivision" });
             }
 
+            if (packUom == null || packUom.Id == 0)
+            {
+                yield return new ValidationResult("Satuan Kemasan tidak boleh kosong", new List<string> { "packUom" });
+            }
+
             if (quantity <= 0)
             {
                 yield return new ValidationResult("Quantity harus lebih dari 0", new List<string> { "quantity" });
