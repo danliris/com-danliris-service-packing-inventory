@@ -197,6 +197,8 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.AR.AR_Re
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentMD;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.LocalSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentMD.LocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.ShippingLocalSalesNote;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -222,6 +224,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             ApplicationSetting.SalesEndpoint = Configuration.GetValue<string>(Constant.SALES_ENDPOINT) ?? Configuration[Constant.SALES_ENDPOINT];
             ApplicationSetting.DyeingPrintingEndpoint = Configuration.GetValue<string>(Constant.DYEINGPRINTING_ENDPOINT) ?? Configuration[Constant.DYEINGPRINTING_ENDPOINT];
             ApplicationSetting.PurchasingEndpoint = Configuration.GetValue<string>(Constant.PURCHASING_ENDPOINT) ?? Configuration[Constant.PURCHASING_ENDPOINT];
+            ApplicationSetting.InventoryEndpoint = Configuration.GetValue<string>(Constant.INVENTORY_ENDPOINT) ?? Configuration[Constant.INVENTORY_ENDPOINT];
 
         }
 
@@ -363,6 +366,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentMDLocalSalesContractRepository, GarmentMDLocalSalesContractRepository>();
             services.AddTransient<IGarmentMDLocalSalesDORepository, GarmentMDLocalSalesDORepository>();
+            services.AddTransient<IGarmentMDLocalSalesNoteRepository, GarmentMDLocalSalesNoteRepository>();
             #endregion
 
             #region Service
@@ -528,6 +532,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
 
             services.AddTransient<IGarmentMDLocalSalesContractService, GarmentMDLocalSalesContractService>();
             services.AddTransient<IGarmentMDLocalSalesDOService, GarmentMDLocalSalesDOService>();
+            services.AddTransient<IGarmentMDLocalSalesNoteService, GarmentMDLocalSalesNoteService>();
 
             #endregion
 

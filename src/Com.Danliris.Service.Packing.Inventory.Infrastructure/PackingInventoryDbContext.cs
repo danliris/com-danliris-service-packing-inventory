@@ -87,6 +87,9 @@ using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.OmzetCorrectionsMode
 using Com.Danliris.Service.Packing.Inventory.Data.Models.AR.RecapOmzet;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalSalesContract;
 using Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalSalesDO;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalMDSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalMDSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalMDSalesNote;
 //using Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.GarmentDraftPackingListItem;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
@@ -262,6 +265,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentMDLocalSalesContractModel> GarmentMDLocalSalesContracts { get; set; }
         public DbSet<GarmentMDLocalSalesDOModel> GarmentMDLocalSalesDOs { get; set; }
 
+        public DbSet<GarmentMDLocalSalesNoteModel> GarmentMDLocalSalesNotes { get; set; }
+        public DbSet<GarmentMDLocalSalesNoteItemModel> GarmentMDLocalSalesNoteItems { get; set; }
+        public DbSet<GarmentMDLocalSalesNoteDetailModel> GarmentMDLocalSalesNoteDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FabricQualityControlEntityTypeConfiguration());
@@ -435,6 +442,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
 
             modelBuilder.Entity<GarmentMDLocalSalesContractModel>().HasQueryFilter(entity => !entity.IsDeleted);  
             modelBuilder.Entity<GarmentMDLocalSalesDOModel>().HasQueryFilter(entity => !entity.IsDeleted);
+
+            modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesNoteConfig());
+            modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesNoteItemConfig());
+            modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesNoteDetailConfig());
 
             base.OnModelCreating(modelBuilder);
         }

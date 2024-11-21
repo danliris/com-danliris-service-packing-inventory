@@ -10,6 +10,6 @@
         public static string SalesEndpoint { get; set; }
         public static string DyeingPrintingEndpoint { get; set; }
         public static string PurchasingEndpoint { get; set; }
-
+        public static string InventoryEndpoint { get; set; }
     }
 }
