@@ -28,6 +28,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                 .Property(s => s.UomUnit)
                 .HasMaxLength(250);
 
+            builder
+               .HasMany(h => h.Details)
+              .WithOne()
+              .HasForeignKey(f => f.LocalSalesNoteItemId);
+
         }
     }
 }
