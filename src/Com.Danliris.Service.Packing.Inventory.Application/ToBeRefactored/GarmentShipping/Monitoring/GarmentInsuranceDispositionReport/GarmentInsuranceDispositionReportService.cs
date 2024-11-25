@@ -92,24 +92,24 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             result.Columns.Add(new DataColumn() { ColumnName = "Kurs", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Amount", DataType = typeof(string) });
             result.Columns.Add(new DataColumn() { ColumnName = "Premi", DataType = typeof(string) });            
-            result.Columns.Add(new DataColumn() { ColumnName = "Amount C1A", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Amount C1B", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Amount C2A", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Amount C2B", DataType = typeof(string) });
-            result.Columns.Add(new DataColumn() { ColumnName = "Amount C2C", DataType = typeof(string) });
+            result.Columns.Add(new DataColumn() { ColumnName = "Amount Unit", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "Amount C1B", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "Amount C2A", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "Amount C2B", DataType = typeof(string) });
+            //result.Columns.Add(new DataColumn() { ColumnName = "Amount C2C", DataType = typeof(string) });
 
             if (Query.ToArray().Count() == 0)
-                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+                result.Rows.Add("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
             else
             {
                 Dictionary<string, List<GarmentInsuranceDispositionReportViewModel>> dataBySupplier = new Dictionary<string, List<GarmentInsuranceDispositionReportViewModel>>();
                 Dictionary<string, decimal> subTotalAmount = new Dictionary<string, decimal>();
                 Dictionary<string, decimal> subTotalPremi = new Dictionary<string, decimal>();
                 Dictionary<string, decimal> subTotalAmt1A = new Dictionary<string, decimal>();
-                Dictionary<string, decimal> subTotalAmt1B = new Dictionary<string, decimal>();
-                Dictionary<string, decimal> subTotalAmt2A = new Dictionary<string, decimal>();
-                Dictionary<string, decimal> subTotalAmt2B = new Dictionary<string, decimal>();
-                Dictionary<string, decimal> subTotalAmt2C= new Dictionary<string, decimal>();
+                //Dictionary<string, decimal> subTotalAmt1B = new Dictionary<string, decimal>();
+                //Dictionary<string, decimal> subTotalAmt2A = new Dictionary<string, decimal>();
+                //Dictionary<string, decimal> subTotalAmt2B = new Dictionary<string, decimal>();
+                //Dictionary<string, decimal> subTotalAmt2C= new Dictionary<string, decimal>();
 
                 foreach (GarmentInsuranceDispositionReportViewModel data in Query.ToList())
                 {
@@ -133,10 +133,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         CurrencyRate = data.CurrencyRate,
                         Amount = data.Amount,  
                         AmountC1A = data.AmountC1A,
-                        AmountC1B = data.AmountC1B,
-                        AmountC2A = data.AmountC2A,
-                        AmountC2B = data.AmountC2B,
-                        AmountC2C = data.AmountC2C,
+                        //AmountC1B = data.AmountC1B,
+                        //AmountC2A = data.AmountC2A,
+                        //AmountC2B = data.AmountC2B,
+                        //AmountC2C = data.AmountC2C,
                         PremiAmount = data.PremiAmount,
                     });
             
@@ -155,43 +155,43 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         subTotalAmt1A.Add(policyType, 0);
                     };
 
-                    if (!subTotalAmt1B.ContainsKey(policyType))
-                    {
-                        subTotalAmt1B.Add(policyType, 0);
-                    };
+                    //if (!subTotalAmt1B.ContainsKey(policyType))
+                    //{
+                    //    subTotalAmt1B.Add(policyType, 0);
+                    //};
 
-                    if (!subTotalAmt2A.ContainsKey(policyType))
-                    {
-                        subTotalAmt2A.Add(policyType, 0);
-                    };
+                    //if (!subTotalAmt2A.ContainsKey(policyType))
+                    //{
+                    //    subTotalAmt2A.Add(policyType, 0);
+                    //};
 
-                    if (!subTotalAmt2B.ContainsKey(policyType))
-                    {
-                        subTotalAmt2B.Add(policyType, 0);
-                    };
+                    //if (!subTotalAmt2B.ContainsKey(policyType))
+                    //{
+                    //    subTotalAmt2B.Add(policyType, 0);
+                    //};
 
-                    if (!subTotalAmt2C.ContainsKey(policyType))
-                    {
-                        subTotalAmt2C.Add(policyType, 0);
-                    };
+                    //if (!subTotalAmt2C.ContainsKey(policyType))
+                    //{
+                    //    subTotalAmt2C.Add(policyType, 0);
+                    //};
 
                     subTotalAmount[policyType] += data.Amount;
                     subTotalPremi[policyType] += data.PremiAmount;
                     subTotalAmt1A[policyType] += data.AmountC1A;
-                    subTotalAmt1B[policyType] += data.AmountC1B;
-                    subTotalAmt2A[policyType] += data.AmountC2A;
-                    subTotalAmt2B[policyType] += data.AmountC2B;
-                    subTotalAmt2C[policyType] += data.AmountC2C;
+                    //subTotalAmt1B[policyType] += data.AmountC1B;
+                    //subTotalAmt2A[policyType] += data.AmountC2A;
+                    //subTotalAmt2B[policyType] += data.AmountC2B;
+                    //subTotalAmt2C[policyType] += data.AmountC2C;
                     
                 }
 
                 decimal Total1 = 0;
                 decimal Total2 = 0;
                 decimal Total3 = 0;
-                decimal Total4 = 0;
-                decimal Total5 = 0;
-                decimal Total6 = 0;
-                decimal Total7 = 0;
+                //decimal Total4 = 0;
+                //decimal Total5 = 0;
+                //decimal Total6 = 0;
+                //decimal Total7 = 0;
 
                 int rowPosition = 13;
 
@@ -209,31 +209,31 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         string AmtTotal = string.Format("{0:N2}", item.Amount);
                         string AmtPremi = string.Format("{0:N2}", item.PremiAmount);
                         string AmtC1A = string.Format("{0:N2}", item.AmountC1A);
-                        string AmtC1B = string.Format("{0:N2}", item.AmountC1B);
-                        string AmtC2A = string.Format("{0:N2}", item.AmountC2A);
-                        string AmtC2B = string.Format("{0:N2}", item.AmountC2B);
-                        string AmtC2C = string.Format("{0:N2}", item.AmountC2C);
+                        //string AmtC1B = string.Format("{0:N2}", item.AmountC1B);
+                        //string AmtC2A = string.Format("{0:N2}", item.AmountC2A);
+                        //string AmtC2B = string.Format("{0:N2}", item.AmountC2B);
+                        //string AmtC2C = string.Format("{0:N2}", item.AmountC2C);
                         string RatePls = string.Format("{0:N2}", item.Rate);
                         string RateUSD= string.Format("{0:N2}", item.CurrencyRate);
 
                         result.Rows.Add(index, item.DispositionNo, PayDate, item.BankName, item.PolicyType, RatePls, item.InsuranceCode, item.InsuranceName, item.PolicyNo,
-                                         PlcDate, item.InvoiceNo, item.BuyerCode, item.BuyerName, RateUSD, AmtTotal, AmtPremi, AmtC1A, AmtC1B, AmtC2A, AmtC2B, AmtC2C);
+                                         PlcDate, item.InvoiceNo, item.BuyerCode, item.BuyerName, RateUSD, AmtTotal, AmtPremi, AmtC1A);
                         rowPosition += 1;
                         DispoType = item.PolicyType;
                     }
 
-                    result.Rows.Add(".", ".", ".", ".", ".", ".", "SUB TOTAL", ".", ".", ".", DispoType, ".", ".", ":", Math.Round(subTotalAmt1A[policyType.Key], 2), Math.Round(subTotalAmt1B[policyType.Key], 2), Math.Round(subTotalAmt2A[policyType.Key], 2), Math.Round(subTotalAmt2B[policyType.Key], 2), Math.Round(subTotalAmt2C[policyType.Key], 2));
+                    result.Rows.Add(".", ".", ".", ".", ".", ".", "SUB TOTAL", ".", ".", ".", DispoType, ".", ".", ":", Math.Round(subTotalAmt1A[policyType.Key], 2));
 
                     rowPosition += 1;
                     Total1 += subTotalAmount[policyType.Key];
                     Total2 += subTotalPremi[policyType.Key];
                     Total3 += subTotalAmt1A[policyType.Key];
-                    Total4 += subTotalAmt1B[policyType.Key];
-                    Total5 += subTotalAmt2A[policyType.Key];
-                    Total6 += subTotalAmt2B[policyType.Key];
-                    Total7 += subTotalAmt2C[policyType.Key];
+                    //Total4 += subTotalAmt1B[policyType.Key];
+                    //Total5 += subTotalAmt2A[policyType.Key];
+                    //Total6 += subTotalAmt2B[policyType.Key];
+                    //Total7 += subTotalAmt2C[policyType.Key];
                 }
-                result.Rows.Add(".", ".", ".", ".", ".", ".", "T O T A L :", ".", ".", ".", ".", ".", ".", ":", Math.Round(Total1, 2), Math.Round(Total2, 2), Math.Round(Total3, 2), Math.Round(Total4, 2), Math.Round(Total5, 2), Math.Round(Total6, 2), Math.Round(Total7, 2));
+                result.Rows.Add(".", ".", ".", ".", ".", ".", "T O T A L :", ".", ".", ".", ".", ".", ".", ":", Math.Round(Total1, 2), Math.Round(Total2, 2), Math.Round(Total3, 2));
                 rowPosition += 1;
             }        
             return Excel.CreateExcel(new List<KeyValuePair<DataTable, string>>() { new KeyValuePair<DataTable, string>(result, "SHEET1") }, true);

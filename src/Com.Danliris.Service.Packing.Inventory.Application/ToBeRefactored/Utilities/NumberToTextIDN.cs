@@ -8,8 +8,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Util
     public class NumberToTextIDN
     {
         static string[] satuan = { "", "SATU", "DUA", "TIGA", "EMPAT", "LIMA", "ENAM", "TUJUH", "DELAPAN", "SEMBILAN" };
-        static string[] belasan = { "SEPULUH", "SEBELAS", "DUA BELASs", "TIGA BELAS", "EMPAT BELAS", "LIMA BELAS", "ENAM BELAS", "TUJUH BELAS", "DELAPAN BELAS", "SEMBILAN BELAS" };
-        static string[] puluhan = { "", "", "DUA PULUH", "TIGA PLULUH", "EMPAT PULUH", "LIMA PULUH", "ENAM PULUH", "TUJUH PULUH", "DELAPAN PULUH", "SEMBILAN PULUH" };
+        static string[] belasan = { "SEPULUH", "SEBELAS", "DUA BELAS", "TIGA BELAS", "EMPAT BELAS", "LIMA BELAS", "ENAM BELAS", "TUJUH BELAS", "DELAPAN BELAS", "SEMBILAN BELAS" };
+        static string[] puluhan = { "", "", "DUA PULUH", "TIGA PULUH", "EMPAT PULUH", "LIMA PULUH", "ENAM PULUH", "TUJUH PULUH", "DELAPAN PULUH", "SEMBILAN PULUH" };
         static string[] ribuan = { "", "RIBU", "JUTA", "MILYAR", "TRILIYUN", "KUADRILYUN", "KUINTILIUN", "SEKSTILIUN", "SEPTILIUN", "OKTILIUN", "NONILIUN", "DESILIUN" };
         public static string terbilang(double d)
         {
