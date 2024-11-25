@@ -268,40 +268,40 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
             tableUnit.AddCell(cellUnitCenter);
 
             decimal amount1A = viewModel.items.Sum(a => a.amount1A);
-            cellUnitLeft.Phrase = new Phrase("UNIT 1A", small_font);
+            cellUnitLeft.Phrase = new Phrase("UNIT GARMENT", small_font);
             tableUnit.AddCell(cellUnitLeft);
             cellUnitRight.Phrase = new Phrase(amount1A > 0 ? string.Format("{0:n0}", amount1A) : "", small_font);
             tableUnit.AddCell(cellUnitRight);
 
-            decimal amount1B = viewModel.items.Sum(a => a.amount1B);
-            cellUnitLeft.Phrase = new Phrase("UNIT 1B", small_font);
-            tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount1B > 0 ? string.Format("{0:n0}", amount1B) : "", small_font);
-            tableUnit.AddCell(cellUnitRight);
+            //decimal amount1B = viewModel.items.Sum(a => a.amount1B);
+            //cellUnitLeft.Phrase = new Phrase("UNIT 1B", small_font);
+            //tableUnit.AddCell(cellUnitLeft);
+            //cellUnitRight.Phrase = new Phrase(amount1B > 0 ? string.Format("{0:n0}", amount1B) : "", small_font);
+            //tableUnit.AddCell(cellUnitRight);
 
-            decimal amount2A = viewModel.items.Sum(a => a.amount2A);
-            cellUnitLeft.Phrase = new Phrase("UNIT 2A", small_font);
-            tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2A > 0 ? string.Format("{0:n0}", amount2A) : "", small_font);
-            tableUnit.AddCell(cellUnitRight);
+            //decimal amount2A = viewModel.items.Sum(a => a.amount2A);
+            //cellUnitLeft.Phrase = new Phrase("UNIT 2A", small_font);
+            //tableUnit.AddCell(cellUnitLeft);
+            //cellUnitRight.Phrase = new Phrase(amount2A > 0 ? string.Format("{0:n0}", amount2A) : "", small_font);
+            //tableUnit.AddCell(cellUnitRight);
 
-            decimal amount2B = viewModel.items.Sum(a => a.amount2B);
-            cellUnitLeft.Phrase = new Phrase("UNIT 2B", small_font);
-            tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2B > 0 ? string.Format("{0:n0}", amount2B) : "", small_font);
-            tableUnit.AddCell(cellUnitRight);
+            //decimal amount2B = viewModel.items.Sum(a => a.amount2B);
+            //cellUnitLeft.Phrase = new Phrase("UNIT 2B", small_font);
+            //tableUnit.AddCell(cellUnitLeft);
+            //cellUnitRight.Phrase = new Phrase(amount2B > 0 ? string.Format("{0:n0}", amount2B) : "", small_font);
+            //tableUnit.AddCell(cellUnitRight);
 
-            decimal amount2C = viewModel.items.Sum(a => a.amount2C);
-            cellUnitLeft.Phrase = new Phrase("UNIT 2C", small_font);
-            tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(amount2C > 0 ? string.Format("{0:n0}", amount2C) : "", small_font);
-            tableUnit.AddCell(cellUnitRight);
+            //decimal amount2C = viewModel.items.Sum(a => a.amount2C);
+            //cellUnitLeft.Phrase = new Phrase("UNIT 2C", small_font);
+            //tableUnit.AddCell(cellUnitLeft);
+            //cellUnitRight.Phrase = new Phrase(amount2C > 0 ? string.Format("{0:n0}", amount2C) : "", small_font);
+            //tableUnit.AddCell(cellUnitRight);
 
-            decimal totalUnitCharge = amount1A + amount1B + amount2A + amount2B + amount2C;
-            cellUnitLeft.Phrase = new Phrase("Total", small_font_bold);
-            tableUnit.AddCell(cellUnitLeft);
-            cellUnitRight.Phrase = new Phrase(string.Format("{0:n0}", totalUnitCharge), small_font_bold);
-            tableUnit.AddCell(cellUnitRight);
+            //decimal totalUnitCharge = amount1A + amount1B + amount2A + amount2B + amount2C;
+            //cellUnitLeft.Phrase = new Phrase("Total", small_font_bold);
+            //tableUnit.AddCell(cellUnitLeft);
+            //cellUnitRight.Phrase = new Phrase(string.Format("{0:n0}", totalUnitCharge), small_font_bold);
+            //tableUnit.AddCell(cellUnitRight);
 
             tableUnit.SpacingAfter = 5;
             tableUnit.HorizontalAlignment = Element.ALIGN_LEFT;
