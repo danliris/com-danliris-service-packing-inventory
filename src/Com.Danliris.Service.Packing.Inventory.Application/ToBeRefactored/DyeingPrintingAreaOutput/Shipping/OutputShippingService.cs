@@ -739,7 +739,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //    && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
                         //bonNo = GenerateBonNoPenjualan(totalCurrentYearData + 1, viewModel.Date, viewModel.ShippingCode, viewModel.ShippingProductionOrders.First().ShippingGrade);
 
-                        totalCurrentYearData = _repository.GetDbSet().Count(s => s.Area == DyeingPrintingArea.SHIPPING
+                        totalCurrentYearData = _repository.GetDbSet().IgnoreQueryFilters().Count(s => s.Area == DyeingPrintingArea.SHIPPING
                            && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT && s.ShippingCode == viewModel.ShippingCode);
                         bonNo = GenerateBonNoPenjualan(totalCurrentYearData + 1, viewModel.Date, viewModel.ShippingCode, viewModel.ShippingProductionOrders.First().ShippingGrade);
 
@@ -768,7 +768,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         //    && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT);
                         //bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
 
-                        totalCurrentYearData = _repository.GetDbSet().Count(s => s.Area == DyeingPrintingArea.SHIPPING
+                        totalCurrentYearData = _repository.GetDbSet().IgnoreQueryFilters().Count(s => s.Area == DyeingPrintingArea.SHIPPING
                             && s.DestinationArea == viewModel.DestinationArea && s.CreatedUtc.Year == viewModel.Date.Year && s.Type == DyeingPrintingArea.OUT);
                         bonNo = GenerateBonNo(totalCurrentYearData + 1, viewModel.Date, viewModel.DestinationArea);
 
