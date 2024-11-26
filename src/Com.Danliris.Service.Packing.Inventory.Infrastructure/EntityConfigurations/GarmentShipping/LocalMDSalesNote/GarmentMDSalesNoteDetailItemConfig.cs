@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurations.GarmentShipping.LocalMDSalesNote
 {
-    public class GarmentMDLocalSalesNoteDetailConfig : IEntityTypeConfiguration<GarmentMDLocalSalesNoteDetailModel>
+    public class GarmentMDSalesNoteDetailItemConfig : IEntityTypeConfiguration<GarmentMDSalesNoteDetailItemModel>
     {
-        public void Configure(EntityTypeBuilder<GarmentMDLocalSalesNoteDetailModel> builder)
+        public void Configure(EntityTypeBuilder<GarmentMDSalesNoteDetailItemModel> builder)
         {
             /* StandardEntity */
             builder.HasKey(s => s.Id);
@@ -20,18 +20,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
             builder.HasQueryFilter(f => !f.IsDeleted);
             /* StandardEntity */
 
-
-            builder
-                .Property(s => s.BonNo)
-                .HasMaxLength(250);
-
             builder
                 .Property(s => s.UomUnit)
                 .HasMaxLength(250);
 
-            builder
-                .Property(s => s.BonFrom)
-                .HasMaxLength(250);
+            
 
             builder
                .Property(s => s.ComodityCode)
@@ -46,10 +39,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.EntityConfigurat
                .Property(s => s.RONo)
                .HasMaxLength(15);
 
-            builder
-              .HasMany(h => h.DetailItems)
-             .WithOne()
-             .HasForeignKey(f => f.LocalSalesNoteDetailId);
+           
 
 
         }
