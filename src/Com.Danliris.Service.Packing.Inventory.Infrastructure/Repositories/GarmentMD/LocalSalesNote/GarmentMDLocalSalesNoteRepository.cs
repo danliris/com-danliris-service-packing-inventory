@@ -36,6 +36,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
         {
             var model = _dbSet
                 .Include(i => i.Items)
+                .ThenInclude(s => s.Details)
+                .ThenInclude(d => d.DetailItems)
                 .FirstOrDefault(s => s.Id == id);
 
             //var sc= _salesContractDbSet.FirstOrDefault(a => a.Id == model.LocalSalesContractId);
@@ -53,6 +55,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 foreach (var detail in item.Details)
                 {
                     detail.FlagForDelete(_identityProvider.Username, UserAgent);
+                    foreach(var detailItem in detail.DetailItems)
+                    {
+                        detailItem.FlagForDelete(_identityProvider.Username, UserAgent);
+                    }
                 }
             }
 
@@ -76,6 +82,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                 foreach (var detail in item.Details)
                 {
                     detail.FlagForCreate(_identityProvider.Username, UserAgent);
+
+                    foreach(var detailItem in detail.DetailItems)
+                    {
+                        detailItem.FlagForCreate(_identityProvider.Username, UserAgent);
+                    }
                 }
             }
 
@@ -102,6 +113,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
             var modelToUpdate = _dbSet
                 .Include(i => i.Items)
                 .ThenInclude(s => s.Details)
+                .ThenInclude(d => d.DetailItems)
                 .FirstOrDefault(s => s.Id == id);
 
             modelToUpdate.SetDate(model.Date, _identityProvider.Username, UserAgent);
@@ -143,6 +155,10 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                         if (itemDetailToUpdate == null)
                         {
                             detail.FlagForDelete(_identityProvider.Username, UserAgent);
+                            foreach (var detailItem in detail.DetailItems)
+                            {
+                                detailItem.FlagForDelete(_identityProvider.Username, UserAgent);
+                            }
                         }
                     }
                 }
@@ -163,6 +179,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.Gar
                     if (detail.Id == 0)
                     {
                         detail.FlagForCreate(_identityProvider.Username, UserAgent);
+                        foreach (var detailItem in detail.DetailItems)
+                        {
+                            detailItem.FlagForCreate(_identityProvider.Username, UserAgent);
+                        }
+
                         macthItem.Details.Add(detail);
                     }
                 }

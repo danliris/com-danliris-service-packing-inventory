@@ -4,14 +4,16 @@ using Com.Danliris.Service.Packing.Inventory.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(PackingInventoryDbContext))]
-    partial class PackingInventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126031351_Add-Coloum-Comodity&RONo-LocalSalesNoteNew")]
+    partial class AddColoumComodityRONoLocalSalesNoteNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2150,67 +2152,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasIndex("LocalSalesNoteItemId");
 
                     b.ToTable("GarmentMDLocalSalesNoteDetails");
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalMDSalesNote.GarmentMDSalesNoteDetailItemModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("ComodityCode")
-                        .HasMaxLength(25);
-
-                    b.Property<int>("ComodityId");
-
-                    b.Property<string>("ComodityName")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CreatedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("CreatedUtc");
-
-                    b.Property<string>("DeletedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("DeletedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("DeletedUtc");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("LastModifiedAgent")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(128);
-
-                    b.Property<DateTime>("LastModifiedUtc");
-
-                    b.Property<int>("LocalSalesNoteDetailId");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<string>("RONo")
-                        .HasMaxLength(15);
-
-                    b.Property<int>("UomId");
-
-                    b.Property<string>("UomUnit")
-                        .HasMaxLength(250);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocalSalesNoteDetailId");
-
-                    b.ToTable("GarmentMDSalesNoteDetailItems");
                 });
 
             modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalSalesContract.GarmentMDLocalSalesContractModel", b =>
@@ -9277,14 +9218,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
                     b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.Garmentshipping.LocalMDSalesNote.GarmentMDLocalSalesNoteItemModel")
                         .WithMany("Details")
                         .HasForeignKey("LocalSalesNoteItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalMDSalesNote.GarmentMDSalesNoteDetailItemModel", b =>
-                {
-                    b.HasOne("Com.Danliris.Service.Packing.Inventory.Data.Models.GarmentShipping.LocalMDSalesNote.GarmentMDLocalSalesNoteDetailModel")
-                        .WithMany("DetailItems")
-                        .HasForeignKey("LocalSalesNoteDetailId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

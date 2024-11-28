@@ -1,4 +1,5 @@
 ﻿using Com.Danliris.Service.Packing.Inventory.Application.CommonViewModelObjectProperties;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.CommonViewModelObjectProperties;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.LocalSalesNote.ViewModel;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Utilities;
 using Com.Danliris.Service.Packing.Inventory.Application.Utilities;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static iTextSharp.text.pdf.AcroFields;
 
 namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.ShippingLocalSalesNote
 {
@@ -154,6 +156,42 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                             Unit = s.UomUnit
                         },
                         bonFrom = s.BonFrom,
+                        comodity = new Comodity
+                        {
+                            Id = s.ComodityId,
+                            Code = s.ComodityCode,
+                            Name = s.ComodityName
+                        },
+                        roNo = s.RONo,
+                        detailItems = (s.DetailItems ?? new List<GarmentMDSalesNoteDetailItemModel>()).Select(r => new GarmentMDSalesNoteDetailItemViewModel
+                        {
+                            Active = r.Active,
+                            Id = r.Id,
+                            CreatedAgent = r.CreatedAgent,
+                            CreatedBy = r.CreatedBy,
+                            CreatedUtc = r.CreatedUtc,
+                            DeletedAgent = r.DeletedAgent,
+                            DeletedBy = r.DeletedBy,
+                            DeletedUtc = r.DeletedUtc,
+                            IsDeleted = r.IsDeleted,
+                            LastModifiedAgent = r.LastModifiedAgent,
+                            LastModifiedBy = r.LastModifiedBy,
+                            LastModifiedUtc = r.LastModifiedUtc,
+
+                            quantity = r.Quantity,
+                            uom = new UnitOfMeasurement
+                            {
+                                Id = r.UomId,
+                                Unit = r.UomUnit
+                            },
+                            comodity = new Comodity
+                            {
+                                Id = r.ComodityId,
+                                Code = r.ComodityCode,
+                                Name = r.ComodityName
+                            },
+                            roNo = r.RONo,
+                        }).ToList()
                     }).ToList()
                 }).ToList()
             };
@@ -169,7 +207,14 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 var detail = (i.details ?? new List<GarmentMDLocalSalesNoteDetailViewModel>()).Select(s =>
                 {
                     s.uom = s.uom ?? new UnitOfMeasurement();
-                    return new GarmentMDLocalSalesNoteDetailModel(s.bonNo, s.quantity, s.uom.Id.GetValueOrDefault(), s.uom.Unit, s.bonFrom) { Id = s.Id };
+                    s.comodity = s.comodity ?? new Comodity();
+                    var detailItems = (s.detailItems ?? new List<GarmentMDSalesNoteDetailItemViewModel>()).Select(r =>
+                    {
+                        r.uom = r.uom ?? new UnitOfMeasurement();
+                        r.comodity = r.comodity ?? new Comodity();
+                        return new GarmentMDSalesNoteDetailItemModel(r.quantity, r.uom.Id.GetValueOrDefault(), r.uom.Unit, r.comodity.Id, r.comodity.Code, r.comodity.Name, r.roNo) { Id = r.Id };
+                    }).ToList();
+                    return new GarmentMDLocalSalesNoteDetailModel(s.bonNo, s.quantity, s.uom.Id.GetValueOrDefault(), s.uom.Unit, s.bonFrom,s.comodity.Id,s.comodity.Code,s.comodity.Name,s.roNo, detailItems) { Id = s.Id };
                 }).ToList();
                 return new GarmentMDLocalSalesNoteItemModel(i.localSalesContractId, i.comodityName, i.quantity, i.uom.Id.GetValueOrDefault(), i.uom.Unit, i.price, i.remark, detail) { Id = i.Id };
             }).ToList();
@@ -299,12 +344,79 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
 
         public async Task<int> Update(int id, GarmentMDLocalSalesNoteViewModel viewModel)
         {
-            var model = MapToModel(viewModel);
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var oldData = await _repository.ReadByIdAsync(id);
+                    var model = MapToModel(viewModel);
 
-            //Add Log History
-            await logHistoryRepository.InsertAsync("MERCHANDISER", "Update Nota Penjualan Lokal - " + model.NoteNo);
 
-            return await _repository.UpdateAsync(id, model);
+                    var bonLeftOverToFalse = new List<string>();
+                    var bonLeftOverToTrue = new List<string>(); ;
+
+                    //get deleted detail
+                    foreach(var Olditem in oldData.Items)
+                    {
+                        var newItem = model.Items.FirstOrDefault(m => m.Id == Olditem.Id);
+                        if(newItem != null)
+                        {
+                            foreach (var detail in Olditem.Details)
+                            {
+                                var itemDetailToUpdate = newItem.Details.FirstOrDefault(f => f.Id == detail.Id);
+
+                                if (itemDetailToUpdate == null)
+                                {
+                                    if(Olditem.ComodityName == "BARANG JADI" && detail.BonFrom == "SISA")
+                                    bonLeftOverToFalse.Add(detail.BonNo);
+                                }
+                            }
+                        }
+                    }
+
+                    //Get new detail
+                    foreach (var item in model.Items)
+                    {
+                        var oldItem = oldData.Items.FirstOrDefault(f => f.Id == item.Id);
+                        if (oldItem != null)
+                        {
+                            foreach (var detail in item.Details)
+                            {
+                                if (detail.Id == 0)
+                                {
+                                    if (oldItem.ComodityName =="BARANG JADI" && detail.BonFrom == "SISA")
+                                        bonLeftOverToTrue.Add(detail.BonNo);
+                                }
+                            }
+                        }
+                    }
+
+                    //Add Log History
+                    await logHistoryRepository.InsertAsync("MERCHANDISER", "Update Nota Penjualan Lokal - " + model.NoteNo);
+
+                    var Updated =  await _repository.UpdateAsync(id, model);
+
+                    //update status bon production
+                    if (bonLeftOverToFalse.Count > 0)
+                    {
+                        await PutIsLSNInventory(bonLeftOverToFalse, false);
+                    }
+
+                    //update status bon production
+                    if (bonLeftOverToTrue.Count > 0)
+                    {
+                        await PutIsLSNInventory(bonLeftOverToTrue, true);
+                    }
+
+                    transaction.Commit();
+
+                    return Updated;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
         }
 
         protected async Task<string> PutIsLSNInventory(List<string> nos, bool isLSN)

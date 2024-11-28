@@ -268,6 +268,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
         public DbSet<GarmentMDLocalSalesNoteModel> GarmentMDLocalSalesNotes { get; set; }
         public DbSet<GarmentMDLocalSalesNoteItemModel> GarmentMDLocalSalesNoteItems { get; set; }
         public DbSet<GarmentMDLocalSalesNoteDetailModel> GarmentMDLocalSalesNoteDetails { get; set; }
+        public DbSet<GarmentMDSalesNoteDetailItemModel> GarmentMDSalesNoteDetailItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -446,6 +447,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure
             modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesNoteConfig());
             modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesNoteItemConfig());
             modelBuilder.ApplyConfiguration(new GarmentMDLocalSalesNoteDetailConfig());
+            modelBuilder.ApplyConfiguration(new GarmentMDSalesNoteDetailItemConfig());
 
             base.OnModelCreating(modelBuilder);
         }
