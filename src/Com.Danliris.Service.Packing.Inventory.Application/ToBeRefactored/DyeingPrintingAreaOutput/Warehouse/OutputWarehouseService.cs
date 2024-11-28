@@ -494,7 +494,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                                                                 s.ProductTextile.Id,
                                                                 s.ProductTextile.Code,
                                                                 s.ProductTextile.Name
-                                                                )).ToList());
+                                                                )).ToList(), null);
 
 
 
@@ -651,7 +651,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                             "", s.DyeingPrintingAreaInputProductionOrderId, s.BuyerId, s.MaterialProduct.Id, s.MaterialProduct.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name,
                             s.MaterialWidth, s.AdjDocumentNo, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name, s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode,
                             s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.Quantity, s.FinishWidth, s.DateIn, viewModel.Date, s.DestinationBuyerName, s.InventoryType, s.MaterialOrigin, s.DeliveryOrderSalesType,
-                            s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
+                            s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList(), null);
 
 
                 result = await _outputRepository.InsertAsync(model);
@@ -2347,7 +2347,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     {
                         Id = s.Id
-                    }).ToList());
+                    }).ToList(), null);
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
             Dictionary<int, decimal> dictQtyPacking = new Dictionary<int, decimal>();
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
@@ -2428,7 +2428,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     {
                         Id = s.Id
-                    }).ToList());
+                    }).ToList(), null);
 
 
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();

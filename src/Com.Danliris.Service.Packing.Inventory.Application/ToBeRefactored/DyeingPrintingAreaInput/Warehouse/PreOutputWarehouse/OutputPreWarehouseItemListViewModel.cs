@@ -65,5 +65,8 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string PrevSppInJson { get; set; }
         public string InventoryType { get; set; }
         public string MaterialOrigin { get; set; }
+        public decimal BalanceCustom { get; set; }
+        public decimal PackagingLengthCustom { get; set; }
+        public string UomUnitCustom { get; set; }
     }
 }

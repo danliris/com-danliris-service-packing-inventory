@@ -1708,7 +1708,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     {
                         Id = s.Id
-                    }).ToList());
+                    }).ToList(), null);
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
             Dictionary<int, decimal> dictQtyPacking = new Dictionary<int, decimal>();
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)

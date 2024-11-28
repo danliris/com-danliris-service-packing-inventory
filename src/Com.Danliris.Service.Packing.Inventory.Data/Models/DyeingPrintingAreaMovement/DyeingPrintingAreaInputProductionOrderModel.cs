@@ -121,6 +121,11 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string ProductTextileCode { get; set; }
         public string ProductTextileName { get; set; }
         #endregion
+
+        public string UomUnitCustom { get; set; }
+        public decimal BalanceCustom { get; set; }
+        public decimal PackagingLengthCustom { get; set; }
+
         public DyeingPrintingAreaInputProductionOrderModel()
         {
             IsAfterStockOpname = true;
