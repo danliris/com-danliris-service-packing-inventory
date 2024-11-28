@@ -121,7 +121,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     foreach (var size in detail.Sizes)
                     {
-                        sizesMax[size.Size.SizeIdx] = size.Size.Size;
+                        sizesMax[size.Size.Id] = size.Size.Size;
                     }
                 }
                 if (sizesMax.Count > 11)
@@ -230,7 +230,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                 {
                     foreach (var size in detail.Sizes)
                     {
-                        sizes[size.Size.SizeIdx] = size.Size.Size;
+                        sizes[size.Size.Id] = size.Size.Size;
                     }
                 }
                 PdfPTable tableDetail = new PdfPTable(SIZES_COUNT + (viewModel.InvoiceType == "DL" ? 11 : 8));
@@ -324,7 +324,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Garm
                         double quantity = 0;
                         if (size.Key != 0)
                         {
-                            quantity = detail.Sizes.Where(w => w.Size.SizeIdx == size.Key).Sum(s => s.Quantity);
+                            quantity = detail.Sizes.Where(w => w.Size.Id == size.Key).Sum(s => s.Quantity);
                         }
 
                         if (sizeSumQty.ContainsKey(size.Key))
