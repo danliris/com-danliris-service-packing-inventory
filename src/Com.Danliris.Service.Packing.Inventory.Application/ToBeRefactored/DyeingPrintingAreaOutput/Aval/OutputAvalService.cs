@@ -338,7 +338,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
             {
                 model = new DyeingPrintingAreaOutputModel(viewModel.Date, viewModel.Area, viewModel.Shift, bonNo, true, "", viewModel.Group,
                        type, viewModel.AvalItems.Select(s =>
-                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,viewModel.Date)).ToList());
+                    new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,viewModel.Date)).ToList(), null);
 
                 result = await _outputRepository.InsertAsync(model);
 
@@ -1160,7 +1160,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     new DyeingPrintingAreaOutputProductionOrderModel(viewModel.Area, true, s.AvalType, s.AvalQuantity, s.AvalQuantityKg, s.AdjDocumentNo, s.AvalTransformationId,viewModel.Date)
                     {
                         Id = s.Id
-                    }).ToList());
+                    }).ToList(), null);
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
             Dictionary<int, double> dictWeight = new Dictionary<int, double>();
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)

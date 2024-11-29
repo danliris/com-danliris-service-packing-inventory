@@ -27,6 +27,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
         public string Shift { get; set; }
         public int InputPackagingId { get; set; }
         public string Group { get; set; }
+        public string UomUnit { get; set; }
         public ICollection<OutputPackagingProductionOrderViewModel> PackagingProductionOrders { get; set; }
         public ICollection<InputPlainAdjPackagingProductionOrder> PackagingProductionOrdersAdj { get; set; }
 
