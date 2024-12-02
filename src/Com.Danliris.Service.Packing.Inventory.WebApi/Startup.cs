@@ -199,6 +199,7 @@ using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentM
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.LocalSalesDO;
 using Com.Danliris.Service.Packing.Inventory.Infrastructure.Repositories.GarmentMD.LocalSalesNote;
 using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.ShippingLocalSalesNote;
+using Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.GarmentMD.TraceableOut;
 
 namespace Com.Danliris.Service.Packing.Inventory.WebApi
 {
@@ -533,6 +534,7 @@ namespace Com.Danliris.Service.Packing.Inventory.WebApi
             services.AddTransient<IGarmentMDLocalSalesContractService, GarmentMDLocalSalesContractService>();
             services.AddTransient<IGarmentMDLocalSalesDOService, GarmentMDLocalSalesDOService>();
             services.AddTransient<IGarmentMDLocalSalesNoteService, GarmentMDLocalSalesNoteService>();
+            services.AddTransient<ITraceableOutService, TraceableOutService>();
 
             #endregion
 
