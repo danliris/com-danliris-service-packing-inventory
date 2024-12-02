@@ -1108,8 +1108,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("Balance");
 
-                    b.Property<decimal>("BalanceCustom");
-
                     b.Property<string>("Buyer")
                         .HasMaxLength(4096);
 
@@ -1225,8 +1223,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<double>("PackagingLength");
 
-                    b.Property<decimal>("PackagingLengthCustom");
-
                     b.Property<decimal>("PackagingQty")
                         .HasColumnType("decimal(18,2)");
 
@@ -1305,8 +1301,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Infrastructure.Migrations
 
                     b.Property<string>("UomUnit")
                         .HasMaxLength(32);
-
-                    b.Property<string>("UomUnitCustom");
 
                     b.Property<double>("Weight");
 
