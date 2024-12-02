@@ -62,7 +62,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         /// <param name="type"></param>
         /// <param name="dyeingPrintingAreaOutputProductionOrders"></param>
         public DyeingPrintingAreaOutputModel(DateTimeOffset date, string area, string shift, string bonNo, bool hasNextAreaDocument,
-            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders, string uomUnit)
+            string destinationArea, string group, string type, ICollection<DyeingPrintingAreaOutputProductionOrderModel> dyeingPrintingAreaOutputProductionOrders)
         {
             Date = date;
             Area = area;
@@ -73,7 +73,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             DestinationArea = destinationArea;
             DyeingPrintingAreaOutputProductionOrders = dyeingPrintingAreaOutputProductionOrders;
             Type = type;
-            UomUnit = uomUnit;
         }
 
         /// <summary>

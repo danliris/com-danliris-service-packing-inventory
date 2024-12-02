@@ -337,7 +337,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                         s.Remark, s.ProductionMachine, s.Grade, s.Status, s.Balance, s.Id, s.BuyerId, s.Material.Id, s.Material.Name, s.MaterialConstruction.Id, s.MaterialConstruction.Name, s.MaterialWidth, "",
                         s.QtyPacking, s.PackingType, s.PackingUnit, s.DeliveryOrder.Id, s.DeliveryOrder.No, s.AvalType, s.ProcessType.Id, s.ProcessType.Name, s.YarnMaterial.Id, s.YarnMaterial.Name,
                         s.ProductSKUId, s.FabricSKUId, s.ProductSKUCode, s.HasPrintingProductSKU, s.ProductPackingId, s.FabricPackingId, s.ProductPackingCode, s.HasPrintingProductPacking, s.PackingLength, s.FinishWidth, s.DateIn,viewModel.Date, s.MaterialOrigin,
-                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList(), null);
+                        s.ProductTextile.Id, s.ProductTextile.Code, s.ProductTextile.Name)).ToList());
                     
 
                 result = await _repository.InsertAsync(model);
@@ -788,7 +788,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
 
                     {
                         Id = s.Id
-                    }).ToList(), null);
+                    }).ToList());
             Dictionary<int, double> dictBalance = new Dictionary<int, double>();
             foreach (var item in dbModel.DyeingPrintingAreaOutputProductionOrders)
             {

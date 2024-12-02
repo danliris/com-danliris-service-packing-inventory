@@ -81,11 +81,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
         public string DestinationBuyerName { get; set; }
         public string InventoryType { get; set; }
         public string MaterialOrigin { get; set;  }
-        public decimal BalanceCustom { get; set; }
-        public decimal PackagingLengthCustom { get;  set; }
-        public string UomUnitCustom { get;  set; }
-
-
         #region Product SKU Packing
 
         public int ProductSKUId { get; private set; }
@@ -883,7 +878,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             int materialId, string materialName, int materialConstructionId, string materialConstructionName, string materialWidth, int processTypeId, string processTypeName,
             int yarnMaterialId, string yarnMaterialName,
             int productSKUId, int fabricSKUId, string productSKUCode, bool hasPrintingProductSKU, int productPackingId, int fabricPackingId, string productPackingCode, bool hasPrintingProductPacking, double packingLength, string finishWidth, DateTimeOffset dateIn, DateTimeOffset dateOut, string materialOrigin, 
-            int? productTextileId, string productTextileCode, string productTexileName, string uomUnitCustom, decimal packingLengthCustom, decimal balanceCustom ) : this()
+            int? productTextileId, string productTextileCode, string productTexileName ) : this()
              
         {
             ProductionOrderId = productionOrderId;
@@ -947,11 +942,6 @@ namespace Com.Danliris.Service.Packing.Inventory.Data.Models.DyeingPrintingAreaM
             ProductTextileId = productTextileId;
             ProductTextileCode = productTextileCode;
             ProductTextileName = productTexileName;
-            UomUnitCustom = uomUnitCustom;
-            PackagingLengthCustom = packingLengthCustom;
-            BalanceCustom = balanceCustom;
-            
-
         }
 
         /// <summary>
