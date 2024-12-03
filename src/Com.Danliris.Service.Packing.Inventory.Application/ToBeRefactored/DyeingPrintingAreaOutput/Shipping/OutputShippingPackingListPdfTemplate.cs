@@ -534,7 +534,7 @@ namespace Com.Danliris.Service.Packing.Inventory.Application.ToBeRefactored.Dyei
                     double convqty = 0;
                     foreach (var detail in newDetails.Where( x => x.Color == itemB.Color).OrderBy( s=> s.Color))
                     {
-                        var qtyconv1 = Math.Round((viewModel.UomUnit == "YARD" ? detail.Qty * 1.09361 : detail.Qty), 4);
+                        var qtyconv1 = Math.Round((viewModel.UomUnit == "YARD" ? detail.Qty * 1.09361 : detail.Qty), 2);
                         cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.No}", normal_font, 0.75f));
                         tableDetail.AddCell(cellBorderBottomRight);
                         cellBorderBottomRight.Phrase = new Phrase(GetScalledChunk($"{detail.ProductionOrder.No}", normal_font, 0.75f));
